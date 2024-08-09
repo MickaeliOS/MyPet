@@ -16,42 +16,63 @@ struct PetListView: View {
     @State private var isPresentingAddPetView = false
     @Binding var path: NavigationPath
 
+    private let emptyListMessage = """
+    La liste est vide, ajouter vos animaux
+    en appuyant sur le bouton + situé en haut à
+    droite de l'écran.
+    """
+
     // MARK: - BODY
     var body: some View {
         GeometryReader { geometry in
-            List {
-                ForEach(pets) { pet in
-                    PetView(petPhotoData: pet.photo, petName: pet.name)
-                        .listRowInsets(EdgeInsets())
-                        .frame(height: geometry.size.height * 0.3)
-                        .frame(maxWidth: .infinity)
-                        .onTapGesture {
-                            path.append(pet)
-                        }
+            if pets.isEmpty {
+                VStack {
+                    Image(systemName: "list.bullet.clipboard")
+                        .font(.system(size: 80))
+
+                    Text(emptyListMessage)
+                        .font(.title2)
                 }
-                .onDelete(perform: deletePet)
-            }
-            .listRowSpacing(15)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isPresentingAddPetView.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.title2)
+                .padding()
+                .position(x: geometry.frame(in: .local).midX,
+                          y: geometry.frame(in: .local).midY)
+                .foregroundStyle(.secondary)
+            } else {
+                List {
+                    ForEach(pets) { pet in
+                        PetView(petPhotoData: pet.photo, petName: pet.name)
+                            .listRowInsets(EdgeInsets())
+                            .frame(height: geometry.size.height * 0.3)
+                            .frame(maxWidth: .infinity)
+                            .onTapGesture {
+                                path.append(pet)
+                            }
                     }
+                    .onDelete(perform: deletePet)
+                }
+                .listRowSpacing(15)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                EditButton()
+                    .font(.title2)
+            }
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isPresentingAddPetView.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.title2)
                 }
             }
         }
-        .navigationTitle("Mes animaux")
-        .navigationDestination(for: Pet.self, destination: { pet in
-            Text(pet.name)
-        })
+        .navigationDestination(for: Pet.self) { pet in
+            PetTabView()
+                .environment(pet)
+        }
         .sheet(isPresented: $isPresentingAddPetView) {
             AddPetView(path: $path)
         }
