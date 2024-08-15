@@ -19,7 +19,6 @@ struct AddPetView: View {
     @State private var animalItem: PhotosPickerItem?
     @State private var animalImage: Image?
     @State private var photoPickerFailed = false
-    @Binding var path: NavigationPath
 
     // MARK: - BODY
     var body: some View {
@@ -109,7 +108,7 @@ struct AddPetView: View {
         let previewer = try Previewer()
 
         return NavigationStack {
-            AddPetView(path: .constant(NavigationPath()))
+            AddPetView()
         }
         .modelContainer(previewer.container)
 

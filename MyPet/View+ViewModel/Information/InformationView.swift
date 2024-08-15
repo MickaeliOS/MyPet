@@ -12,26 +12,32 @@ struct InformationView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            displayPetPhoto(geometry: geometry)
-        }
-    }
+            VStack(alignment: .leading) {
+                if let petPhotoData = pet.photo, let uiImage = UIImage(data: petPhotoData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .frame(height: geometry.size.height * 0.4)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                } else {
+                    Image(systemName: "pawprint.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity)
+                        .frame(height: geometry.size.height * 0.4)
+                }
 
-    @ViewBuilder
-    private func displayPetPhoto(geometry: GeometryProxy) -> some View {
-        if let petPhoto = pet.photo,
-           let uiImage = UIImage(data: petPhoto) {
+                Text(pet.name)
+                    .font(.largeTitle)
+                    .padding(.bottom, 5)
 
-            Image(uiImage: uiImage)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity)
-                .frame(height: geometry.size.height * 0.3)
-        } else {
-            Image(systemName: "pawprint.fill")
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
-                .frame(height: geometry.size.height * 0.2)
+                Text(pet.gender.rawValue)
+                    .font(.headline)
+                Text(pet.type)
+                Text(pet.race)
+                Text("\(pet.birthdate.dateToStringDMY)")
+                Text(pet.color)
+                Text(pet.eyeColor)
+            }
         }
     }
 }

@@ -17,6 +17,8 @@
 		83636B962C5BCE7D004E1EE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */; };
 		83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA22C5BCF04004E1EE5 /* AddPetView.swift */; };
 		83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA42C5BCF1D004E1EE5 /* Pet.swift */; };
+		83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */; };
+		83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */; };
 		83BB914B2C6649E30063185C /* PetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB914A2C6649E30063185C /* PetTabView.swift */; };
 		83BB914F2C6651050063185C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB914E2C6651050063185C /* ImageExtension.swift */; };
 		83BB91522C6660A70063185C /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB91512C6660A70063185C /* InformationView.swift */; };
@@ -34,6 +36,8 @@
 		83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83636BA22C5BCF04004E1EE5 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		83636BA42C5BCF1D004E1EE5 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickDividerView.swift; sourceTree = "<group>"; };
 		83BB914A2C6649E30063185C /* PetTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabView.swift; sourceTree = "<group>"; };
 		83BB914E2C6651050063185C /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		83BB91512C6660A70063185C /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
@@ -53,6 +57,7 @@
 		830DC6912C650D46000A0698 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				83A23C482C6E369200B7DEC3 /* ReusableView */,
 				830DC6922C650D53000A0698 /* Previewer.swift */,
 			);
 			path = Utility;
@@ -81,6 +86,7 @@
 			children = (
 				835517202C626EAC006D111B /* StringExtension.swift */,
 				83BB914E2C6651050063185C /* ImageExtension.swift */,
+				83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -148,6 +154,14 @@
 				83636B922C5BCE7D004E1EE5 /* Assets.xcassets */,
 			);
 			path = MainFile;
+			sourceTree = "<group>";
+		};
+		83A23C482C6E369200B7DEC3 /* ReusableView */ = {
+			isa = PBXGroup;
+			children = (
+				83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */,
+			);
+			path = ReusableView;
 			sourceTree = "<group>";
 		};
 		83BB91492C6649A80063185C /* PetTabView */ = {
@@ -259,9 +273,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				830DC6932C650D53000A0698 /* Previewer.swift in Sources */,
+				83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */,
 				8355171E2C62666B006D111B /* AddPetViewModel.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
 				83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */,
+				83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */,
 				8355171B2C6253F2006D111B /* Identification.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,

@@ -8,15 +8,34 @@
 import SwiftUI
 
 struct PetTabView: View {
-    @Environment(Pet.self) var pet
+    @Binding var selectedPet: Pet?
 
     var body: some View {
-        TabView {
-            InformationView()
-                .tabItem {
-                    Label("Infos", systemImage: "info.circle.fill")
+        VStack {
+            HStack {
+                Button {
+                    withAnimation {
+                        selectedPet = nil
+                    }
+                } label: {
+                    Label("Mes animaux", systemImage: "chevron.left")
+                        .font(.title3)
                 }
+
+                Spacer()
+            }
+
+            if let pet = selectedPet {
+                TabView {
+                    InformationView()
+                        .tabItem {
+                            Label("Infos", systemImage: "info.circle.fill")
+                        }
+                }
+                .environment(pet)
+            }
         }
+        .padding()
     }
 }
 
@@ -25,7 +44,7 @@ struct PetTabView: View {
         let previewer = try Previewer()
 
         return NavigationStack {
-            PetTabView()
+            PetTabView(selectedPet: .constant(previewer.firstPet))
                 .environment(previewer.firstPet)
         }
         .modelContainer(previewer.container)

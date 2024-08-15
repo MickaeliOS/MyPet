@@ -9,15 +9,21 @@ import SwiftUI
 import SwiftData
 
 @main
-struct MyPetApp: App {
-    @State var path = NavigationPath()
+struct MyApp: App {
+    @State var selectedPet: Pet?
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $path) {
-                PetListView(path: $path)
+            Group {
+                if selectedPet != nil {
+                    PetTabView(selectedPet: $selectedPet)
+                        .transition(.move(edge: .trailing))
+                } else {
+                    PetListView(selectedPet: $selectedPet)
+                        .transition(.move(edge: .leading))
+                }
             }
         }
-        .modelContainer(for: Pet.self)
+        .modelContainer(for: [Pet.self])
     }
 }

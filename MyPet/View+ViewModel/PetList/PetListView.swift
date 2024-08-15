@@ -14,7 +14,7 @@ struct PetListView: View {
     @Query var pets: [Pet]
     @Environment(\.modelContext) var modelContext
     @State private var isPresentingAddPetView = false
-    @Binding var path: NavigationPath
+    @Binding var selectedPet: Pet?
 
     private let emptyListMessage = """
     La liste est vide, ajouter vos animaux
@@ -24,57 +24,52 @@ struct PetListView: View {
 
     // MARK: - BODY
     var body: some View {
-        GeometryReader { geometry in
-            if pets.isEmpty {
-                VStack {
-                    Image(systemName: "list.bullet.clipboard")
-                        .font(.system(size: 80))
+        NavigationStack {
+            GeometryReader { geometry in
+                if pets.isEmpty {
+                    VStack {
+                        Image(systemName: "list.bullet.clipboard")
+                            .font(.system(size: 80))
 
-                    Text(emptyListMessage)
-                        .font(.title2)
-                }
-                .padding()
-                .position(x: geometry.frame(in: .local).midX,
-                          y: geometry.frame(in: .local).midY)
-                .foregroundStyle(.secondary)
-            } else {
-                List {
-                    ForEach(pets) { pet in
-                        PetView(petPhotoData: pet.photo, petName: pet.name)
-                            .listRowInsets(EdgeInsets())
-                            .frame(height: geometry.size.height * 0.3)
-                            .frame(maxWidth: .infinity)
-                            .onTapGesture {
-                                path.append(pet)
-                            }
+                        Text(emptyListMessage)
+                            .font(.title2)
                     }
-                    .onDelete(perform: deletePet)
+                    .padding()
+                    .position(x: geometry.frame(in: .local).midX,
+                              y: geometry.frame(in: .local).midY)
+                    .foregroundStyle(.secondary)
+                } else {
+                    List {
+                        ForEach(pets) { pet in
+                            PetView(petPhotoData: pet.photo, petName: pet.name)
+                                .listRowInsets(EdgeInsets())
+                                .frame(maxWidth: .infinity)
+                                .frame(height: geometry.size.height * 0.3)
+                                .onTapGesture {
+                                    withAnimation {
+                                        selectedPet = pet
+                                    }
+                                }
+                        }
+                        .onDelete(perform: deletePet)
+                    }
+                    .listRowSpacing(15)
                 }
-                .listRowSpacing(15)
             }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                EditButton()
-                    .font(.title2)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    isPresentingAddPetView.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                        .font(.title2)
+            .navigationTitle("Mes animaux")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isPresentingAddPetView.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.title3)
+                    }
                 }
             }
-        }
-        .navigationDestination(for: Pet.self) { pet in
-            PetTabView()
-                .environment(pet)
         }
         .sheet(isPresented: $isPresentingAddPetView) {
-            AddPetView(path: $path)
+            AddPetView()
         }
     }
 
@@ -121,7 +116,7 @@ struct PetView: View {
         let previewer = try Previewer()
 
         return NavigationStack {
-            PetListView(path: .constant(NavigationPath()))
+            PetListView(selectedPet: .constant(previewer.firstPet))
         }
         .modelContainer(previewer.container)
 

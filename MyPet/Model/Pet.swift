@@ -10,7 +10,7 @@ import SwiftData
 
 @Model
 final class Pet {
-    let name: String
+    var name: String
     let gender: Gender
     let type: String
     let race: String
@@ -47,5 +47,15 @@ extension Pet {
         case female = "Femelle"
         case hermaphrodite = "Hermaphrodite"
         case other = "Autre"
+    }
+}
+
+extension Pet {
+    var getAge: Int? {
+        let calendar = Calendar.current
+        let currentDate = Date()
+        let ageComponents = calendar.dateComponents([.year], from: birthdate, to: currentDate)
+
+        return ageComponents.year
     }
 }
