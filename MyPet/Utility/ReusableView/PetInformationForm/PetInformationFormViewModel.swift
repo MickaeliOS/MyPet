@@ -1,13 +1,13 @@
 //
-//  AddPetViewModel.swift
+//  PetInformationFormViewModel.swift
 //  MyPet
 //
-//  Created by Mickaël Horn on 06/08/2024.
+//  Created by Mickaël Horn on 23/08/2024.
 //
 
 import Foundation
 
-extension AddPetView {
+extension PetInformationForm {
 
     @Observable
     final class ViewModel {

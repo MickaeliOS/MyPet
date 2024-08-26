@@ -14,7 +14,7 @@ struct PetListView: View {
     @Query var pets: [Pet]
     @Environment(\.modelContext) var modelContext
     @State private var isPresentingAddPetView = false
-    @Binding var selectedPet: Pet?
+    @State private var path = NavigationPath()
 
     private let emptyListMessage = """
     La liste est vide, ajouter vos animaux
@@ -24,7 +24,7 @@ struct PetListView: View {
 
     // MARK: - BODY
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             GeometryReader { geometry in
                 if pets.isEmpty {
                     VStack {
@@ -46,9 +46,7 @@ struct PetListView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: geometry.size.height * 0.3)
                                 .onTapGesture {
-                                    withAnimation {
-                                        selectedPet = pet
-                                    }
+                                    path.append(pet)
                                 }
                         }
                         .onDelete(perform: deletePet)
@@ -57,6 +55,10 @@ struct PetListView: View {
                 }
             }
             .navigationTitle("Mes animaux")
+            .navigationDestination(for: Pet.self, destination: { pet in
+                PetContainerView()
+                    .environment(pet)
+            })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -116,7 +118,7 @@ struct PetView: View {
         let previewer = try Previewer()
 
         return NavigationStack {
-            PetListView(selectedPet: .constant(previewer.firstPet))
+            PetListView()
         }
         .modelContainer(previewer.container)
 

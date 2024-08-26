@@ -10,10 +10,10 @@ import SwiftData
 
 @Model
 final class Identification {
-    let chip: Int?
-    let chipLocation: String?
-    let tatoo: String?
-    let tatooLocation: String?
+    var chip: Int?
+    var chipLocation: String?
+    var tatoo: String?
+    var tatooLocation: String?
 
     init(chip: Int?, chipLocation: String?, tatoo: String?, tatooLocation: String?) {
         self.chip = chip

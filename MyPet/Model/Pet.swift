@@ -11,14 +11,15 @@ import SwiftData
 @Model
 final class Pet {
     var name: String
-    let gender: Gender
-    let type: String
-    let race: String
-    let birthdate: Date
-    let color: String
-    let eyeColor: String
+    var gender: Gender
+    var type: String
+    var race: String
+    var birthdate: Date
+    var color: String
+    var eyeColor: String
     var photo: Data?
-    let identification: Identification?
+    var identification: Identification?
+    var favorite: Favorite?
 
     init(
         name: String,
@@ -46,16 +47,19 @@ extension Pet {
         case male = "Mâle"
         case female = "Femelle"
         case hermaphrodite = "Hermaphrodite"
-        case other = "Autre"
     }
 }
 
 extension Pet {
-    var getAge: Int? {
+    var getStringAge: String {
         let calendar = Calendar.current
         let currentDate = Date()
         let ageComponents = calendar.dateComponents([.year], from: birthdate, to: currentDate)
 
-        return ageComponents.year
+        if let age = ageComponents.year {
+            return String(age)
+        } else {
+            return "Âge inconnu"
+        }
     }
 }

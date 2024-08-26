@@ -10,19 +10,9 @@ import SwiftData
 
 @main
 struct MyApp: App {
-    @State var selectedPet: Pet?
-
     var body: some Scene {
         WindowGroup {
-            Group {
-                if selectedPet != nil {
-                    PetTabView(selectedPet: $selectedPet)
-                        .transition(.move(edge: .trailing))
-                } else {
-                    PetListView(selectedPet: $selectedPet)
-                        .transition(.move(edge: .leading))
-                }
-            }
+            PetListView()
         }
         .modelContainer(for: [Pet.self])
     }
