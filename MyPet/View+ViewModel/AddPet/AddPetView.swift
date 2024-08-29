@@ -20,68 +20,95 @@ struct AddPetView: View {
     @State private var animalImage: Image?
     @State private var photoPickerFailed = false
 
+    @FocusState private var focusedField: FocusedField?
+
     // MARK: - BODY
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-
-                Button("Sauvegarder") {
-                    addPet()
-                    dismiss()
+        ZStack {
+            Color.clear
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    focusedField = nil
                 }
-                .disabled(viewModel.isFormValid)
-                .padding()
-            }
 
-            Form {
-                Section("Informations principales") {
-                    TextField("Nom", text: $viewModel.name)
+            VStack {
+                HStack {
+                    Spacer()
 
-                    Picker("Genre", selection: $viewModel.gender) {
-                        ForEach(Pet.Gender.allCases, id: \.self) { gender in
-                            Text(gender.rawValue)
+                    Button("Sauvegarder") {
+                        addPet()
+                        dismiss()
+                    }
+                    .disabled(viewModel.isFormValid)
+                    .padding()
+                }
+
+                Form {
+                    Section("Informations principales") {
+                        TextField("Nom", text: $viewModel.name)
+                            .submitLabel(.next)
+                            .focused($focusedField, equals: .name)
+
+                        Picker("Genre", selection: $viewModel.gender) {
+                            ForEach(Pet.Gender.allCases, id: \.self) { gender in
+                                Text(gender.rawValue)
+                            }
                         }
+
+                        TextField("Type", text: $viewModel.type)
+                            .submitLabel(.next)
+                            .focused($focusedField, equals: .type)
+
+                        TextField("Race", text: $viewModel.race)
+                            .submitLabel(.next)
+                            .focused($focusedField, equals: .race)
+
+                        DatePicker("Date de naissance", selection: $viewModel.birthdate, displayedComponents: [.date])
                     }
 
-                    TextField("Type", text: $viewModel.type)
-                    TextField("Race", text: $viewModel.race)
+                    Section("Informations diverses") {
+                        TextField("Couleur", text: $viewModel.color)
+                            .submitLabel(.next)
+                            .focused($focusedField, equals: .color)
 
-                    DatePicker("Date de naissance", selection: $viewModel.birthdate, displayedComponents: [.date])
+                        TextField("Couleur des yeux", text: $viewModel.eyeColor)
+                            .focused($focusedField, equals: .eyeColor)
+                            .submitLabel(.done)
+                    }
+
+                    Section("Photo") {
+                        PhotosPicker("Selectionnez une photo", selection: $animalItem, matching: .images)
+
+                        animalImage?
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
+                    }
                 }
-
-                Section("Informations diverses") {
-                    TextField("Couleur", text: $viewModel.color)
-                    TextField("Couleur des yeux", text: $viewModel.eyeColor)
-                }
-
-                Section("Photo") {
-                    PhotosPicker("Selectionnez une photo", selection: $animalItem, matching: .images)
-
-                    animalImage?
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 300, height: 300)
-                }
-            }
-        }
-        .onChange(of: animalItem) {
-            Task {
-                if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
-                   let uiImage = UIImage(data: imageData) {
-
-                    viewModel.photo = imageData
-                    let image = Image(uiImage: uiImage)
-                    animalImage = image
-                } else {
-                    photoPickerFailed = true
+                .onSubmit {
+                    if focusedField != .eyeColor {
+                        focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
+                    }
                 }
             }
-        }
-        .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
-            Button("OK") { }
-        } message: {
-            Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
+            .onChange(of: animalItem) {
+                Task {
+                    if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
+                       let uiImage = UIImage(data: imageData) {
+
+                        viewModel.photo = imageData
+                        let image = Image(uiImage: uiImage)
+                        animalImage = image
+                    } else {
+                        photoPickerFailed = true
+                    }
+                }
+            }
+            .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
+                Button("OK") { }
+            } message: {
+                Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
+            }
         }
     }
 

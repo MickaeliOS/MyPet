@@ -15,24 +15,28 @@ struct PetContainerView: View {
     var body: some View {
         GeometryReader { geometry in
             VStack {
-                petPhoto?
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: geometry.size.height * 0.25)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(.black, lineWidth: 4))
-                    .shadow(color: .black, radius: 1)
-                    .frame(maxWidth: .infinity)
+                VStack {
+                    petPhoto?
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: geometry.size.height * 0.25)
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(.black, lineWidth: 4))
+                        .shadow(color: .black, radius: 1)
+                        .frame(maxWidth: .infinity)
 
-                MenuView(selectedCategory: $selectedCategory)
+                    MenuView(selectedCategory: $selectedCategory)
+                }
 
-                switch selectedCategory {
-                case .infos:
-                    InformationView()
-                case .sante:
-                    Text("Santé")
-                case .charts:
-                    Text("Suivi")
+                Group {
+                    switch selectedCategory {
+                    case .infos:
+                        InformationView()
+                    case .sante:
+                        Text("Santé")
+                    case .charts:
+                        Text("Suivi")
+                    }
                 }
             }
             .onAppear {

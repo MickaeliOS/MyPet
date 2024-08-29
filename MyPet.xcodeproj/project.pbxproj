@@ -22,12 +22,12 @@
 		83BA03F42C7379F100391642 /* PetContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetContainerView.swift */; };
 		83BA04002C7762E200391642 /* EditInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03FF2C7762E200391642 /* EditInformationView.swift */; };
 		83BA04022C77656900391642 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04012C77656900391642 /* Favorite.swift */; };
-		83BA04042C78B3D900391642 /* PetInformationForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04032C78B3D900391642 /* PetInformationForm.swift */; };
-		83BA04072C78B43B00391642 /* PetInformationFormViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04062C78B43B00391642 /* PetInformationFormViewModel.swift */; };
 		83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04092C7CADDD00391642 /* EditInformationViewModel.swift */; };
 		83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA040B2C7CC3B600391642 /* BindingExtension.swift */; };
 		83BB914F2C6651050063185C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB914E2C6651050063185C /* ImageExtension.swift */; };
 		83BB91522C6660A70063185C /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB91512C6660A70063185C /* InformationView.swift */; };
+		83D441442C7E171B00EBAEDB /* InformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441432C7E171B00EBAEDB /* InformationViewModel.swift */; };
+		83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441452C809CFA00EBAEDB /* OptionalExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,12 +47,12 @@
 		83BA03F32C7379F100391642 /* PetContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetContainerView.swift; sourceTree = "<group>"; };
 		83BA03FF2C7762E200391642 /* EditInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationView.swift; sourceTree = "<group>"; };
 		83BA04012C77656900391642 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
-		83BA04032C78B3D900391642 /* PetInformationForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInformationForm.swift; sourceTree = "<group>"; };
-		83BA04062C78B43B00391642 /* PetInformationFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetInformationFormViewModel.swift; sourceTree = "<group>"; };
 		83BA04092C7CADDD00391642 /* EditInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationViewModel.swift; sourceTree = "<group>"; };
 		83BA040B2C7CC3B600391642 /* BindingExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtension.swift; sourceTree = "<group>"; };
 		83BB914E2C6651050063185C /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		83BB91512C6660A70063185C /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		83D441432C7E171B00EBAEDB /* InformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewModel.swift; sourceTree = "<group>"; };
+		83D441452C809CFA00EBAEDB /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +101,7 @@
 				83BB914E2C6651050063185C /* ImageExtension.swift */,
 				83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */,
 				83BA040B2C7CC3B600391642 /* BindingExtension.swift */,
+				83D441452C809CFA00EBAEDB /* OptionalExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -173,19 +174,9 @@
 		83A23C482C6E369200B7DEC3 /* ReusableView */ = {
 			isa = PBXGroup;
 			children = (
-				83BA04052C78B42400391642 /* PetInformationForm */,
 				83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */,
 			);
 			path = ReusableView;
-			sourceTree = "<group>";
-		};
-		83BA04052C78B42400391642 /* PetInformationForm */ = {
-			isa = PBXGroup;
-			children = (
-				83BA04032C78B3D900391642 /* PetInformationForm.swift */,
-				83BA04062C78B43B00391642 /* PetInformationFormViewModel.swift */,
-			);
-			path = PetInformationForm;
 			sourceTree = "<group>";
 		};
 		83BA04082C7CADC900391642 /* EditInformation */ = {
@@ -208,8 +199,9 @@
 		83BB91502C6660970063185C /* Information */ = {
 			isa = PBXGroup;
 			children = (
-				83BA04082C7CADC900391642 /* EditInformation */,
 				83BB91512C6660A70063185C /* InformationView.swift */,
+				83D441432C7E171B00EBAEDB /* InformationViewModel.swift */,
+				83BA04082C7CADC900391642 /* EditInformation */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -313,12 +305,12 @@
 				83BA03F42C7379F100391642 /* PetContainerView.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
 				83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */,
-				83BA04042C78B3D900391642 /* PetInformationForm.swift in Sources */,
+				83D441442C7E171B00EBAEDB /* InformationViewModel.swift in Sources */,
+				83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */,
 				83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */,
 				83BA04002C7762E200391642 /* EditInformationView.swift in Sources */,
 				83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */,
 				83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */,
-				83BA04072C78B43B00391642 /* PetInformationFormViewModel.swift in Sources */,
 				8355171B2C6253F2006D111B /* Identification.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,

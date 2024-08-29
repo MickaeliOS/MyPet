@@ -29,5 +29,25 @@ extension AddPetView {
                 color.isReallyEmpty
             )
         }
+
+        func nextField(focusedField: FocusedField) -> FocusedField {
+            let transitions: [FocusedField: FocusedField] = [
+                .name: .type,
+                .type: .race,
+                .race: .color,
+                .color: .eyeColor,
+                .eyeColor: .eyeColor
+            ]
+
+            return transitions[focusedField] ?? .name
+        }
+    }
+
+    enum FocusedField {
+        case name
+        case type
+        case race
+        case color
+        case eyeColor
     }
 }
