@@ -15,63 +15,62 @@ struct PetListView: View {
     @Environment(\.modelContext) var modelContext
     @State private var isPresentingAddPetView = false
     @State private var path = NavigationPath()
-
-    private let emptyListMessage = """
-    La liste est vide, ajouter vos animaux
-    en appuyant sur le bouton + situé en haut à
-    droite de l'écran.
-    """
+    @State private var selectedPet: Pet?
+    @State private var showPetTabView = false
 
     // MARK: - BODY
     var body: some View {
-        NavigationStack(path: $path) {
-            GeometryReader { geometry in
-                if pets.isEmpty {
-                    VStack {
-                        Image(systemName: "list.bullet.clipboard")
-                            .font(.system(size: 80))
-
-                        Text(emptyListMessage)
-                            .font(.title2)
-                    }
-                    .padding()
-                    .position(x: geometry.frame(in: .local).midX,
-                              y: geometry.frame(in: .local).midY)
-                    .foregroundStyle(.secondary)
-                } else {
-                    List {
-                        ForEach(pets) { pet in
-                            PetView(petPhotoData: pet.photo, petName: pet.name)
-                                .listRowInsets(EdgeInsets())
-                                .frame(maxWidth: .infinity)
-                                .frame(height: geometry.size.height * 0.3)
-                                .onTapGesture {
-                                    path.append(pet)
-                                }
+        if let selectedPet, showPetTabView {
+            PetTabView(showPetTabView: $showPetTabView)
+                .environment(selectedPet)
+        } else {
+            NavigationStack(path: $path) {
+                GeometryReader { geometry in
+                    if pets.isEmpty {
+                        EmptyListView(
+                            emptyListMessage: """
+                            La liste est vide, ajouter vos animaux en appuyant
+                            sur le bouton + situé en haut à droite de l'écran.
+                            """,
+                            messageFontSize: .title2
+                        )
+                        .position(x: geometry.frame(in: .local).midX,
+                                  y: geometry.frame(in: .local).midY)
+                    } else {
+                        List {
+                            ForEach(pets) { pet in
+                                PetView(petPhotoData: pet.information.photo, petName: pet.information.name)
+                                    .listRowInsets(EdgeInsets())
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: geometry.size.height * 0.3)
+                                    .onTapGesture {
+                                        withAnimation(.easeInOut) {
+                                            selectedPet = pet
+                                            showPetTabView = true
+                                        }
+                                    }
+                            }
+                            .onDelete(perform: deletePet)
                         }
-                        .onDelete(perform: deletePet)
-                    }
-                    .listRowSpacing(15)
-                }
-            }
-            .navigationTitle("Mes animaux")
-            .navigationDestination(for: Pet.self, destination: { pet in
-                PetContainerView()
-                    .environment(pet)
-            })
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        isPresentingAddPetView.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                            .font(.title3)
+                        .listRowSpacing(15)
                     }
                 }
+                .navigationTitle("Mes animaux")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            isPresentingAddPetView = true
+                        }, label: {
+                            Image(systemName: "plus.circle.fill")
+                        })
+                        .font(.title)
+                        .buttonLinearGradient(for: .foreground)
+                    }
+                }
+                .sheet(isPresented: $isPresentingAddPetView) {
+                    AddPetView()
+                }
             }
-        }
-        .sheet(isPresented: $isPresentingAddPetView) {
-            AddPetView()
         }
     }
 
@@ -106,8 +105,8 @@ struct PetView: View {
                 .minimumScaleFactor(0.5)
                 .font(.system(size: 80, weight: .bold))
                 .foregroundColor(.white)
-                .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-                .opacity(petPhotoData != nil ? 0.5 : 1.0)
+                .shadow(color: petPhotoData != nil ? .white : .black, radius: 10, x: 0, y: 5)
+                .opacity(petPhotoData != nil ? 0.8 : 1.0)
         }
     }
 }

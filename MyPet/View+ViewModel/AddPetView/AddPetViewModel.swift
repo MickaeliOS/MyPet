@@ -12,7 +12,7 @@ extension AddPetView {
     @Observable
     final class ViewModel {
         var name = ""
-        var gender = Pet.Gender.male
+        var gender = Information.Gender.male
         var race = ""
         var type = ""
         var birthdate = Date.now

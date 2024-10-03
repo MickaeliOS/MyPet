@@ -8,11 +8,23 @@
 import SwiftUI
 
 struct EmptyListView: View {
+    let emptyListMessage: String
+    let messageFontSize: Font
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Image(systemName: "list.bullet.clipboard")
+                .font(.system(size: 80))
+
+            Text(emptyListMessage)
+                .font(messageFontSize)
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .foregroundStyle(.secondary)
     }
 }
 
 #Preview {
-    EmptyListView()
+    EmptyListView(emptyListMessage: "Empty List", messageFontSize: .title2)
 }

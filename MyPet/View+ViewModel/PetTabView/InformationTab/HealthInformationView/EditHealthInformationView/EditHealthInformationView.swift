@@ -15,10 +15,7 @@ struct EditHealthInformationView: View {
     @State private var intolerances: [String] = []
     @State private var isSterelized = false
     @State private var isSterelizedChanged = false
-
-    func isListValid(_ list: [String]) -> Bool {
-        return !list.isEmpty && list.allSatisfy { !$0.isEmpty }
-    }
+    @State private var viewModel = ViewModel()
 
     var body: some View {
         NavigationStack {
@@ -51,14 +48,14 @@ struct EditHealthInformationView: View {
                         if pet.health == nil {
                             pet.health = Health()
                         }
-                        
-                        pet.health?.allergies = isListValid(allergies) ? allergies : nil
-                        pet.health?.intolerances = isListValid(intolerances) ? intolerances : nil
+
+                        pet.health?.allergies = viewModel.isListValid(allergies) ? allergies : nil
+                        pet.health?.intolerances = viewModel.isListValid(intolerances) ? intolerances : nil
                         if isSterelizedChanged { pet.health?.isSterelized = isSterelized }
 
                         dismiss()
                     }
-                    .disabled(!(isListValid(allergies) || isListValid(intolerances)))
+                    .disabled(!(viewModel.isListValid(allergies) || viewModel.isListValid(intolerances)))
                 }
             }
         }

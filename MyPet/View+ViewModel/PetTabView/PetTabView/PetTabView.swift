@@ -30,7 +30,15 @@ struct PetTabView: View {
                     )
                 }
 
-            Text("Suivi")
+            VeterinarianView()
+                .tabItem {
+                    Label(
+                        Category.veterinarian.rawValue,
+                        systemImage: Category.veterinarian.imageName
+                    )
+                }
+
+            ChartView()
                 .tabItem {
                     Label(
                         Category.charts.rawValue,
@@ -44,6 +52,7 @@ struct PetTabView: View {
 enum Category: String, CaseIterable {
     case infos = "Infos"
     case health = "Santé"
+    case veterinarian = "Vétérinaire"
     case charts = "Suivi"
 
     var imageName: String {
@@ -52,6 +61,8 @@ enum Category: String, CaseIterable {
             return "list.bullet.clipboard"
         case .health:
             return "heart"
+        case .veterinarian:
+            return "cross.case.fill"
         case .charts:
             return "chart.xyaxis.line"
         }

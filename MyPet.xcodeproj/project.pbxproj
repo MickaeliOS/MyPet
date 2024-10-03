@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		830DC6932C650D53000A0698 /* Previewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830DC6922C650D53000A0698 /* Previewer.swift */; };
+		8316B68D2C984D8500CCD571 /* Information.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8316B68C2C984D8500CCD571 /* Information.swift */; };
+		8316B6902C985B1800CCD571 /* EditHealthInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8316B68F2C985B1800CCD571 /* EditHealthInformationViewModel.swift */; };
+		8316B69A2C99B80100CCD571 /* MedicineDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8316B6992C99B80100CCD571 /* MedicineDetailView.swift */; };
 		835517182C60D882006D111B /* PetListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835517172C60D882006D111B /* PetListView.swift */; };
 		8355171B2C6253F2006D111B /* Identification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8355171A2C6253F2006D111B /* Identification.swift */; };
 		8355171E2C62666B006D111B /* AddPetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8355171D2C62666B006D111B /* AddPetViewModel.swift */; };
@@ -17,21 +20,51 @@
 		83636B962C5BCE7D004E1EE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */; };
 		83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA22C5BCF04004E1EE5 /* AddPetView.swift */; };
 		83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA42C5BCF1D004E1EE5 /* Pet.swift */; };
+		83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB42C99D070003360A4 /* CalendarExtension.swift */; };
+		83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB62CA174C7003360A4 /* ModelContext.swift */; };
+		83A02EB92CA2DEAC003360A4 /* EditVeterinarianView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */; };
+		83A02EBB2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EBA2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift */; };
+		83A02EBE2CA2EC42003360A4 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EBD2CA2EC42003360A4 /* ChartView.swift */; };
+		83A02EC02CA2ED84003360A4 /* Weight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EBF2CA2ED84003360A4 /* Weight.swift */; };
+		83A02EC22CA2F0FD003360A4 /* ChartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EC12CA2F0FD003360A4 /* ChartViewModel.swift */; };
+		83A02ECB2CAC33B0003360A4 /* ViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02ECA2CAC33B0003360A4 /* ViewModifier.swift */; };
+		83A02ECD2CAC355B003360A4 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02ECC2CAC355B003360A4 /* View.swift */; };
+		83A02ED42CAECA5B003360A4 /* LinearGradientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */; };
 		83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */; };
 		83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */; };
-		83BA03F42C7379F100391642 /* PetContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetContainerView.swift */; };
+		83BA03F42C7379F100391642 /* PetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetTabView.swift */; };
 		83BA04002C7762E200391642 /* EditInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03FF2C7762E200391642 /* EditInformationView.swift */; };
 		83BA04022C77656900391642 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04012C77656900391642 /* Favorite.swift */; };
 		83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04092C7CADDD00391642 /* EditInformationViewModel.swift */; };
 		83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA040B2C7CC3B600391642 /* BindingExtension.swift */; };
 		83BB914F2C6651050063185C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB914E2C6651050063185C /* ImageExtension.swift */; };
-		83BB91522C6660A70063185C /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB91512C6660A70063185C /* InformationView.swift */; };
-		83D441442C7E171B00EBAEDB /* InformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441432C7E171B00EBAEDB /* InformationViewModel.swift */; };
+		83BB91522C6660A70063185C /* InformationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB91512C6660A70063185C /* InformationListView.swift */; };
+		83CD7E582C85E7FB0091FB50 /* Veterinarian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E572C85E7FB0091FB50 /* Veterinarian.swift */; };
+		83CD7E5F2C85ECE20091FB50 /* CategoryGrayTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */; };
+		83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E622C85FC070091FB50 /* Medicine.swift */; };
+		83CD7E672C8606F40091FB50 /* VeterinarianView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E662C8606F40091FB50 /* VeterinarianView.swift */; };
+		83CD7E692C8607250091FB50 /* VeterinarianViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */; };
+		83CD7E6F2C8890560091FB50 /* AddMedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */; };
+		83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E752C8894E40091FB50 /* EditListView.swift */; };
+		83CD7E782C889C1B0091FB50 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E772C889C1B0091FB50 /* EmptyListView.swift */; };
+		83CD7E7C2C88AD0E0091FB50 /* OpenModalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */; };
+		83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E812C8F201C0091FB50 /* MedicineView.swift */; };
+		83CD7E842C8F208D0091FB50 /* MedicineCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */; };
+		83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */; };
+		83CD7EA12C9311BE0091FB50 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA02C9311BE0091FB50 /* Health.swift */; };
+		83CD7EA52C9316BB0091FB50 /* InformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA42C9316BB0091FB50 /* InformationView.swift */; };
+		83CD7EA82C9319270091FB50 /* HealthInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA72C9319270091FB50 /* HealthInformationView.swift */; };
+		83CD7EAA2C93240A0091FB50 /* EditHealthInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA92C93240A0091FB50 /* EditHealthInformationView.swift */; };
+		83CD7EAE2C9339540091FB50 /* EditListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EAD2C9339540091FB50 /* EditListViewModel.swift */; };
+		83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */; };
 		83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441452C809CFA00EBAEDB /* OptionalExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		830DC6922C650D53000A0698 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
+		8316B68C2C984D8500CCD571 /* Information.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Information.swift; sourceTree = "<group>"; };
+		8316B68F2C985B1800CCD571 /* EditHealthInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHealthInformationViewModel.swift; sourceTree = "<group>"; };
+		8316B6992C99B80100CCD571 /* MedicineDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineDetailView.swift; sourceTree = "<group>"; };
 		835517172C60D882006D111B /* PetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetListView.swift; sourceTree = "<group>"; };
 		8355171A2C6253F2006D111B /* Identification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identification.swift; sourceTree = "<group>"; };
 		8355171D2C62666B006D111B /* AddPetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetViewModel.swift; sourceTree = "<group>"; };
@@ -42,16 +75,43 @@
 		83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83636BA22C5BCF04004E1EE5 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		83636BA42C5BCF1D004E1EE5 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		83A02EB42C99D070003360A4 /* CalendarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExtension.swift; sourceTree = "<group>"; };
+		83A02EB62CA174C7003360A4 /* ModelContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContext.swift; sourceTree = "<group>"; };
+		83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVeterinarianView.swift; sourceTree = "<group>"; };
+		83A02EBA2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVeterinarianViewModel.swift; sourceTree = "<group>"; };
+		83A02EBD2CA2EC42003360A4 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		83A02EBF2CA2ED84003360A4 /* Weight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weight.swift; sourceTree = "<group>"; };
+		83A02EC12CA2F0FD003360A4 /* ChartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewModel.swift; sourceTree = "<group>"; };
+		83A02ECA2CAC33B0003360A4 /* ViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModifier.swift; sourceTree = "<group>"; };
+		83A02ECC2CAC355B003360A4 /* View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientExtension.swift; sourceTree = "<group>"; };
 		83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickDividerView.swift; sourceTree = "<group>"; };
-		83BA03F32C7379F100391642 /* PetContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetContainerView.swift; sourceTree = "<group>"; };
+		83BA03F32C7379F100391642 /* PetTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabView.swift; sourceTree = "<group>"; };
 		83BA03FF2C7762E200391642 /* EditInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationView.swift; sourceTree = "<group>"; };
 		83BA04012C77656900391642 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
 		83BA04092C7CADDD00391642 /* EditInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationViewModel.swift; sourceTree = "<group>"; };
 		83BA040B2C7CC3B600391642 /* BindingExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtension.swift; sourceTree = "<group>"; };
 		83BB914E2C6651050063185C /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
-		83BB91512C6660A70063185C /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
-		83D441432C7E171B00EBAEDB /* InformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewModel.swift; sourceTree = "<group>"; };
+		83BB91512C6660A70063185C /* InformationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationListView.swift; sourceTree = "<group>"; };
+		83CD7E572C85E7FB0091FB50 /* Veterinarian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Veterinarian.swift; sourceTree = "<group>"; };
+		83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrayTitleView.swift; sourceTree = "<group>"; };
+		83CD7E622C85FC070091FB50 /* Medicine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medicine.swift; sourceTree = "<group>"; };
+		83CD7E662C8606F40091FB50 /* VeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianView.swift; sourceTree = "<group>"; };
+		83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianViewModel.swift; sourceTree = "<group>"; };
+		83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineView.swift; sourceTree = "<group>"; };
+		83CD7E752C8894E40091FB50 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
+		83CD7E772C889C1B0091FB50 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
+		83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenModalButton.swift; sourceTree = "<group>"; };
+		83CD7E812C8F201C0091FB50 /* MedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineView.swift; sourceTree = "<group>"; };
+		83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineCardView.swift; sourceTree = "<group>"; };
+		83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineViewModel.swift; sourceTree = "<group>"; };
+		83CD7EA02C9311BE0091FB50 /* Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
+		83CD7EA42C9316BB0091FB50 /* InformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationView.swift; sourceTree = "<group>"; };
+		83CD7EA72C9319270091FB50 /* HealthInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthInformationView.swift; sourceTree = "<group>"; };
+		83CD7EA92C93240A0091FB50 /* EditHealthInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHealthInformationView.swift; sourceTree = "<group>"; };
+		83CD7EAD2C9339540091FB50 /* EditListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModel.swift; sourceTree = "<group>"; };
+		83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationListViewModel.swift; sourceTree = "<group>"; };
 		83D441452C809CFA00EBAEDB /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -75,23 +135,77 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		8316B68E2C985AF800CCD571 /* EditHealthInformationView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7EA92C93240A0091FB50 /* EditHealthInformationView.swift */,
+				8316B68F2C985B1800CCD571 /* EditHealthInformationViewModel.swift */,
+			);
+			path = EditHealthInformationView;
+			sourceTree = "<group>";
+		};
+		8316B6912C985ED200CCD571 /* PetTabView */ = {
+			isa = PBXGroup;
+			children = (
+				83BA03F32C7379F100391642 /* PetTabView.swift */,
+			);
+			path = PetTabView;
+			sourceTree = "<group>";
+		};
+		8316B6922C985EF300CCD571 /* InformationView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7EA42C9316BB0091FB50 /* InformationView.swift */,
+			);
+			path = InformationView;
+			sourceTree = "<group>";
+		};
+		8316B6932C985EFE00CCD571 /* HealthInformationView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7EA72C9319270091FB50 /* HealthInformationView.swift */,
+			);
+			path = HealthInformationView;
+			sourceTree = "<group>";
+		};
+		8316B6972C99AE7E00CCD571 /* MedicineCardView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */,
+			);
+			path = MedicineCardView;
+			sourceTree = "<group>";
+		};
+		8316B6982C99B7EC00CCD571 /* MedicineDetailView */ = {
+			isa = PBXGroup;
+			children = (
+				8316B6992C99B80100CCD571 /* MedicineDetailView.swift */,
+			);
+			path = MedicineDetailView;
+			sourceTree = "<group>";
+		};
 		835517192C6253E5006D111B /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				83636BA42C5BCF1D004E1EE5 /* Pet.swift */,
+				8316B68C2C984D8500CCD571 /* Information.swift */,
 				8355171A2C6253F2006D111B /* Identification.swift */,
 				83BA04012C77656900391642 /* Favorite.swift */,
+				83CD7E572C85E7FB0091FB50 /* Veterinarian.swift */,
+				83CD7EA02C9311BE0091FB50 /* Health.swift */,
+				83CD7E622C85FC070091FB50 /* Medicine.swift */,
+				83A02EBF2CA2ED84003360A4 /* Weight.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		8355171C2C6265F8006D111B /* AddPet */ = {
+		8355171C2C6265F8006D111B /* AddPetView */ = {
 			isa = PBXGroup;
 			children = (
 				83636BA22C5BCF04004E1EE5 /* AddPetView.swift */,
 				8355171D2C62666B006D111B /* AddPetViewModel.swift */,
 			);
-			path = AddPet;
+			path = AddPetView;
 			sourceTree = "<group>";
 		};
 		8355171F2C626E9E006D111B /* Extension */ = {
@@ -102,16 +216,21 @@
 				83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */,
 				83BA040B2C7CC3B600391642 /* BindingExtension.swift */,
 				83D441452C809CFA00EBAEDB /* OptionalExtension.swift */,
+				83A02EB42C99D070003360A4 /* CalendarExtension.swift */,
+				83A02EB62CA174C7003360A4 /* ModelContext.swift */,
+				83A02ECA2CAC33B0003360A4 /* ViewModifier.swift */,
+				83A02ECC2CAC355B003360A4 /* View.swift */,
+				83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
 		};
-		835517222C627ACB006D111B /* PetList */ = {
+		835517222C627ACB006D111B /* PetListView */ = {
 			isa = PBXGroup;
 			children = (
 				835517172C60D882006D111B /* PetListView.swift */,
 			);
-			path = PetList;
+			path = PetListView;
 			sourceTree = "<group>";
 		};
 		83636B802C5BCE7B004E1EE5 = {
@@ -154,10 +273,9 @@
 		83636BA62C5BD1FF004E1EE5 /* View+ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				835517222C627ACB006D111B /* PetList */,
-				8355171C2C6265F8006D111B /* AddPet */,
-				83BB91492C6649A80063185C /* PetContainerView */,
-				83BB91502C6660970063185C /* Information */,
+				835517222C627ACB006D111B /* PetListView */,
+				8355171C2C6265F8006D111B /* AddPetView */,
+				83BB91492C6649A80063185C /* PetTabView */,
 			);
 			path = "View+ViewModel";
 			sourceTree = "<group>";
@@ -171,10 +289,22 @@
 			path = MainFile;
 			sourceTree = "<group>";
 		};
+		83A02EBC2CA2EC2D003360A4 /* ChartTab */ = {
+			isa = PBXGroup;
+			children = (
+				83A02EBD2CA2EC42003360A4 /* ChartView.swift */,
+				83A02EC12CA2F0FD003360A4 /* ChartViewModel.swift */,
+			);
+			path = ChartTab;
+			sourceTree = "<group>";
+		};
 		83A23C482C6E369200B7DEC3 /* ReusableView */ = {
 			isa = PBXGroup;
 			children = (
 				83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */,
+				83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */,
+				83CD7E772C889C1B0091FB50 /* EmptyListView.swift */,
+				83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -188,22 +318,102 @@
 			path = EditInformation;
 			sourceTree = "<group>";
 		};
-		83BB91492C6649A80063185C /* PetContainerView */ = {
+		83BB91492C6649A80063185C /* PetTabView */ = {
 			isa = PBXGroup;
 			children = (
-				83BA03F32C7379F100391642 /* PetContainerView.swift */,
+				8316B6912C985ED200CCD571 /* PetTabView */,
+				83BB91502C6660970063185C /* InformationTab */,
+				83CD7E592C85E9CC0091FB50 /* MedicineTab */,
+				83CD7E652C8606D80091FB50 /* VeterinarianTab */,
+				83A02EBC2CA2EC2D003360A4 /* ChartTab */,
 			);
-			path = PetContainerView;
+			path = PetTabView;
 			sourceTree = "<group>";
 		};
-		83BB91502C6660970063185C /* Information */ = {
+		83BB91502C6660970063185C /* InformationTab */ = {
 			isa = PBXGroup;
 			children = (
-				83BB91512C6660A70063185C /* InformationView.swift */,
-				83D441432C7E171B00EBAEDB /* InformationViewModel.swift */,
+				83CD7EA32C93168A0091FB50 /* InformationListView */,
+				83CD7EA22C9316090091FB50 /* InformationView */,
+				83CD7EA62C9319180091FB50 /* HealthInformationView */,
+			);
+			path = InformationTab;
+			sourceTree = "<group>";
+		};
+		83CD7E592C85E9CC0091FB50 /* MedicineTab */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E802C8F20040091FB50 /* MedicineView */,
+				8316B6972C99AE7E00CCD571 /* MedicineCardView */,
+				83CD7E882C8F314A0091FB50 /* AddMedicineView */,
+				8316B6982C99B7EC00CCD571 /* MedicineDetailView */,
+			);
+			path = MedicineTab;
+			sourceTree = "<group>";
+		};
+		83CD7E652C8606D80091FB50 /* VeterinarianTab */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E662C8606F40091FB50 /* VeterinarianView.swift */,
+				83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */,
+				83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */,
+				83A02EBA2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift */,
+			);
+			path = VeterinarianTab;
+			sourceTree = "<group>";
+		};
+		83CD7E742C8894D70091FB50 /* EditListView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E752C8894E40091FB50 /* EditListView.swift */,
+				83CD7EAD2C9339540091FB50 /* EditListViewModel.swift */,
+			);
+			path = EditListView;
+			sourceTree = "<group>";
+		};
+		83CD7E802C8F20040091FB50 /* MedicineView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E812C8F201C0091FB50 /* MedicineView.swift */,
+			);
+			path = MedicineView;
+			sourceTree = "<group>";
+		};
+		83CD7E882C8F314A0091FB50 /* AddMedicineView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */,
+				83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */,
+			);
+			path = AddMedicineView;
+			sourceTree = "<group>";
+		};
+		83CD7EA22C9316090091FB50 /* InformationView */ = {
+			isa = PBXGroup;
+			children = (
+				8316B6922C985EF300CCD571 /* InformationView */,
 				83BA04082C7CADC900391642 /* EditInformation */,
 			);
-			path = Information;
+			path = InformationView;
+			sourceTree = "<group>";
+		};
+		83CD7EA32C93168A0091FB50 /* InformationListView */ = {
+			isa = PBXGroup;
+			children = (
+				83BB91512C6660A70063185C /* InformationListView.swift */,
+				83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */,
+			);
+			path = InformationListView;
+			sourceTree = "<group>";
+		};
+		83CD7EA62C9319180091FB50 /* HealthInformationView */ = {
+			isa = PBXGroup;
+			children = (
+				8316B6932C985EFE00CCD571 /* HealthInformationView */,
+				8316B68E2C985AF800CCD571 /* EditHealthInformationView */,
+				83CD7E742C8894D70091FB50 /* EditListView */,
+			);
+			path = HealthInformationView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,24 +508,54 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83CD7EAE2C9339540091FB50 /* EditListViewModel.swift in Sources */,
 				83BA04022C77656900391642 /* Favorite.swift in Sources */,
+				83A02ED42CAECA5B003360A4 /* LinearGradientExtension.swift in Sources */,
 				830DC6932C650D53000A0698 /* Previewer.swift in Sources */,
+				8316B68D2C984D8500CCD571 /* Information.swift in Sources */,
 				83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */,
 				8355171E2C62666B006D111B /* AddPetViewModel.swift in Sources */,
-				83BA03F42C7379F100391642 /* PetContainerView.swift in Sources */,
+				83CD7E582C85E7FB0091FB50 /* Veterinarian.swift in Sources */,
+				83A02ECB2CAC33B0003360A4 /* ViewModifier.swift in Sources */,
+				83A02EBE2CA2EC42003360A4 /* ChartView.swift in Sources */,
+				8316B6902C985B1800CCD571 /* EditHealthInformationViewModel.swift in Sources */,
+				83BA03F42C7379F100391642 /* PetTabView.swift in Sources */,
+				83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */,
+				83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */,
+				8316B69A2C99B80100CCD571 /* MedicineDetailView.swift in Sources */,
+				83CD7E692C8607250091FB50 /* VeterinarianViewModel.swift in Sources */,
+				83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
+				83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */,
 				83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */,
-				83D441442C7E171B00EBAEDB /* InformationViewModel.swift in Sources */,
+				83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */,
+				83CD7E5F2C85ECE20091FB50 /* CategoryGrayTitleView.swift in Sources */,
 				83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */,
 				83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */,
+				83CD7E7C2C88AD0E0091FB50 /* OpenModalButton.swift in Sources */,
+				83CD7EA12C9311BE0091FB50 /* Health.swift in Sources */,
+				83CD7E672C8606F40091FB50 /* VeterinarianView.swift in Sources */,
 				83BA04002C7762E200391642 /* EditInformationView.swift in Sources */,
+				83A02EBB2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift in Sources */,
+				83CD7E6F2C8890560091FB50 /* AddMedicineView.swift in Sources */,
+				83A02EB92CA2DEAC003360A4 /* EditVeterinarianView.swift in Sources */,
+				83CD7EA82C9319270091FB50 /* HealthInformationView.swift in Sources */,
 				83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */,
+				83A02ECD2CAC355B003360A4 /* View.swift in Sources */,
+				83A02EC22CA2F0FD003360A4 /* ChartViewModel.swift in Sources */,
+				83CD7E842C8F208D0091FB50 /* MedicineCardView.swift in Sources */,
 				83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */,
 				8355171B2C6253F2006D111B /* Identification.swift in Sources */,
+				83CD7E782C889C1B0091FB50 /* EmptyListView.swift in Sources */,
+				83A02EC02CA2ED84003360A4 /* Weight.swift in Sources */,
+				83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,
+				83CD7EAA2C93240A0091FB50 /* EditHealthInformationView.swift in Sources */,
 				83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */,
-				83BB91522C6660A70063185C /* InformationView.swift in Sources */,
+				83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */,
+				83CD7EA52C9316BB0091FB50 /* InformationView.swift in Sources */,
+				83BB91522C6660A70063185C /* InformationListView.swift in Sources */,
 				83BB914F2C6651050063185C /* ImageExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -466,6 +706,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mickaelhorn.MyPet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

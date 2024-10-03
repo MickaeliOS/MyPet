@@ -8,7 +8,7 @@
 import Foundation
 
 extension Optional where Wrapped == String {
-    func defaultValueIfNilOrEmpty(_ defaultValue: String = "Non renseigné") -> String {
+    func orDefault(_ defaultValue: String = "Non renseigné") -> String {
         switch self {
         case .some(let value) where !value.isEmpty:
             return value

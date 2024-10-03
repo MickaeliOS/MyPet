@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+struct Weight: Codable, Identifiable {
+    var id = UUID()
+    let day: Date
+    let weight: Double
+}

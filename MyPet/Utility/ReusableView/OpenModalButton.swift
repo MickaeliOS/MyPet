@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct OpenModalButton: View {
+struct OpenModalButton<Content: View>: View {
+    @Binding var isPresentingView: Bool
+    let content: Content
+    let systemImage: String
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Button {
+            isPresentingView = true
+        } label: {
+            Image(systemName: systemImage)
+        }
+        .sheet(isPresented: $isPresentingView) {
+            content
+        }
+        .font(.title)
+        .foregroundStyle(.green)
     }
 }
 
 #Preview {
-    OpenModalButton()
+    OpenModalButton(isPresentingView: .constant(false), content: Text("Hello World!"), systemImage: "plus.circle.fill")
 }

@@ -12,6 +12,7 @@ struct AddMedicineView: View {
     @Environment(\.dismiss) var dismiss
 
     @FocusState private var durationIsFocused
+
     @State private var viewModel = ViewModel()
     @State private var isDatePickerPresented = false
 
@@ -65,7 +66,13 @@ struct AddMedicineView: View {
                                         isDatePickerPresented = false
                                     }
                                     .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(.blue)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .foregroundStyle(.white)
+                                    .padding()
                                 }
+                                .environment(\.locale, .init(identifier: "fr"))
                             }
                         }
                     }
@@ -92,14 +99,14 @@ struct AddMedicineView: View {
                             }
                             .frame(height: 50)
                         }
-                    }
 
-                    Button {
-                        viewModel.takingTimes.append(Date())
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus.circle.fill")
-                            Text("Ajouter une horaire")
+                        Button {
+                            viewModel.takingTimes.append(Date())
+                        } label: {
+                            HStack {
+                                Image(systemName: "plus.circle.fill")
+                                Text("Ajouter une horaire")
+                            }
                         }
                     }
                 }
@@ -107,7 +114,13 @@ struct AddMedicineView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Sauvegarder") {
-                            if let medicine = viewModel.createMedicine() {
+                            if var medicine = viewModel.createMedicine() {
+                                if pet.medicine == nil {
+                                    pet.medicine = []
+                                }
+
+                                viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
+                                medicine.notificationIDs = viewModel.notificationIDs
                                 pet.medicine?.append(medicine)
                                 dismiss()
                             }
@@ -125,15 +138,15 @@ struct AddMedicineView: View {
 }
 
 struct MedicineTypeView: View {
-    @Binding var selectedMedicineType: Medicine.MedicineCategory
+    @Binding var selectedMedicineType: Medicine.MedicineType
 
     var body: some View {
         HStack {
-            ForEach(Medicine.MedicineCategory.allCases, id: \.self) { medicine in
+            ForEach(Medicine.MedicineType.allCases, id: \.self) { medicine in
                 Button {
                     selectedMedicineType = medicine
                 } label: {
-                    Image(systemName: medicine.rawValue)
+                    Image(systemName: medicine.imageSystemName)
                         .font(.largeTitle)
                 }
                 .frame(width: 100, height: 100)

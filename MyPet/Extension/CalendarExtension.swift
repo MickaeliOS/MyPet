@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+extension Calendar {
+    func numberOfDaysBetween(_ from: Date, and: Date) -> Int? {
+        let numberOfDays = dateComponents([.day], from: from, to: and)
+        return numberOfDays.day
+    }
+}

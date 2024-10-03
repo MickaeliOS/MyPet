@@ -11,8 +11,9 @@ import SwiftUI
 struct InformationListView: View {
     @Environment(Pet.self) var pet
 
-    @State private var isPresentingEditInformationView = false
     @State var viewModel = ViewModel()
+    @State private var showInformationView = false
+    @State private var showHealthInformationView = false
 
     @Binding var showPetTabView: Bool
 
@@ -20,26 +21,48 @@ struct InformationListView: View {
         NavigationStack {
             GeometryReader { geometry in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 30) {
-                        ProfilePictureView(geometry: geometry)
-                        GeneralInformation(showPetTabView: $showPetTabView, geometry: geometry, viewModel: viewModel)
-                        VariousInformation()
-                        IdentificationView(viewModel: viewModel)
-                        FavoriteView(viewModel: viewModel)
+                    VStack(alignment: .leading, spacing: 15) {
+                        ZStack(alignment: .bottomLeading) {
+                            ProfilePictureView(geometry: geometry)
+                            PetToolBarView(showPetTabView: $showPetTabView, viewModel: viewModel)
+                        }
+
+                        GeneralInformation(
+                            geometry: geometry,
+                            viewModel: viewModel
+                        )
+
+                        Spacer()
+
+                        InformationListButton(
+                            showView: $showInformationView,
+                            buttonName: "Informations",
+                            buttonSystemImage: "info.circle.fill"
+                        )
+
+                        InformationListButton(
+                            showView: $showHealthInformationView,
+                            buttonName: "Infos. Médicales",
+                            buttonSystemImage: "cross.case.fill"
+                        )
                     }
-                    .padding([.leading, .trailing])
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    OpenModalButton(
-                        isPresentingView: $isPresentingEditInformationView,
-                        content: EditInformationView(),
-                        systemImage: "pencil.line"
-                    )
-                }
+            .navigationDestination(isPresented: $showInformationView) {
+                InformationView()
             }
-            .frame(maxWidth: .infinity)
+            .navigationDestination(isPresented: $showHealthInformationView) {
+                HealthInformationView()
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear {
+                viewModel.requestAuthorizationForNotifications()
+            }
+            .alert("Erreur", isPresented: $viewModel.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
+            }
         }
     }
 }
@@ -49,7 +72,7 @@ struct InformationListView: View {
         let previewer = try Previewer()
 
         return TabView {
-            InformationView(showPetTabView: .constant(true))
+            InformationListView(showPetTabView: .constant(true))
                 .environment(previewer.firstPet)
                 .tabItem {
                     Label(
@@ -66,6 +89,56 @@ struct InformationListView: View {
 }
 
 // MARK: - CHILD VIEWS
+struct PetToolBarView: View {
+    @Environment(Pet.self) var pet
+    @Binding var showPetTabView: Bool
+    var viewModel: InformationListView.ViewModel
+
+    var body: some View {
+        HStack {
+            HStack {
+                Text(pet.information.name)
+                    .font(.title)
+                    .bold()
+                    .padding(.bottom, 5)
+
+                Image(viewModel.getGender(gender: pet.information.gender))
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+            .padding()
+            .background(.white)
+            .foregroundStyle(.black)
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .shadow(radius: 15)
+            .padding(.leading)
+
+            Spacer()
+
+            Button {
+                withAnimation(.easeInOut) {
+                    showPetTabView = false
+                }
+            } label: {
+                Image(systemName: "arrow.left.arrow.right")
+                    .foregroundStyle(.white)
+                    .padding(10)
+                    .buttonLinearGradient(for: .background)
+                    .clipShape(Circle())
+            }
+            .overlay {
+                Circle()
+                    .stroke(.white, lineWidth: 4)
+            }
+            .padding()
+        }
+        .alignmentGuide(VerticalAlignment.bottom,
+                        computeValue: { value in
+            value[VerticalAlignment.center]
+        })
+    }
+}
+
 struct ProfilePictureView: View {
     @Environment(Pet.self) var pet
     @State private var petPhoto: Image?
@@ -77,11 +150,6 @@ struct ProfilePictureView: View {
             petPhoto?
                 .resizable()
                 .scaledToFit()
-                .frame(height: geometry.size.height * 0.25)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(.black, lineWidth: 4))
-                .shadow(color: .black, radius: 1)
-                .frame(maxWidth: .infinity)
         }
         .onAppear {
             setupPetPhoto()
@@ -89,7 +157,7 @@ struct ProfilePictureView: View {
     }
 
     private func setupPetPhoto() {
-        if let imageData = pet.photo,
+        if let imageData = pet.information.photo,
            let uiImage = UIImage(data: imageData) {
 
             petPhoto = Image(uiImage: uiImage)
@@ -101,133 +169,66 @@ struct ProfilePictureView: View {
 
 struct GeneralInformation: View {
     @Environment(Pet.self) var pet
-    @Binding var showPetTabView: Bool
     let geometry: GeometryProxy
-    var viewModel: InformationView.ViewModel
+    var viewModel: InformationListView.ViewModel
 
     var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(pet.name)
-                    .font(.largeTitle)
-                    .bold()
-                    .padding(.bottom, 5)
+        VStack(alignment: .leading, spacing: 15) {
+            VStack {
+                Text("""
+                 \(pet.information.type), \
+                 \(pet.information.race), \
+                 \(pet.information.getStringAge) \(pet.information.getStringAge > "1" ? "ans" : "an")
+                 """)
+                .font(.title2)
+            }
 
-                Image(viewModel.getGender(gender: pet.gender))
-                    .resizable()
-                    .frame(width: 30, height: 30)
+            VStack(alignment: .leading, spacing: 10) {
+                Label {
+                    Text(pet.information.birthdate.dateToStringDMY)
+                } icon: {
+                    Image(systemName: "calendar")
+                }
 
-                Spacer()
+                Label {
+                    Text(pet.information.color)
+                } icon: {
+                    Image(systemName: "paintpalette")
+                }
 
-                Button {
-                    withAnimation(.easeInOut) {
-                        showPetTabView = false
-                    }
-                } label: {
-                    Label("Changer", systemImage: "arrow.left.arrow.right")
-                        .foregroundStyle(.white)
-                        .padding(10)
-                        .background(.teal)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                Label {
+                    Text(pet.information.eyeColor)
+                } icon: {
+                    Image(systemName: "eye")
                 }
             }
+            .font(.callout)
+        }
+        .padding(.leading)
+    }
+}
 
+struct InformationListButton: View {
+    @Binding var showView: Bool
+    let buttonName: String
+    let buttonSystemImage: String
+
+    var body: some View {
+        Button {
+            showView = true
+        } label: {
             HStack {
-                Text(pet.type)
-                    .padding(.trailing)
-
-                ThickDividerView(orientation: .vertical)
-
-                Text(pet.race)
-                    .padding([.leading, .trailing])
-
-                ThickDividerView(orientation: .vertical)
-
-                Text("\(pet.getStringAge) \(pet.getStringAge > "1" ? "ans" : "an" )")
-                    .padding(.leading)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: geometry.size.height * 0.1)
-            .padding([.top, .bottom])
-        }
-    }
-}
-
-struct IdentificationView: View {
-    @Environment(Pet.self) var pet
-    var viewModel: InformationView.ViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Identification", systemImage: "cpu")
-
-            Text("Puce")
-                .bold()
-            Text(pet.identification?.chip.map { "\($0)" } ?? "Non renseigné")
-
-            Text("Localisation Puce")
-                .bold()
-            Text(viewModel.orDefault(pet.identification?.chipLocation))
-
-            Text("Tatouage")
-                .bold()
-            Text(viewModel.orDefault(pet.identification?.tatoo))
-
-            Text("Localisation Tatouage")
-                .bold()
-            Text(viewModel.orDefault(pet.identification?.tatooLocation))
-        }
-    }
-}
-
-struct VariousInformation: View {
-    @Environment(Pet.self) var pet
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Label {
-                Text(pet.birthdate.dateToStringDMY)
-            } icon: {
-                Image(systemName: "calendar")
-                    .font(.title3)
-            }
-
-            Label {
-                Text(pet.color)
-            } icon: {
-                Image(systemName: "paintpalette")
-                    .font(.title3)
-            }
-
-            Label {
-                Text(pet.eyeColor)
-            } icon: {
-                Image(systemName: "eye")
-                    .font(.title3)
+                Label(buttonName, systemImage: buttonSystemImage)
+                Spacer()
+                Image(systemName: "chevron.right")
             }
         }
-    }
-}
-
-struct FavoriteView: View {
-    @Environment(Pet.self) var pet
-    var viewModel: InformationView.ViewModel
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Favoris", systemImage: "star.fill")
-
-            Text("Jouet")
-                .bold()
-            Text(viewModel.orDefault(pet.favorite?.toy))
-
-            Text("Nourriture")
-                .bold()
-            Text(viewModel.orDefault(pet.favorite?.food))
-
-            Text("Endroit")
-                .bold()
-            Text(viewModel.orDefault(pet.favorite?.place))
-        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .font(.title)
+        .foregroundStyle(.white)
+        .buttonLinearGradient(for: .background)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .padding([.leading, .trailing])
     }
 }

@@ -27,38 +27,38 @@ struct EditInformationView: View {
             VStack {
                 Form {
                     Section("Informations principales") {
-                        TextField("Nom", text: $pet.name)
+                        TextField("Nom", text: $pet.information.name)
                             .submitLabel(.next)
                             .focused($focusedField, equals: .name)
                             .keyboardType(.namePhonePad)
 
-                        Picker("Genre", selection: $pet.gender) {
-                            ForEach(Pet.Gender.allCases, id: \.self) { gender in
+                        Picker("Genre", selection: $pet.information.gender) {
+                            ForEach(Information.Gender.allCases, id: \.self) { gender in
                                 Text(gender.rawValue)
                             }
                         }
 
-                        TextField("Type", text: $pet.type)
+                        TextField("Type", text: $pet.information.type)
                             .submitLabel(.next)
                             .focused($focusedField, equals: .type)
 
-                        TextField("Race", text: $pet.race)
+                        TextField("Race", text: $pet.information.race)
                             .submitLabel(.next)
                             .focused($focusedField, equals: .race)
 
                         DatePicker(
                             "Date de naissance",
-                            selection: $pet.birthdate,
+                            selection: $pet.information.birthdate,
                             displayedComponents: [.date]
                         )
                     }
 
                     Section("Informations diverses") {
-                        TextField("Couleur", text: $pet.color)
+                        TextField("Couleur", text: $pet.information.color)
                             .submitLabel(.next)
                             .focused($focusedField, equals: .color)
 
-                        TextField("Couleur des yeux", text: $pet.eyeColor)
+                        TextField("Couleur des yeux", text: $pet.information.eyeColor)
                             .submitLabel(.next)
                             .focused($focusedField, equals: .eyeColor)
                     }

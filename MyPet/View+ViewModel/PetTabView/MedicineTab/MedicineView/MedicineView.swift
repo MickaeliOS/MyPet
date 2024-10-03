@@ -6,45 +6,62 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MedicineView: View {
     @Environment(Pet.self) var pet
     @State private var isPresentingEditMedicineView = false
 
-    var body: some View {
-        VStack {
-            HStack {
-                CategoryGrayTitleView(text: "Médicaments", systemImage: "pill.fill")
-                Spacer()
-                OpenModalButton(
-                    isPresentingView: $isPresentingEditMedicineView,
-                    content: AddMedicineView(),
-                    systemImage: "pencil.line"
-                )
-            }
+    var sortedMedicineList: [Medicine] {
+        if let medicineList = pet.medicine, !medicineList.isEmpty {
+            let sortedMedicinelist = medicineList.sorted(by: { $0.lastDay > $1.lastDay })
 
-            if let medicineList = pet.health?.medicine, !medicineList.isEmpty {
-                List {
-                    ForEach(medicineList) { medicine in
-                        MedicineCardView(medicine: medicine)
-                    }
-                    .onDelete { deleteMedicine(at: $0) }
-                }
-                .listStyle(.plain)
+            return sortedMedicinelist
+        } else {
 
-            } else {
-                EmptyListView(
-                    emptyListMessage: """
-                        La liste est vide, appuyez sur la petite icône située à droite.
-                        """,
-                    messageFontSize: .title3
-                )
-            }
+            return []
         }
     }
 
-    private func deleteMedicine(at offsets: IndexSet) {
-        pet.health?.medicine?.remove(atOffsets: offsets)
+    var body: some View {
+        NavigationStack {
+            VStack(alignment: .leading) {
+                CategoryGrayTitleView(text: "Médicaments", systemImage: "pill.fill")
+
+                if !sortedMedicineList.isEmpty {
+                    List {
+                        ForEach(sortedMedicineList) { medicine in
+                            NavigationLink(destination: MedicineDetailView(medicine: medicine)) {
+                                MedicineCardView(medicine: medicine)
+                            }
+                        }
+                        .onDelete {
+                            pet.deleteNotifications(with: sortedMedicineList, offsets: $0)
+                            pet.deleteMedicineFromOffSets(with: sortedMedicineList, offsets: $0)
+                        }
+                    }
+                    .listStyle(.plain)
+
+                } else {
+                    EmptyListView(
+                        emptyListMessage: """
+                            La liste est vide, appuyez sur la petite icône située à droite.
+                            """,
+                        messageFontSize: .title3
+                    )
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    OpenModalButton(
+                        isPresentingView: $isPresentingEditMedicineView,
+                        content: AddMedicineView(),
+                        systemImage: "pencil.line"
+                    )
+                }
+            }
+        }
     }
 }
 

@@ -6,19 +6,38 @@
 //
 
 import Foundation
+import UserNotifications
 
 extension InformationListView {
 
     @Observable
     final class ViewModel {
-//        func orDefault(_ value: String?) -> String {
-//            return value.orDefault()
-//        }
+        var errorMessage = ""
+        var showingAlert = false
+        var gaveAuthorization = false
 
-        func getGender(gender: Pet.Gender) -> String {
+        func getGender(gender: Information.Gender) -> String {
             return gender == .male ? "male" :
                    gender == .female ? "female" :
                    "hermaphrodite"
+        }
+
+        func requestAuthorizationForNotifications() {
+            UNUserNotificationCenter.current().requestAuthorization(options: [
+                .alert,
+                .badge,
+                .sound
+            ]) { [weak self] success, _ in
+                if success {
+                    self?.gaveAuthorization = true
+                } else {
+                    self?.errorMessage = """
+                    Oups, une erreur est survenue concernant les
+                    notifications, essayez de redémarrer l'application.
+                    """
+                    self?.showingAlert = true
+                }
+            }
         }
     }
 }

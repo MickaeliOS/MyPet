@@ -9,23 +9,33 @@ import SwiftUI
 
 struct InformationView: View {
     @State private var isPresentingEditInformationView = false
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 30) {
-            IdentificationView()
-            FavoriteView()
-        }
-        .navigationTitle("Informations")
-        .navigationBarTitleDisplayMode(.large)
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding([.top, .leading, .trailing])
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                OpenModalButton(
-                    isPresentingView: $isPresentingEditInformationView,
-                    content: EditInformationView(),
-                    systemImage: "pencil.line"
-                )
+        ScrollView {
+            VStack(alignment: .leading, spacing: 30) {
+                IdentificationView()
+                FavoriteView()
+            }
+            .navigationBarBackButtonHidden(true)
+            .customBackButtonToolBar(with: "Profil", dismiss: { dismiss() })
+            .navigationTitle("Informations")
+            .navigationBarTitleDisplayMode(.large)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .padding([.top, .leading, .trailing])
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isPresentingEditInformationView = true
+                    } label: {
+                        Image(systemName: "plus.circle.fill")
+                    }
+                    .font(.title)
+                    .buttonLinearGradient(for: .foreground)
+                }
+            }
+            .sheet(isPresented: $isPresentingEditInformationView) {
+                EditInformationView()
             }
         }
     }
@@ -36,24 +46,50 @@ struct IdentificationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Identification", systemImage: "cpu")
+            CategoryGrayTitleView(text: "Identification", systemImage: "cpu", foregroundStyle: .white)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(LinearGradient.linearBlue)
 
-            Text("Puce")
-                .bold()
-            Text(pet.identification?.chip.map { "\($0)" } ?? "Non renseigné")
+            VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading) {
+                    Text("Puce")
+                        .bold()
+                    Text(pet.identification?.chip.map { "\($0)" } ?? "Non renseigné")
+                }
+                .padding([.bottom, .top], 6)
 
-            Text("Localisation Puce")
-                .bold()
-            Text((pet.identification?.chipLocation).orDefault())
+                VStack(alignment: .leading) {
+                    Text("Localisation Puce")
+                        .bold()
+                    Text((pet.identification?.chipLocation).orDefault())
+                }
+                .padding(.bottom, 6)
 
-            Text("Tatouage")
-                .bold()
-            Text((pet.identification?.tatoo).orDefault())
+                VStack(alignment: .leading) {
 
-            Text("Localisation Tatouage")
-                .bold()
-            Text((pet.identification?.tatooLocation).orDefault())
+                    Text("Tatouage")
+                        .bold()
+                    Text((pet.identification?.tatoo).orDefault())
+                }
+                .padding(.bottom, 6)
+
+                VStack(alignment: .leading) {
+
+                    Text("Localisation Tatouage")
+                        .bold()
+                    Text((pet.identification?.tatooLocation).orDefault())
+                }
+                .padding(.bottom, 6)
+
+            }
+            .padding([.leading, .bottom])
         }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(Color(UIColor.systemBackground))
+        .foregroundStyle(Color(UIColor.label))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .blue, radius: 10)
     }
 }
 
@@ -62,20 +98,42 @@ struct FavoriteView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Favoris", systemImage: "star.fill")
+            CategoryGrayTitleView(text: "Favoris", systemImage: "star.fill", foregroundStyle: .white)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(LinearGradient.linearBlue)
 
-            Text("Jouet")
-                .bold()
-            Text((pet.favorite?.toy).orDefault())
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading) {
+                    Text("Jouet")
+                        .bold()
+                    Text((pet.favorite?.toy).orDefault())
+                }
+                .padding([.top, .bottom], 6)
 
-            Text("Nourriture")
-                .bold()
-            Text((pet.favorite?.food).orDefault())
+                VStack(alignment: .leading) {
 
-            Text("Endroit")
-                .bold()
-            Text((pet.favorite?.place).orDefault())
+                    Text("Nourriture")
+                        .bold()
+                    Text((pet.favorite?.food).orDefault())
+                }
+                .padding(.bottom, 6)
+
+                VStack(alignment: .leading) {
+
+                    Text("Endroit")
+                        .bold()
+                    Text((pet.favorite?.place).orDefault())
+                }
+                .padding(.bottom, 6)
+            }
+            .padding([.leading, .bottom])
         }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(Color(UIColor.systemBackground))
+        .foregroundStyle(Color(UIColor.label))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .blue, radius: 10)
     }
 }
 

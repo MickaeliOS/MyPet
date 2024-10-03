@@ -19,7 +19,7 @@ final class Previewer {
         container = try ModelContainer(for: Pet.self, configurations: config)
 
         // Pet1
-        firstPet = Pet(
+        let firstPetInfo = Information(
             name: "MrCat",
             gender: .male,
             type: "Cat",
@@ -31,7 +31,7 @@ final class Previewer {
         )
 
         // Pet2
-        secondPet = Pet(
+        let secondPetInfo = Information(
             name: "MrsDog",
             gender: .female,
             type: "Dog",
@@ -41,6 +41,9 @@ final class Previewer {
             eyeColor: "Black",
             photo: nil
         )
+
+        firstPet = Pet(information: firstPetInfo)
+        secondPet = Pet(information: secondPetInfo)
 
         container.mainContext.insert(firstPet)
         container.mainContext.insert(secondPet)

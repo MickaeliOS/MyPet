@@ -7,59 +7,67 @@
 
 import Foundation
 import SwiftData
+import UserNotifications
 
 @Model
 final class Pet {
-    var name: String
-    var gender: Gender
-    var type: String
-    var race: String
-    var birthdate: Date
-    var color: String
-    var eyeColor: String
-    var photo: Data?
+    var information: Information
     var identification: Identification?
     var favorite: Favorite?
+    var veterinarian: Veterinarian?
+    var health: Health?
+    var medicine: [Medicine]?
+    var weights: [Weight]?
 
     init(
-        name: String,
-        gender: Gender,
-        type: String,
-        race: String,
-        birthdate: Date,
-        color: String,
-        eyeColor: String,
-        photo: Data?
+        information: Information,
+        identification: Identification? = nil,
+        favorite: Favorite? = nil,
+        veterinarian: Veterinarian? = nil,
+        health: Health? = nil,
+        medicine: [Medicine]? = nil,
+        weights: [Weight]? = nil
     ) {
-        self.name = name
-        self.gender = gender
-        self.type = type
-        self.race = race
-        self.birthdate = birthdate
-        self.color = color
-        self.eyeColor = eyeColor
-        self.photo = photo
+        self.information = information
+        self.identification = identification
+        self.favorite = favorite
+        self.veterinarian = veterinarian
+        self.health = health
+        self.medicine = medicine
+        self.weights = nil
     }
 }
 
 extension Pet {
-    enum Gender: String, Codable, CaseIterable {
-        case male = "Mâle"
-        case female = "Femelle"
-        case hermaphrodite = "Hermaphrodite"
+    func addMedicine(medicine: Medicine) {
+        self.medicine?.append(medicine)
     }
-}
 
-extension Pet {
-    var getStringAge: String {
-        let calendar = Calendar.current
-        let currentDate = Date()
-        let ageComponents = calendar.dateComponents([.year], from: birthdate, to: currentDate)
+    func deleteMedicineFromOffSets(with medicineList: [Medicine], offsets: IndexSet) {
+        for offset in offsets {
+            if let index = medicine?.firstIndex(of: medicineList[offset]) {
+                medicine?.remove(at: index)
+            }
+        }
+    }
 
-        if let age = ageComponents.year {
-            return String(age)
+    func deleteNotifications(with medicineList: [Medicine], offsets: IndexSet) {
+        for offset in offsets {
+            if let index = medicine?.firstIndex(of: medicineList[offset]) {
+                if let notificationsToDelete = medicine?[index].notificationIDs {
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(
+                        withIdentifiers: notificationsToDelete
+                    )
+                }
+            }
+        }
+    }
+
+    func addWeight(weight: Weight) {
+        if let index = self.weights?.firstIndex(where: { $0.day > weight.day }) {
+            self.weights?.insert(weight, at: index)
         } else {
-            return "Âge inconnu"
+            self.weights?.append(weight)
         }
     }
 }
