@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-@MainActor
 func ?? <Element> (lhs: Binding<Element?>, rhs: Element) -> Binding<Element> {
     Binding {
         lhs.wrappedValue ?? rhs

@@ -26,7 +26,7 @@ struct MedicineView: View {
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                CategoryGrayTitleView(text: "Médicaments", systemImage: "pill.fill")
+                CategoryTitleView(text: "Médicaments", systemImage: "pill.fill")
 
                 if !sortedMedicineList.isEmpty {
                     List {

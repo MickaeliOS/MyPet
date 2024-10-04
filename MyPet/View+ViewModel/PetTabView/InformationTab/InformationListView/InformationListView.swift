@@ -128,7 +128,7 @@ struct PetToolBarView: View {
             }
             .overlay {
                 Circle()
-                    .stroke(.white, lineWidth: 4)
+                    .stroke(Color(UIColor.systemBackground), lineWidth: 4)
             }
             .padding()
         }
@@ -149,8 +149,11 @@ struct ProfilePictureView: View {
         VStack {
             petPhoto?
                 .resizable()
-                .scaledToFit()
+                .scaledToFill()
+                .frame(height: 300)
+                .clipped()
         }
+        .frame(maxWidth: geometry.size.width)
         .onAppear {
             setupPetPhoto()
         }

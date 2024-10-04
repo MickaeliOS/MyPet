@@ -40,7 +40,7 @@
 		83BB914F2C6651050063185C /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB914E2C6651050063185C /* ImageExtension.swift */; };
 		83BB91522C6660A70063185C /* InformationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BB91512C6660A70063185C /* InformationListView.swift */; };
 		83CD7E582C85E7FB0091FB50 /* Veterinarian.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E572C85E7FB0091FB50 /* Veterinarian.swift */; };
-		83CD7E5F2C85ECE20091FB50 /* CategoryGrayTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */; };
+		83CD7E5F2C85ECE20091FB50 /* CategoryTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */; };
 		83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E622C85FC070091FB50 /* Medicine.swift */; };
 		83CD7E672C8606F40091FB50 /* VeterinarianView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E662C8606F40091FB50 /* VeterinarianView.swift */; };
 		83CD7E692C8607250091FB50 /* VeterinarianViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */; };
@@ -95,7 +95,7 @@
 		83BB914E2C6651050063185C /* ImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		83BB91512C6660A70063185C /* InformationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationListView.swift; sourceTree = "<group>"; };
 		83CD7E572C85E7FB0091FB50 /* Veterinarian.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Veterinarian.swift; sourceTree = "<group>"; };
-		83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryGrayTitleView.swift; sourceTree = "<group>"; };
+		83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTitleView.swift; sourceTree = "<group>"; };
 		83CD7E622C85FC070091FB50 /* Medicine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medicine.swift; sourceTree = "<group>"; };
 		83CD7E662C8606F40091FB50 /* VeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianView.swift; sourceTree = "<group>"; };
 		83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianViewModel.swift; sourceTree = "<group>"; };
@@ -302,7 +302,7 @@
 			isa = PBXGroup;
 			children = (
 				83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */,
-				83CD7E5E2C85ECE20091FB50 /* CategoryGrayTitleView.swift */,
+				83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */,
 				83CD7E772C889C1B0091FB50 /* EmptyListView.swift */,
 				83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */,
 			);
@@ -529,7 +529,7 @@
 				83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */,
 				83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */,
 				83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */,
-				83CD7E5F2C85ECE20091FB50 /* CategoryGrayTitleView.swift in Sources */,
+				83CD7E5F2C85ECE20091FB50 /* CategoryTitleView.swift in Sources */,
 				83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */,
 				83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */,
 				83CD7E7C2C88AD0E0091FB50 /* OpenModalButton.swift in Sources */,

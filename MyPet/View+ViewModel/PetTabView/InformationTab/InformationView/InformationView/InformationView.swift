@@ -28,9 +28,9 @@ struct InformationView: View {
                     Button {
                         isPresentingEditInformationView = true
                     } label: {
-                        Image(systemName: "plus.circle.fill")
+                        Image(systemName: "pencil")
                     }
-                    .font(.title)
+                    .font(.title2)
                     .buttonLinearGradient(for: .foreground)
                 }
             }
@@ -46,7 +46,7 @@ struct IdentificationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Identification", systemImage: "cpu", foregroundStyle: .white)
+            CategoryTitleView(text: "Identification", systemImage: "cpu", foregroundStyle: .white)
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(LinearGradient.linearBlue)
@@ -98,7 +98,7 @@ struct FavoriteView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryGrayTitleView(text: "Favoris", systemImage: "star.fill", foregroundStyle: .white)
+            CategoryTitleView(text: "Favoris", systemImage: "star.fill", foregroundStyle: .white)
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .background(LinearGradient.linearBlue)

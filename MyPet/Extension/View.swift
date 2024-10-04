@@ -20,4 +20,10 @@ extension View {
     func customBackButtonToolBar(with title: String, dismiss: @escaping () -> Void) -> some View {
         modifier(CustomBackButtonToolBar(title: title, dismiss: dismiss))
     }
+
+    #if canImport(UIKit)
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    #endif
 }

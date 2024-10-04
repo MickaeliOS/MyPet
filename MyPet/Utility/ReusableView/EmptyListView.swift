@@ -18,6 +18,7 @@ struct EmptyListView: View {
 
             Text(emptyListMessage)
                 .font(messageFontSize)
+                .lineLimit(0)
         }
         .frame(maxWidth: .infinity)
         .padding()

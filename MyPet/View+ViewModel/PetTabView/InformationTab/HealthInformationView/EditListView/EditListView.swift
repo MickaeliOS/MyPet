@@ -19,54 +19,61 @@ struct EditListView: View {
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     VStack(alignment: .leading) {
-                        CategoryGrayTitleView(
+                        CategoryTitleView(
                             text: viewModel.dataType.rawValue,
-                            systemImage: viewModel.dataType.imageName
+                            systemImage: viewModel.dataType.imageName,
+                            foregroundStyle: .white
                         )
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        .background(LinearGradient.linearBlue)
+                        .padding(.bottom)
 
-                        ForEach(list.indices, id: \.self) { index in
+                        VStack {
+                            ForEach(list.indices, id: \.self) { index in
 
-                            // Minus Button + Allergy TextField
-                            HStack {
-                                Button {
-                                    if list.indices.contains(index) {
-                                        list.remove(at: index)
+                                // Minus Button + Allergy TextField
+                                HStack {
+                                    Button {
+                                        if list.indices.contains(index) {
+                                            list.remove(at: index)
+                                        }
+                                    } label: {
+                                        Image(systemName: "minus.circle.fill")
                                     }
-                                } label: {
-                                    Image(systemName: "minus.circle.fill")
-                                }
 
-                                if list.indices.contains(index) {
-                                    TextField(
+                                    if list.indices.contains(index) {
+                                        TextField(
+                                            viewModel.dataType == .allergy ?
+                                            "Allergie \(index + 1)" :
+                                                "Intolérance \(index + 1)",
+                                            text: $list[index]
+                                        )
+                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        .padding(.vertical, 4)
+                                    }
+                                }
+                            }
+
+                            // Create a new TextField
+                            Button {
+                                list.append("")
+                                scrollToEnd = true
+                            } label: {
+                                HStack {
+                                    Image(systemName: "plus.circle.fill")
+                                    Text(
                                         viewModel.dataType == .allergy ?
-                                        "Allergie \(index + 1)" :
-                                        "Intolérance \(index + 1)",
-                                        text: $list[index]
+                                        "Ajouter une allergie" :
+                                            "Ajouter une intolérance"
                                     )
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .padding(.vertical, 4)
                                 }
+                                .font(.title3)
                             }
+                            .id("addButton")
                         }
-
-                        // Create a new TextField
-                        Button {
-                            list.append("")
-                            scrollToEnd = true
-                        } label: {
-                            HStack {
-                                Image(systemName: "plus.circle.fill")
-                                Text(
-                                    viewModel.dataType == .allergy ?
-                                    "Ajouter une allergie" :
-                                    "Ajouter une intolérance"
-                                )
-                            }
-                            .font(.title3)
-                        }
-                        .id("addButton")
+                        .padding()
                     }
-                    .padding()
                     .onChange(of: scrollToEnd) {
                         if scrollToEnd {
                             withAnimation {

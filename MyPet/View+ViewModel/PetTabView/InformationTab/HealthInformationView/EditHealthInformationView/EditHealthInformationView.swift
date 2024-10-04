@@ -20,8 +20,6 @@ struct EditHealthInformationView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                CategoryGrayTitleView(text: "Informations", systemImage: "cross.case.fill")
-
                 Toggle("Stérélisé ?", isOn: $isSterelized)
                     .onChange(of: isSterelized) {
                         isSterelizedChanged = true
@@ -55,7 +53,6 @@ struct EditHealthInformationView: View {
 
                         dismiss()
                     }
-                    .disabled(!(viewModel.isListValid(allergies) || viewModel.isListValid(intolerances)))
                 }
             }
         }

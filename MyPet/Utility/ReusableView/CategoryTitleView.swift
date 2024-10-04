@@ -1,5 +1,5 @@
 //
-//  CategoryGrayTitleView.swift
+//  CategoryTitleView.swift
 //  MyPet
 //
 //  Created by Mickaël Horn on 02/09/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryGrayTitleView<S: ShapeStyle>: View {
+struct CategoryTitleView<S: ShapeStyle>: View {
     let text: String
     let systemImage: String
     var foregroundStyle: S
@@ -30,5 +30,5 @@ struct CategoryGrayTitleView<S: ShapeStyle>: View {
 }
 
 #Preview {
-    CategoryGrayTitleView(text: "Identification", systemImage: "cpu")
+    CategoryTitleView(text: "Identification", systemImage: "cpu")
 }

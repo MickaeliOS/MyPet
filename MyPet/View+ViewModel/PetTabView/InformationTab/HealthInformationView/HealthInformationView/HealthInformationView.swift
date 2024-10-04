@@ -14,31 +14,25 @@ struct HealthInformationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            CategoryGrayTitleView(text: "Infos", systemImage: "cross.case.fill")
-
-            if let isSterelized = pet.health?.isSterelized {
-                Text("Stérélisé : \(isSterelized ? "Oui" : "Non")")
-                    .padding()
-            } else {
-                Text("Stérélisé : Non renseigné.")
-                    .padding()
-            }
-
+            SterelizedView()
             AllergyView(allergies: pet.health?.allergies)
             IntoleranceView(intolerance: pet.health?.intolerances)
         }
         .navigationTitle("Infos. Médicales")
         .navigationBarTitleDisplayMode(.large)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding([.top])
+        .padding()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                OpenModalButton(
-                    isPresentingView: $showEditHealthInformations,
-                    content: EditHealthInformationView(),
-                    systemImage: "pencil.line"
-                )
+                Button {
+                    showEditHealthInformations = true
+                } label: {
+                    Image(systemName: "pencil")
+                }
             }
+        }
+        .sheet(isPresented: $showEditHealthInformations) {
+            EditHealthInformationView()
         }
     }
 }
@@ -58,14 +52,45 @@ struct HealthInformationView: View {
 }
 
 // MARK: - CHILD VIEWS
+struct SterelizedView: View {
+    @Environment(Pet.self) var pet
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            CategoryTitleView(text: "Infos", systemImage: "cross.case.fill", foregroundStyle: .white)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(LinearGradient.linearBlue)
+
+            if let isSterelized = pet.health?.isSterelized {
+                Text("Stérélisé : \(isSterelized ? "Oui" : "Non")")
+                    .padding()
+            } else {
+                Text("Stérélisé : Non renseigné.")
+                    .padding()
+            }
+        }
+        .background(Color(UIColor.systemBackground))
+        .foregroundStyle(Color(UIColor.label))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .blue, radius: 10)
+    }
+}
+
 struct AllergyView: View {
     let allergies: [String]?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                CategoryGrayTitleView(text: "Allergies", systemImage: "allergens.fill")
-                Spacer()
+                CategoryTitleView(
+                    text: "Allergies",
+                    systemImage: "allergens.fill",
+                    foregroundStyle: .white
+                )
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(LinearGradient.linearBlue)
             }
 
             if let allergies {
@@ -80,6 +105,10 @@ struct AllergyView: View {
                 )
             }
         }
+        .background(Color(UIColor.systemBackground))
+        .foregroundStyle(Color(UIColor.label))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .blue, radius: 10)
     }
 }
 
@@ -89,8 +118,14 @@ struct IntoleranceView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                CategoryGrayTitleView(text: "Intolérances", systemImage: "exclamationmark.octagon.fill")
-                Spacer()
+                CategoryTitleView(
+                    text: "Intolérances",
+                    systemImage: "exclamationmark.octagon.fill",
+                    foregroundStyle: .white
+                )
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(LinearGradient.linearBlue)
             }
 
             if let intolerance {
@@ -105,5 +140,9 @@ struct IntoleranceView: View {
                 )
             }
         }
+        .background(Color(UIColor.systemBackground))
+        .foregroundStyle(Color(UIColor.label))
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .shadow(color: .blue, radius: 10)
     }
 }
