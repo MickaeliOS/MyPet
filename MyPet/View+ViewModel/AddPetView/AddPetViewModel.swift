@@ -9,6 +9,14 @@ import Foundation
 
 extension AddPetView {
 
+    enum FocusedField {
+        case name
+        case type
+        case race
+        case color
+        case eyeColor
+    }
+
     @Observable
     final class ViewModel {
         var name = ""
@@ -41,13 +49,5 @@ extension AddPetView {
 
             return transitions[focusedField] ?? .name
         }
-    }
-
-    enum FocusedField {
-        case name
-        case type
-        case race
-        case color
-        case eyeColor
     }
 }

@@ -13,7 +13,7 @@ struct InformationView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 30) {
+            VStack(alignment: .leading, spacing: 15) {
                 IdentificationView()
                 FavoriteView()
             }
@@ -22,7 +22,6 @@ struct InformationView: View {
             .navigationTitle("Informations")
             .navigationBarTitleDisplayMode(.large)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .padding([.top, .leading, .trailing])
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -31,7 +30,7 @@ struct InformationView: View {
                         Image(systemName: "pencil")
                     }
                     .font(.title2)
-                    .buttonLinearGradient(for: .foreground)
+                    .foregroundStyle(LinearGradient.linearBlue)
                 }
             }
             .sheet(isPresented: $isPresentingEditInformationView) {
@@ -46,10 +45,8 @@ struct IdentificationView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryTitleView(text: "Identification", systemImage: "cpu", foregroundStyle: .white)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(LinearGradient.linearBlue)
+            CategoryTitleView(text: "Identification", systemImage: "cpu")
+                .padding([.leading, .top])
 
             VStack(alignment: .leading, spacing: 10) {
                 VStack(alignment: .leading) {
@@ -67,7 +64,6 @@ struct IdentificationView: View {
                 .padding(.bottom, 6)
 
                 VStack(alignment: .leading) {
-
                     Text("Tatouage")
                         .bold()
                     Text((pet.identification?.tatoo).orDefault())
@@ -83,13 +79,9 @@ struct IdentificationView: View {
                 .padding(.bottom, 6)
 
             }
-            .padding([.leading, .bottom])
+            .padding(.leading)
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(Color(UIColor.systemBackground))
-        .foregroundStyle(Color(UIColor.label))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(color: .blue, radius: 10)
     }
 }
 
@@ -98,10 +90,8 @@ struct FavoriteView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            CategoryTitleView(text: "Favoris", systemImage: "star.fill", foregroundStyle: .white)
-                .padding()
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(LinearGradient.linearBlue)
+            CategoryTitleView(text: "Favoris", systemImage: "star.fill")
+                .padding([.leading, .top])
 
             VStack(alignment: .leading) {
                 VStack(alignment: .leading) {
@@ -127,13 +117,9 @@ struct FavoriteView: View {
                 }
                 .padding(.bottom, 6)
             }
-            .padding([.leading, .bottom])
+            .padding(.leading)
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
-        .background(Color(UIColor.systemBackground))
-        .foregroundStyle(Color(UIColor.label))
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .shadow(color: .blue, radius: 10)
     }
 }
 

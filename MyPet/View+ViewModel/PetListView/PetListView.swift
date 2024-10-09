@@ -29,10 +29,11 @@ struct PetListView: View {
                     if pets.isEmpty {
                         EmptyListView(
                             emptyListMessage: """
-                            La liste est vide, ajouter vos animaux en appuyant
+                            La liste est vide, ajouter vos animaux en appuyant \
                             sur le bouton + situé en haut à droite de l'écran.
                             """,
-                            messageFontSize: .title2
+                            messageFontSize: .title2,
+                            orientation: .vertical
                         )
                         .position(x: geometry.frame(in: .local).midX,
                                   y: geometry.frame(in: .local).midY)
@@ -63,8 +64,8 @@ struct PetListView: View {
                         }, label: {
                             Image(systemName: "plus.circle.fill")
                         })
-                        .font(.title)
-                        .buttonLinearGradient(for: .foreground)
+                        .foregroundStyle(LinearGradient.linearBlue)
+                        .font(.title2)
                     }
                 }
                 .sheet(isPresented: $isPresentingAddPetView) {
@@ -91,7 +92,7 @@ struct PetView: View {
     var body: some View {
         ZStack {
             if let petPhotoData, let uiImage = UIImage(data: petPhotoData) {
-                Image(uiImage: uiImage)
+                Image("potate")
                     .resizable()
                     .scaledToFill()
             } else {
@@ -105,7 +106,7 @@ struct PetView: View {
                 .minimumScaleFactor(0.5)
                 .font(.system(size: 80, weight: .bold))
                 .foregroundColor(.white)
-                .shadow(color: petPhotoData != nil ? .white : .black, radius: 10, x: 0, y: 5)
+                .shadow(color: petPhotoData != nil ? .white : .black, radius: 2)
                 .opacity(petPhotoData != nil ? 0.8 : 1.0)
         }
     }

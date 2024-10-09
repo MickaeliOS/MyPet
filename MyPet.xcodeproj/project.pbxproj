@@ -20,6 +20,7 @@
 		83636B962C5BCE7D004E1EE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */; };
 		83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA22C5BCF04004E1EE5 /* AddPetView.swift */; };
 		83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA42C5BCF1D004E1EE5 /* Pet.swift */; };
+		8383B3792CB699E10040F440 /* WeightHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383B3782CB699E10040F440 /* WeightHistoryView.swift */; };
 		83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB42C99D070003360A4 /* CalendarExtension.swift */; };
 		83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB62CA174C7003360A4 /* ModelContext.swift */; };
 		83A02EB92CA2DEAC003360A4 /* EditVeterinarianView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */; };
@@ -75,6 +76,7 @@
 		83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83636BA22C5BCF04004E1EE5 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		83636BA42C5BCF1D004E1EE5 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		8383B3782CB699E10040F440 /* WeightHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightHistoryView.swift; sourceTree = "<group>"; };
 		83A02EB42C99D070003360A4 /* CalendarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExtension.swift; sourceTree = "<group>"; };
 		83A02EB62CA174C7003360A4 /* ModelContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContext.swift; sourceTree = "<group>"; };
 		83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVeterinarianView.swift; sourceTree = "<group>"; };
@@ -289,11 +291,46 @@
 			path = MainFile;
 			sourceTree = "<group>";
 		};
-		83A02EBC2CA2EC2D003360A4 /* ChartTab */ = {
+		8383B3742CB681790040F440 /* VeterinarianView */ = {
+			isa = PBXGroup;
+			children = (
+				83CD7E662C8606F40091FB50 /* VeterinarianView.swift */,
+				83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */,
+			);
+			path = VeterinarianView;
+			sourceTree = "<group>";
+		};
+		8383B3752CB681840040F440 /* EditVeterinarianView */ = {
+			isa = PBXGroup;
+			children = (
+				83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */,
+				83A02EBA2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift */,
+			);
+			path = EditVeterinarianView;
+			sourceTree = "<group>";
+		};
+		8383B3762CB699320040F440 /* ChartView */ = {
 			isa = PBXGroup;
 			children = (
 				83A02EBD2CA2EC42003360A4 /* ChartView.swift */,
 				83A02EC12CA2F0FD003360A4 /* ChartViewModel.swift */,
+			);
+			path = ChartView;
+			sourceTree = "<group>";
+		};
+		8383B3772CB6993B0040F440 /* WeightHistoryView */ = {
+			isa = PBXGroup;
+			children = (
+				8383B3782CB699E10040F440 /* WeightHistoryView.swift */,
+			);
+			path = WeightHistoryView;
+			sourceTree = "<group>";
+		};
+		83A02EBC2CA2EC2D003360A4 /* ChartTab */ = {
+			isa = PBXGroup;
+			children = (
+				8383B3762CB699320040F440 /* ChartView */,
+				8383B3772CB6993B0040F440 /* WeightHistoryView */,
 			);
 			path = ChartTab;
 			sourceTree = "<group>";
@@ -354,10 +391,8 @@
 		83CD7E652C8606D80091FB50 /* VeterinarianTab */ = {
 			isa = PBXGroup;
 			children = (
-				83CD7E662C8606F40091FB50 /* VeterinarianView.swift */,
-				83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */,
-				83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */,
-				83A02EBA2CA2DEDD003360A4 /* EditVeterinarianViewModel.swift */,
+				8383B3742CB681790040F440 /* VeterinarianView */,
+				8383B3752CB681840040F440 /* EditVeterinarianView */,
 			);
 			path = VeterinarianTab;
 			sourceTree = "<group>";
@@ -551,6 +586,7 @@
 				83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,
+				8383B3792CB699E10040F440 /* WeightHistoryView.swift in Sources */,
 				83CD7EAA2C93240A0091FB50 /* EditHealthInformationView.swift in Sources */,
 				83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */,
 				83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */,

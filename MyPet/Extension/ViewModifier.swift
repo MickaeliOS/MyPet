@@ -26,26 +26,6 @@ struct CustomTextField: ViewModifier {
     }
 }
 
-struct ButtonLinearGradient: ViewModifier {
-    enum Mode {
-        case background
-        case foreground
-    }
-
-    let mode: Mode
-
-    func body(content: Content) -> some View {
-        switch mode {
-        case .background:
-            content
-                .background(LinearGradient.linearBlue)
-        case .foreground:
-            content
-                .foregroundStyle(LinearGradient.linearBlue)
-        }
-    }
-}
-
 struct CustomBackButtonToolBar: ViewModifier {
     let title: String
     let dismiss: () -> Void
@@ -59,10 +39,31 @@ struct CustomBackButtonToolBar: ViewModifier {
                     } label: {
                         HStack {
                             Image(systemName: "chevron.backward")
-                            Text("Profil")
+//                                .bold()
+
+                            Text(title)
                         }
                     }
                 }
             }
+    }
+}
+
+struct RoundedRectangleShadow: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .background(Color(UIColor.systemBackground))
+            .foregroundStyle(Color(UIColor.label))
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .shadow(radius: 10)
+    }
+}
+
+struct WideLinearBlueGradient: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .topLeading)
+            .background(LinearGradient.linearBlue)
     }
 }

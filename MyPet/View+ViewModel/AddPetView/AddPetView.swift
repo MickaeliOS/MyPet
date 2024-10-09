@@ -144,7 +144,7 @@ struct AddPetView: View {
             PhotosPicker("Selectionnez une photo", selection: $animalItem, matching: .images)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .buttonLinearGradient(for: .background)
+                .background(LinearGradient.linearBlue)
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .font(.title3)

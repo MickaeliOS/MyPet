@@ -11,6 +11,7 @@ import SwiftData
 struct MedicineView: View {
     @Environment(Pet.self) var pet
     @State private var isPresentingEditMedicineView = false
+    @State private var path = NavigationPath()
 
     var sortedMedicineList: [Medicine] {
         if let medicineList = pet.medicine, !medicineList.isEmpty {
@@ -24,16 +25,16 @@ struct MedicineView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             VStack(alignment: .leading) {
-                CategoryTitleView(text: "Médicaments", systemImage: "pill.fill")
-
                 if !sortedMedicineList.isEmpty {
                     List {
                         ForEach(sortedMedicineList) { medicine in
-                            NavigationLink(destination: MedicineDetailView(medicine: medicine)) {
-                                MedicineCardView(medicine: medicine)
-                            }
+                            MedicineCardView(medicine: medicine)
+                                .onTapGesture {
+                                    path.append(medicine)
+                                }
+                                .listRowSeparator(.hidden)
                         }
                         .onDelete {
                             pet.deleteNotifications(with: sortedMedicineList, offsets: $0)
@@ -51,15 +52,25 @@ struct MedicineView: View {
                     )
                 }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .navigationTitle("Médicaments")
+            .navigationDestination(for: Medicine.self, destination: { medicine in
+                MedicineDetailView(medicine: medicine)
+            })
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+            .frame(maxWidth: .infinity, alignment: .topLeading)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    OpenModalButton(
-                        isPresentingView: $isPresentingEditMedicineView,
-                        content: AddMedicineView(),
-                        systemImage: "pencil.line"
-                    )
+                    Button(action: {
+                        isPresentingEditMedicineView = true
+                    }, label: {
+                        Image(systemName: "plus.circle.fill")
+                    })
+                    .font(.title2)
+                    .foregroundStyle(LinearGradient.linearBlue)
                 }
+            }
+            .sheet(isPresented: $isPresentingEditMedicineView) {
+                AddMedicineView()
             }
         }
     }

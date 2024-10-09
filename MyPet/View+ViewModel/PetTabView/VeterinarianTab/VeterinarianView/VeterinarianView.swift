@@ -18,35 +18,39 @@ struct VeterinarianView: View {
                 Text("Nom")
                     .bold()
                 Text(viewModel.orDefault(pet.veterinarian?.name))
-                    .padding(.bottom)
+                    .padding(.bottom, 6)
 
                 Text("Adresse")
                     .bold()
                 Text(viewModel.orDefault(pet.veterinarian?.address))
-                    .padding(.bottom)
+                    .padding(.bottom, 6)
 
                 Text("Téléphone")
                     .bold()
 
                 Text(viewModel.orDefault(pet.veterinarian?.phone.map { "\($0)" }))
-                    .padding(.bottom)
+                    .padding(.bottom, 6)
 
                 Text("Site web")
                     .bold()
                     .textInputAutocapitalization(.none)
 
-                Text(viewModel.orDefault(pet.veterinarian?.website))                    .padding(.bottom)
+                Text(viewModel.orDefault(pet.veterinarian?.website))
             }
             .navigationTitle("Vétérinaire")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    OpenModalButton(
-                        isPresentingView: $isPresentingEditVeterinarianView,
-                        content: EditVeterinarianView(),
-                        systemImage: "pencil.line"
-                    )
+                    Button {
+                        isPresentingEditVeterinarianView = true
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .font(.title2)
                 }
+            }
+            .sheet(isPresented: $isPresentingEditVeterinarianView) {
+                EditVeterinarianView()
             }
             .padding()
         }

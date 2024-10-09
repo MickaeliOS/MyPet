@@ -25,6 +25,10 @@ extension EditVeterinarianView {
 
             return transitions[focusedField] ?? .name
         }
+
+        var isFormValid: Bool {
+            name.isReallyEmpty || address.isReallyEmpty
+        }
     }
 
     // MARK: ENUM

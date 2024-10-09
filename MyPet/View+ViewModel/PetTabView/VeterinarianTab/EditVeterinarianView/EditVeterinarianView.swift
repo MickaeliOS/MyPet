@@ -15,25 +15,31 @@ struct EditVeterinarianView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
+            VStack {
                 TextField("Nom", text: $viewModel.name)
                     .focused($focusedField, equals: .name)
                     .submitLabel(.next)
+                    .customTextField(with: Image(systemName: "person"))
 
                 TextField("Adresse", text: $viewModel.address)
                     .focused($focusedField, equals: .address)
                     .submitLabel(.next)
+                    .customTextField(with: Image(systemName: "mappin.circle.fill"))
 
                 TextField("Téléphone", value: $viewModel.phone, format: .number)
                     .focused($focusedField, equals: .phone)
                     .submitLabel(.next)
                     .keyboardType(.phonePad)
+                    .customTextField(with: Image(systemName: "phone.fill"))
 
                 TextField("Site web", text: $viewModel.website)
                     .focused($focusedField, equals: .website)
                     .submitLabel(.next)
+                    .customTextField(with: Image(systemName: "globe"))
             }
             .navigationTitle("Modifier Vétérinaire")
+            .padding()
+            .frame(maxHeight: .infinity, alignment: .topLeading)
             .onSubmit {
                 focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
             }
@@ -53,6 +59,7 @@ struct EditVeterinarianView: View {
                         addVeterinarian()
                         dismiss()
                     }
+                    .disabled(viewModel.isFormValid)
                 }
             }
         }
@@ -69,5 +76,13 @@ struct EditVeterinarianView: View {
 }
 
 #Preview {
-    EditVeterinarianView()
+    do {
+        let previewer = try Previewer()
+
+        return EditVeterinarianView()
+            .environment(previewer.firstPet)
+
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
+    }
 }

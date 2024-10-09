@@ -13,12 +13,16 @@ extension View {
         modifier(CustomTextField(icon: icon))
     }
 
-    func buttonLinearGradient(for mode: ButtonLinearGradient.Mode) -> some View {
-        modifier(ButtonLinearGradient(mode: mode))
-    }
-
     func customBackButtonToolBar(with title: String, dismiss: @escaping () -> Void) -> some View {
         modifier(CustomBackButtonToolBar(title: title, dismiss: dismiss))
+    }
+
+    func roundedRectangleShadow() -> some View {
+        modifier(RoundedRectangleShadow())
+    }
+
+    func wideLinearBlueGradient() -> some View {
+        modifier(WideLinearBlueGradient())
     }
 
     #if canImport(UIKit)

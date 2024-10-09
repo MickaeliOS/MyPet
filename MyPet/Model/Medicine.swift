@@ -13,13 +13,19 @@ struct Medicine: Codable, Hashable, Identifiable {
     let dosage: String
     let medicineType: MedicineType
     let everyDay: Bool
-    let takingTimes: [Date]
+    let takingTimes: [TakingTime]
     let dates: Set<DateComponents>?
     let additionalInformation: String?
     let lastDay: Date
     var notificationIDs: [String]?
 }
 
+extension Medicine {
+    struct TakingTime: Codable, Hashable, Identifiable {
+        var id = UUID()
+        var date: Date
+    }
+}
 extension Medicine {
     enum MedicineType: CaseIterable, Codable {
         case pill
@@ -33,7 +39,7 @@ extension Medicine {
             case .syringe:
                 "syringe.fill"
             case .bottle:
-                "waterbottle.fill"
+                "cross.vial.fill"
             }
         }
     }
@@ -46,8 +52,8 @@ extension Medicine {
         medicineType: .bottle,
         everyDay: true,
         takingTimes: [
-            Date(),
-            Date()
+            TakingTime(date: Date()),
+            TakingTime(date: Date())
         ],
         dates: nil,
         additionalInformation: "After lunch.",

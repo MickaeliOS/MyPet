@@ -11,33 +11,39 @@ import UserNotifications
 extension AddMedicineView {
 
     // MARK: ENUM
-    enum AddMedicineError: Error {
-        case cannotCalculatedLastDay
-        case cannotHandleNotification
-
-        var errorDescription: String {
-            switch self {
-            case .cannotCalculatedLastDay:
-                return """
-                Oups, une erreur est survenue ! Veuillez vérifier
-                les jours sélectionnés, ou bien choisir \"Tous les jours\"
-                """
-            case .cannotHandleNotification:
-                return "Impossible de planifier les notifications. Veuillez recommencer l'ajout du médicament."
-            }
-        }
+    enum FocusedField {
+        case name
+        case dosage
+        case additionalInformation
     }
-
+    
     @Observable
     final class ViewModel {
 
+        enum AddMedicineError: Error {
+            case cannotCalculatedLastDay
+            case cannotHandleNotification
+
+            var errorDescription: String {
+                switch self {
+                case .cannotCalculatedLastDay:
+                    return """
+                    Oups, une erreur est survenue ! Veuillez vérifier
+                    les jours sélectionnés, ou bien choisir \"Tous les jours\"
+                    """
+                case .cannotHandleNotification:
+                    return "Impossible de planifier les notifications. Veuillez recommencer l'ajout du médicament."
+                }
+            }
+        }
+        
         // MARK: PROPERTY
         var medicineName = ""
         var medicineDosage = ""
         var additionalInformations = ""
         var everyDay = false
         var duration: Int?
-        var takingTimes: [Date] = [Date()]
+        var takingTimes: [Medicine.TakingTime] = [.init(date: .now)]
         var medicineDates: Set<DateComponents> = []
         var selectedMedicineType = Medicine.MedicineType.pill
         var errorMessage = ""
@@ -129,6 +135,15 @@ extension AddMedicineView {
             }
         }
 
+        func nextField(focusedField: FocusedField) -> FocusedField {
+            let transitions: [FocusedField: FocusedField] = [
+                .name: .dosage,
+                .dosage: .additionalInformation
+            ]
+
+            return transitions[focusedField] ?? .name
+        }
+
         // MARK: PRIVATE FUNCTION
         private func scheduleNotificationFlow(
             for dateComponents: Set<DateComponents>,
@@ -136,9 +151,14 @@ extension AddMedicineView {
             petName: String
         ) {
             for dateComponent in dateComponents {
-                for time in medicine.takingTimes {
+                for takingTime in medicine.takingTimes {
                     do {
-                        try scheduleNotification(for: dateComponent, at: time, medicine: medicine, petName: petName)
+                        try scheduleNotification(
+                            for: dateComponent,
+                            at: takingTime.date,
+                            medicine: medicine,
+                            petName: petName
+                        )
                     } catch let error {
                         errorMessage = handleError(error: error)
                         showingAlert = true

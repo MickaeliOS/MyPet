@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-enum Orientation {
-    case vertical
-    case horizontal
-}
-
 struct ThickDividerView: View {
+    enum Orientation {
+        case vertical
+        case horizontal
+    }
+
     let orientation: Orientation
 
     var body: some View {

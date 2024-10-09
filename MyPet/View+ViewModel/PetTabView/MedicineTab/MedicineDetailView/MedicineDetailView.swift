@@ -50,7 +50,7 @@ struct MedicineDetailView: View {
                     ForEach(medicine.takingTimes.indices, id: \.self) { index in
                         let takingTime = medicine.takingTimes[index]
 
-                        Text(takingTime, format: .dateTime.hour().minute())
+                        Text(takingTime.date, format: .dateTime.hour().minute())
                             .foregroundStyle(.white)
                             .padding(10)
                             .background(.blue)

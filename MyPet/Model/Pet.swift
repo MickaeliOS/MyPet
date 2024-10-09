@@ -70,4 +70,14 @@ extension Pet {
             self.weights?.append(weight)
         }
     }
+
+    func deleteWeight(offsets: IndexSet) {
+        weights?.remove(atOffsets: offsets)
+    }
+
+//    func sortMedicineByTakingTime() {
+//        medicine?.forEach({ medicine in
+//            medicine.takingTimes = medicine.takingTimes.sorted(by: <)
+//        })
+//    }
 }

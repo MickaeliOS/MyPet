@@ -77,7 +77,10 @@ struct EditInformationView: View {
 
     // MARK: - VIEW FUNCTION
     @ViewBuilder private func principalInformationsView(pet: Bindable<Pet>) -> some View {
-        VStack {
+        VStack(alignment: .leading) {
+            CategoryTitleView(text: "Informations", systemImage: "info.square.fill")
+                .padding(.top)
+
             VStack(alignment: .leading) {
                 TextField("Nom", text: pet.information.name)
                     .customTextField(with: Image(systemName: "person.fill"))
@@ -144,7 +147,7 @@ struct EditInformationView: View {
             PhotosPicker("Selectionnez une photo", selection: $animalItem, matching: .images)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .buttonLinearGradient(for: .background)
+                .background(LinearGradient.linearBlue)
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .font(.title3)

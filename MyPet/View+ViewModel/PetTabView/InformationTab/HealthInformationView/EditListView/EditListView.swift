@@ -9,81 +9,82 @@ import SwiftUI
 
 struct EditListView: View {
     @Environment(\.dismiss) var dismiss
-
+    
     @Binding var list: [String]
     @State var viewModel: ViewModel
     @State private var scrollToEnd = false
-
+    
     var body: some View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
-                ScrollView {
-                    VStack(alignment: .leading) {
+                VStack(alignment: .leading) {
+                    HStack {
                         CategoryTitleView(
                             text: viewModel.dataType.rawValue,
-                            systemImage: viewModel.dataType.imageName,
-                            foregroundStyle: .white
+                            systemImage: viewModel.dataType.imageName
                         )
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                        .background(LinearGradient.linearBlue)
-                        .padding(.bottom)
-
-                        VStack {
-                            ForEach(list.indices, id: \.self) { index in
-
-                                // Minus Button + Allergy TextField
-                                HStack {
-                                    Button {
-                                        if list.indices.contains(index) {
-                                            list.remove(at: index)
-                                        }
-                                    } label: {
-                                        Image(systemName: "minus.circle.fill")
-                                    }
-
-                                    if list.indices.contains(index) {
-                                        TextField(
-                                            viewModel.dataType == .allergy ?
-                                            "Allergie \(index + 1)" :
-                                                "Intolérance \(index + 1)",
-                                            text: $list[index]
-                                        )
-                                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        .padding(.vertical, 4)
-                                    }
-                                }
+                        .padding(.leading)
+                        
+                        Button {
+                            list.append("")
+                            scrollToEnd = true
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title2)
                             }
-
-                            // Create a new TextField
-                            Button {
-                                list.append("")
-                                scrollToEnd = true
-                            } label: {
-                                HStack {
-                                    Image(systemName: "plus.circle.fill")
-                                    Text(
-                                        viewModel.dataType == .allergy ?
-                                        "Ajouter une allergie" :
-                                            "Ajouter une intolérance"
-                                    )
-                                }
-                                .font(.title3)
-                            }
-                            .id("addButton")
+                            .font(.title3)
+                            .padding(.trailing)
                         }
-                        .padding()
+                        .id("addButton")
                     }
+                    
+                    VStack {
+                        if list.isEmpty {
+                            EmptyListView(
+                                emptyListMessage: "La liste est vide, appuyez sur l'icône +",
+                                messageFontSize: .title2
+                            )
+                        } else {
+                            ScrollView {
+                                
+                                ForEach(list.indices, id: \.self) { index in
+                                    // Minus Button + Allergy TextField
+                                    HStack {
+                                        Button {
+                                            if list.indices.contains(index) {
+                                                list.remove(at: index)
+                                            }
+                                        } label: {
+                                            Image(systemName: "minus.circle.fill")
+                                        }
+                                        
+                                        if list.indices.contains(index) {
+                                            TextField(
+                                                viewModel.dataType == .allergy ?
+                                                "Allergie \(index + 1)" :
+                                                    "Intolérance \(index + 1)",
+                                                text: $list[index]
+                                            )
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                        }
+                                    }
+                                    .id(index)
+                                }
+                            }
+                        }
+                    }
+                    .padding([.leading, .trailing])
                     .onChange(of: scrollToEnd) {
                         if scrollToEnd {
                             withAnimation {
-                                scrollViewProxy.scrollTo("addButton", anchor: .center)
+                                scrollViewProxy.scrollTo(list.indices.last, anchor: .bottom)
                             }
                             scrollToEnd = false
                         }
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
         }
     }
@@ -92,13 +93,13 @@ struct EditListView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-
+        
         return EditListView(
             list: .constant([]),
             viewModel: EditListView.ViewModel(dataType: .allergy)
         )
         .environment(previewer.firstPet)
-
+        
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

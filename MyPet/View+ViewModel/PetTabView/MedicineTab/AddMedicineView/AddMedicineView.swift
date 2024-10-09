@@ -11,126 +11,87 @@ struct AddMedicineView: View {
     @Environment(Pet.self) var pet
     @Environment(\.dismiss) var dismiss
 
-    @FocusState private var durationIsFocused
-
     @State private var viewModel = ViewModel()
-    @State private var isDatePickerPresented = false
+    @State private var scrollToEnd = false
 
     var body: some View {
         @Bindable var pet = pet
 
         NavigationStack {
-            VStack {
-                Form {
-                    Section("Informations") {
-                        TextField("Nom", text: $viewModel.medicineName)
-                        TextField("Dosage, ex: 4ml", text: $viewModel.medicineDosage)
-                        TextField("Informations complémentaires", text: $viewModel.additionalInformations)
-                    }
-
-                    Section("Type de médicament") {
+            ScrollViewReader { scrollViewProxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 30) {
+                        MedicineMainInformationView(addMedicineViewModel: $viewModel)
                         MedicineTypeView(selectedMedicineType: $viewModel.selectedMedicineType)
+                        MedicineFrequencyView(addMedicineViewModel: $viewModel)
+                        MedicineSchedulesView(addMedicineViewModel: $viewModel, scrollToEnd: $scrollToEnd)
                     }
-
-                    Section("Fréquence") {
-                        Toggle("Tous les jours", isOn: $viewModel.everyDay)
-
-                        if viewModel.everyDay {
-                            TextField("Combien de jours ?", value: $viewModel.duration, format: .number)
-                                .keyboardType(.numberPad)
-                                .focused($durationIsFocused)
-                                .toolbar {
-                                    ToolbarItemGroup(placement: .keyboard) {
-                                        Spacer()
-                                        Button("Done") {
-                                            durationIsFocused = false
-                                        }
+                    .frame(alignment: .topLeading)
+                    .navigationTitle("Ajouter un médicament")
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button("Sauvegarder") {
+                                if var medicine = viewModel.createMedicine() {
+                                    if pet.medicine == nil {
+                                        pet.medicine = []
                                     }
-                                }
-                        } else {
-                            Button {
-                                isDatePickerPresented = true
-                            } label: {
-                                Text("Sélectionner les jours (\(viewModel.medicineDates.count) sélectionnés)")
-                            }
-                            .sheet(isPresented: $isDatePickerPresented) {
-                                VStack {
-                                    Text("Sélectionner les jours")
-                                        .font(.headline)
-                                        .padding()
 
-                                    MultiDatePicker("Sélectionnez vos jours", selection: $viewModel.medicineDates)
-                                        .padding()
-
-                                    Button("Fermer") {
-                                        isDatePickerPresented = false
-                                    }
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(.blue)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .foregroundStyle(.white)
-                                    .padding()
+                                    viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
+                                    medicine.notificationIDs = viewModel.notificationIDs
+                                    pet.medicine?.append(medicine)
+                                    dismiss()
                                 }
-                                .environment(\.locale, .init(identifier: "fr"))
                             }
                         }
                     }
-
-                    Section("Horaires de prise") {
-                        ForEach(viewModel.takingTimes.indices, id: \.self) { index in
-                            HStack {
-                                if index != 0 {
-                                    Button {
-                                        viewModel.takingTimes.remove(at: index)
-                                    } label: {
-                                        Image(systemName: "minus.circle.fill")
-                                            .foregroundColor(.red)
-                                    }
-                                    .buttonStyle(BorderlessButtonStyle())
-                                }
-
-                                DatePicker(
-                                    "Horaire \(index + 1)",
-                                    selection: $viewModel.takingTimes[index],
-                                    displayedComponents: .hourAndMinute
-                                )
-                                .labelsHidden()
-                            }
-                            .frame(height: 50)
-                        }
-
-                        Button {
-                            viewModel.takingTimes.append(Date())
-                        } label: {
-                            HStack {
-                                Image(systemName: "plus.circle.fill")
-                                Text("Ajouter une horaire")
-                            }
-                        }
+                    .alert("Erreur", isPresented: $viewModel.showingAlert) {
+                        Button("OK") { }
+                    } message: {
+                        Text(viewModel.errorMessage)
                     }
                 }
-                .navigationTitle("Ajouter un médicament")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Sauvegarder") {
-                            if var medicine = viewModel.createMedicine() {
-                                if pet.medicine == nil {
-                                    pet.medicine = []
-                                }
-
-                                viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
-                                medicine.notificationIDs = viewModel.notificationIDs
-                                pet.medicine?.append(medicine)
-                                dismiss()
-                            }
+                .onChange(of: scrollToEnd) {
+                    if scrollToEnd {
+                        withAnimation {
+                            scrollViewProxy.scrollTo("addButton", anchor: .center)
                         }
+                        scrollToEnd = false
                     }
                 }
-                .alert("Erreur", isPresented: $viewModel.showingAlert) {
-                    Button("OK") { }
-                } message: {
-                    Text(viewModel.errorMessage)
+            }
+        }
+    }
+}
+
+struct MedicineMainInformationView: View {
+    @Binding var addMedicineViewModel: AddMedicineView.ViewModel
+    @FocusState private var focusedField: AddMedicineView.FocusedField?
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            CategoryTitleView(text: "Informations", systemImage: "info.square.fill")
+                .padding([.top, .leading])
+
+            VStack {
+                TextField("Nom", text: $addMedicineViewModel.medicineName)
+                    .focused($focusedField, equals: .name)
+                    .submitLabel(.next)
+                    .customTextField(with: Image(systemName: "person.fill"))
+
+                TextField("Dosage, ex: 4ml", text: $addMedicineViewModel.medicineDosage)
+                    .focused($focusedField, equals: .dosage)
+                    .submitLabel(.next)
+                    .customTextField(with: Image(systemName: "lines.measurement.vertical"))
+
+                TextField("Informations complémentaires", text: $addMedicineViewModel.additionalInformations)
+                    .focused($focusedField, equals: .additionalInformation)
+                    .submitLabel(.done)
+                    .customTextField(with: Image(systemName: "info.bubble.fill.rtl"))
+            }
+            .padding([.leading, .trailing])
+            .onSubmit {
+                if focusedField != .additionalInformation {
+                    focusedField = addMedicineViewModel.nextField(focusedField: focusedField ?? .name)
                 }
             }
         }
@@ -141,20 +102,163 @@ struct MedicineTypeView: View {
     @Binding var selectedMedicineType: Medicine.MedicineType
 
     var body: some View {
-        HStack {
-            ForEach(Medicine.MedicineType.allCases, id: \.self) { medicine in
-                Button {
-                    selectedMedicineType = medicine
-                } label: {
-                    Image(systemName: medicine.imageSystemName)
-                        .font(.largeTitle)
+        VStack(alignment: .leading) {
+            CategoryTitleView(
+                text: "Type de médicament",
+                systemImage: "pills.circle.fill"
+            )
+            .padding([.leading, .trailing, .bottom])
+
+            HStack {
+                ForEach(Medicine.MedicineType.allCases, id: \.self) { medicine in
+                    Button {
+                        selectedMedicineType = medicine
+                    } label: {
+                        Image(systemName: medicine.imageSystemName)
+                            .font(.largeTitle)
+                    }
+                    .frame(width: 100, height: 100)
+                    .background(
+                        Group {
+                            if selectedMedicineType == medicine {
+                                AnyView(LinearGradient.linearBlue)
+                            } else {
+                                AnyView(Color.clear)
+                            }
+                        }
+                    )
+                    .foregroundStyle(selectedMedicineType == medicine ? .white : .black)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .buttonStyle(.plain)
                 }
-                .frame(width: 100, height: 100)
-                .background(selectedMedicineType == medicine ? Color.blue : Color.clear)
-                .foregroundStyle(selectedMedicineType == medicine ? .white : .black)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .buttonStyle(.plain)
             }
+            .frame(maxWidth: .infinity)
+            .padding([.leading, .trailing])
+        }
+    }
+}
+
+struct MedicineFrequencyView: View {
+    @State private var isDatePickerPresented = false
+    @FocusState private var durationIsFocused
+    @Binding var addMedicineViewModel: AddMedicineView.ViewModel
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            CategoryTitleView(
+                text: "Fréquence",
+                systemImage: "calendar.circle.fill"
+            )
+            .padding([.leading, .trailing])
+
+            VStack(alignment: .leading) {
+                Toggle("Tous les jours", isOn: $addMedicineViewModel.everyDay)
+
+                if addMedicineViewModel.everyDay {
+                    TextField("Combien de jours ?", value: $addMedicineViewModel.duration, format: .number)
+                        .customTextField(with: Image(systemName: "calendar"))
+                        .keyboardType(.numberPad)
+                        .focused($durationIsFocused)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                Button("Done") {
+                                    durationIsFocused = false
+                                }
+                            }
+                        }
+                } else {
+                    Button {
+                        isDatePickerPresented = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                            Text("Sélectionner les jours (\(addMedicineViewModel.medicineDates.count) sélectionnés)")
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(LinearGradient.linearBlue)
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .sheet(isPresented: $isDatePickerPresented) {
+                        VStack {
+                            Text("Sélectionner les jours")
+                                .font(.headline)
+                                .padding()
+
+                            MultiDatePicker("Sélectionnez vos jours", selection: $addMedicineViewModel.medicineDates)
+                                .padding()
+
+                            Button("Fermer") {
+                                isDatePickerPresented = false
+                            }
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(.blue)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .foregroundStyle(.white)
+                            .padding()
+                        }
+                        .environment(\.locale, .init(identifier: "fr"))
+                    }
+                }
+            }
+            .padding([.leading, .trailing])
+        }
+    }
+}
+
+struct MedicineSchedulesView: View {
+    @Binding var addMedicineViewModel: AddMedicineView.ViewModel
+    @Binding var scrollToEnd: Bool
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            CategoryTitleView(
+                text: "Horaires de prises",
+                systemImage: "clock.fill"
+            )
+            .padding([.leading])
+
+            VStack(alignment: .leading) {
+                ForEach(addMedicineViewModel.takingTimes.indices, id: \.self) { index in
+                    HStack {
+                        if index != 0 {
+                            Button {
+                                addMedicineViewModel.takingTimes.remove(at: index)
+                            } label: {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundColor(.red)
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
+
+                        DatePicker(
+                            "Horaire \(index + 1)",
+                            selection: $addMedicineViewModel.takingTimes[index].date,
+                            displayedComponents: .hourAndMinute
+                        )
+                    }
+                }
+
+                Button {
+                    addMedicineViewModel.takingTimes.append(.init(date: .now))
+                    scrollToEnd = true
+                } label: {
+                    HStack {
+                        Image(systemName: "plus.circle.fill")
+                        Text("Ajouter une horaire")
+                    }
+                }
+                .id("addButton")
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(LinearGradient.linearBlue)
+                .foregroundStyle(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            .padding([.leading, .trailing])
         }
     }
 }

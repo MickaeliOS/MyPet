@@ -81,8 +81,6 @@ struct InformationListView: View {
                     )
                 }
         }
-        .modelContainer(previewer.container)
-
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
@@ -123,7 +121,7 @@ struct PetToolBarView: View {
                 Image(systemName: "arrow.left.arrow.right")
                     .foregroundStyle(.white)
                     .padding(10)
-                    .buttonLinearGradient(for: .background)
+                    .background(LinearGradient.linearBlue)
                     .clipShape(Circle())
             }
             .overlay {
@@ -230,8 +228,9 @@ struct InformationListButton: View {
         .frame(maxWidth: .infinity)
         .font(.title)
         .foregroundStyle(.white)
-        .buttonLinearGradient(for: .background)
+        .background(LinearGradient.linearBlue)
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .padding([.leading, .trailing])
+        .shadow(color: .blue, radius: 5)
     }
 }
