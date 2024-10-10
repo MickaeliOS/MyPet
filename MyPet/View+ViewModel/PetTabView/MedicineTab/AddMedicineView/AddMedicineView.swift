@@ -127,7 +127,7 @@ struct MedicineTypeView: View {
                             }
                         }
                     )
-                    .foregroundStyle(selectedMedicineType == medicine ? .white : .black)
+                    .foregroundStyle(selectedMedicineType == medicine ? .white : .primary)
                     .clipShape(RoundedRectangle(cornerRadius: 15))
                     .buttonStyle(.plain)
                 }

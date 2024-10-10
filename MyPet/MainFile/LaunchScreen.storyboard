@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchscreen_bg" translatesAutoresizingMaskIntoConstraints="NO" id="ukn-5d-J8w">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mypet_logo" translatesAutoresizingMaskIntoConstraints="NO" id="X45-eh-CVd">
+                                <rect key="frame" x="10" y="-86" width="373.00000000000006" height="1024"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ukn-5d-J8w" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="3zf-sH-qRc"/>
+                            <constraint firstAttribute="trailing" secondItem="X45-eh-CVd" secondAttribute="trailing" constant="10" id="9US-pO-6Om"/>
+                            <constraint firstItem="X45-eh-CVd" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GaD-HP-LGP"/>
+                            <constraint firstItem="X45-eh-CVd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="10" id="TnU-UA-515"/>
+                            <constraint firstAttribute="bottom" secondItem="ukn-5d-J8w" secondAttribute="bottom" id="YO4-SJ-hcM"/>
+                            <constraint firstItem="X45-eh-CVd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Z1m-Ie-62A"/>
+                            <constraint firstItem="ukn-5d-J8w" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="duf-fQ-UZI"/>
+                            <constraint firstItem="ukn-5d-J8w" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="s9E-gT-Ena"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52.671755725190835" y="374.64788732394368"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="launchscreen_bg" width="1024" height="1024"/>
+        <image name="mypet_logo" width="1024" height="1024"/>
+    </resources>
+</document>

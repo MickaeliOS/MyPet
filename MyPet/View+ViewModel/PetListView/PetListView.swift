@@ -92,7 +92,7 @@ struct PetView: View {
     var body: some View {
         ZStack {
             if let petPhotoData, let uiImage = UIImage(data: petPhotoData) {
-                Image("potate")
+                Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill()
             } else {

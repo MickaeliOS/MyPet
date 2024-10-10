@@ -34,20 +34,23 @@ struct InformationListView: View {
 
                         Spacer()
 
-                        InformationListButton(
-                            showView: $showInformationView,
-                            buttonName: "Informations",
-                            buttonSystemImage: "info.circle.fill"
-                        )
+                        HStack {
+                            InformationListButton(
+                                showView: $showInformationView,
+                                buttonSystemImage: "info.circle.fill"
+                            )
 
-                        InformationListButton(
-                            showView: $showHealthInformationView,
-                            buttonName: "Infos. Médicales",
-                            buttonSystemImage: "cross.case.fill"
-                        )
+                            InformationListButton(
+                                showView: $showHealthInformationView,
+                                buttonSystemImage: "cross.case.fill"
+                            )
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding([.leading, .trailing])
                     }
                 }
             }
+            .navigationTitle("Profil")
             .navigationDestination(isPresented: $showInformationView) {
                 InformationView()
             }
@@ -211,26 +214,20 @@ struct GeneralInformation: View {
 
 struct InformationListButton: View {
     @Binding var showView: Bool
-    let buttonName: String
     let buttonSystemImage: String
 
     var body: some View {
         Button {
             showView = true
         } label: {
-            HStack {
-                Label(buttonName, systemImage: buttonSystemImage)
-                Spacer()
-                Image(systemName: "chevron.right")
-            }
+            Image(systemName: buttonSystemImage)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .font(.title)
+                .foregroundStyle(.white)
+                .background(LinearGradient.linearBlue)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(color: .blue, radius: 5)
         }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .font(.title)
-        .foregroundStyle(.white)
-        .background(LinearGradient.linearBlue)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
-        .padding([.leading, .trailing])
-        .shadow(color: .blue, radius: 5)
     }
 }

@@ -17,8 +17,8 @@ struct InformationView: View {
                 IdentificationView()
                 FavoriteView()
             }
-            .navigationBarBackButtonHidden(true)
-            .customBackButtonToolBar(with: "Profil", dismiss: { dismiss() })
+//            .navigationBarBackButtonHidden(true)
+//            .customBackButtonToolBar(with: "Profil", dismiss: { dismiss() })
             .navigationTitle("Informations")
             .navigationBarTitleDisplayMode(.large)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)

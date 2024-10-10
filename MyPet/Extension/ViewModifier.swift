@@ -39,7 +39,7 @@ struct CustomBackButtonToolBar: ViewModifier {
                     } label: {
                         HStack {
                             Image(systemName: "chevron.backward")
-//                                .bold()
+                                .bold()
 
                             Text(title)
                         }

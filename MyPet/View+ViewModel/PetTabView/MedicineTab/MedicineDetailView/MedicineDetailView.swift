@@ -9,73 +9,102 @@ import SwiftUI
 
 struct MedicineDetailView: View {
     let medicine: Medicine
+    let medicineDatesGrid = [
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10),
+        GridItem(.flexible(), spacing: 10)
+    ]
+
     @State private var daysLeft: Int?
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("LAST DAY : \(medicine.lastDay)")
-                Image(systemName: medicine.medicineType.imageSystemName)
-                    .font(.system(size: 60))
-                    .frame(width: 200, height: 200)
-                    .background {
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(.blue, lineWidth: 5)
+            VStack(alignment: .leading, spacing: 30) {
+                VStack(alignment: .leading) {
+                    Image(systemName: medicine.medicineType.imageSystemName)
+                        .font(.system(size: 140))
+                        .frame(width: 200, height: 200)
+                        .foregroundStyle(LinearGradient.linearBlue)
+                        .frame(maxWidth: .infinity)
+
+                    Text("\(medicine.name), \(medicine.dosage)")
+                        .font(.largeTitle)
+                        .bold()
+                }
+
+                VStack(alignment: .leading) {
+                    CategoryTitleView(text: "Calendrier", systemImage: "calendar")
+                        .padding(.bottom, 5)
+
+                    if medicine.everyDay {
+                        Text("Tous les jours")
+                            .font(.headline)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.bottom)
 
-                Text("\(medicine.name), \(medicine.dosage)")
-                    .font(.title)
-                    .bold()
+                    if let dates = medicine.dates {
+                        let nonNilDates = dates.compactMap { $0.date }
+                        let sortedDates = nonNilDates.sorted(by: { $0 > $1 })
 
-                if medicine.everyDay {
-                    Text("Tous les jours")
+                        LazyVGrid(columns: medicineDatesGrid, spacing: 10) {
+                            ForEach(sortedDates, id: \.self) { date in
+                                Text(date, format: .dateTime.day().month().year())
+                                    .padding(3)
+                                    .font(.title3)
+                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .background {
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .stroke(LinearGradient.linearBlue, lineWidth: 5)
+                                    }
+                                    .padding()
+                            }
+                        }
+                    }
+                }
+
+                VStack(alignment: .leading) {
+                    CategoryTitleView(text: "Horaires de prises", systemImage: "clock.fill")
                         .font(.headline)
-                }
+                        .padding(.bottom, 5)
 
-                if let dates = medicine.dates {
-                    let nonNilDates = dates.compactMap { $0.date }
-                    let sortedDates = nonNilDates.sorted(by: { $0 > $1 })
-
-                    ForEach(sortedDates, id: \.self) { date in
-                        Text(date, format: .dateTime.day().month().year())
-                    }
-                }
-
-                Text("Horaires de prises")
-                    .font(.headline)
-
-                HStack {
-                    ForEach(medicine.takingTimes.indices, id: \.self) { index in
-                        let takingTime = medicine.takingTimes[index]
-
-                        Text(takingTime.date, format: .dateTime.hour().minute())
-                            .foregroundStyle(.white)
-                            .padding(10)
-                            .background(.blue)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                    }
-                }
-
-                Text(medicine.additionalInformation ?? "Pas d'informations complémentaires.")
-
-                if let daysLeft {
                     HStack {
-                        Spacer()
-                        Text(daysLeft <= 0 ? "Expiré." :
-                                daysLeft == 1 ? "Dernier jour !" :
-                                "Il reste \(daysLeft) jour(s)")
-                        .font(.callout)
+                        ForEach(medicine.takingTimes.indices, id: \.self) { index in
+                            let takingTime = medicine.takingTimes[index]
+
+                            Text(takingTime.date, format: .dateTime.hour().minute())
+                                .foregroundStyle(.white)
+                                .padding()
+                                .background(LinearGradient.linearBlue)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .bold()
+                        }
+                    }
+                }
+
+                VStack(alignment: .leading) {
+                    CategoryTitleView(text: "Informations complémentaires", systemImage: "info.bubble.fill.rtl")
+                        .font(.headline)
+                        .padding(.bottom, 5)
+
+                    Text(medicine.additionalInformation ?? "Pas d'informations complémentaires.")
+
+                    if let daysLeft {
+                        HStack {
+                            Spacer()
+                            Text(daysLeft <= 0 ? "Expiré." :
+                                    daysLeft == 1 ? "Dernier jour !" :
+                                    "Il reste \(daysLeft) jour(s)")
+                            .font(.headline)
+                        }
                     }
                 }
             }
-            .padding()
-            .navigationTitle("Détails Médicament")
-            .onAppear {
-                daysLeft = Calendar.current.numberOfDaysBetween(Calendar.current.startOfDay(for: Date.now),
-                                                                and: medicine.lastDay)
-            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .padding([.leading, .trailing, .bottom])
+        .onAppear {
+            daysLeft = Calendar.current.numberOfDaysBetween(Calendar.current.startOfDay(for: Date.now),
+                                                            and: medicine.lastDay)
         }
     }
 }

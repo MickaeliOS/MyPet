@@ -17,26 +17,26 @@ extension AddMedicineView {
         case additionalInformation
     }
     
+    enum AddMedicineError: Error {
+        case cannotCalculatedLastDay
+        case cannotHandleNotification
+
+        var errorDescription: String {
+            switch self {
+            case .cannotCalculatedLastDay:
+                return """
+                Oups, une erreur est survenue ! Veuillez vérifier
+                les jours sélectionnés, ou bien choisir \"Tous les jours\"
+                """
+            case .cannotHandleNotification:
+                return "Impossible de planifier les notifications. Veuillez recommencer l'ajout du médicament."
+            }
+        }
+    }
+
     @Observable
     final class ViewModel {
 
-        enum AddMedicineError: Error {
-            case cannotCalculatedLastDay
-            case cannotHandleNotification
-
-            var errorDescription: String {
-                switch self {
-                case .cannotCalculatedLastDay:
-                    return """
-                    Oups, une erreur est survenue ! Veuillez vérifier
-                    les jours sélectionnés, ou bien choisir \"Tous les jours\"
-                    """
-                case .cannotHandleNotification:
-                    return "Impossible de planifier les notifications. Veuillez recommencer l'ajout du médicament."
-                }
-            }
-        }
-        
         // MARK: PROPERTY
         var medicineName = ""
         var medicineDosage = ""
