@@ -63,6 +63,18 @@ extension Pet {
         }
     }
 
+    func deletePetNotifications() {
+        medicine?.forEach({ med in
+            guard let notificationIDs = med.notificationIDs else {
+                return
+            }
+
+            UNUserNotificationCenter.current().removePendingNotificationRequests(
+                withIdentifiers: notificationIDs
+            )
+        })
+    }
+
     func addWeight(weight: Weight) {
         if let index = self.weights?.firstIndex(where: { $0.day > weight.day }) {
             self.weights?.insert(weight, at: index)

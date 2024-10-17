@@ -79,6 +79,7 @@ struct PetListView: View {
     private func deletePet(at offsets: IndexSet) {
         for offset in offsets {
             let pet = pets[offset]
+            pet.deletePetNotifications()
             modelContext.delete(pet)
         }
     }

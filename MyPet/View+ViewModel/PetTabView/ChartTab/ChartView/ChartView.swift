@@ -31,6 +31,12 @@ struct ChartView: View {
 
         NavigationStack {
             GeometryReader { geometry in
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        hideKeyboard()
+                    }
+                
                 VStack(alignment: .leading) {
                     if let weights = pet.weights, !weights.isEmpty {
                         Chart {

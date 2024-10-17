@@ -26,44 +26,47 @@ struct AddPetView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        focusedField = nil
-                    }
+                ZStack {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            hideKeyboard()
+                        }
 
-                VStack(alignment: .leading) {
-                    principalInformations()
-                    colorInformations()
-                    photo()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding([.leading, .trailing])
-                .onSubmit {
-                    if focusedField != .eyeColor {
-                        focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
+                    VStack(alignment: .leading) {
+                        principalInformations()
+                        colorInformations()
+                        photo()
                     }
-                }
-                .onChange(of: animalItem) {
-                    Task {
-                        if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: imageData) {
-
-                            viewModel.photo = imageData
-                            let image = Image(uiImage: uiImage)
-                            animalImage = image
-                        } else {
-                            photoPickerFailed = true
+                    .navigationTitle("Ajouter un animal")
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding([.leading, .trailing])
+                    .onSubmit {
+                        if focusedField != .eyeColor {
+                            focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
                         }
                     }
+                    .onChange(of: animalItem) {
+                        Task {
+                            if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
+                               let uiImage = UIImage(data: imageData) {
+
+                                viewModel.photo = imageData
+                                let image = Image(uiImage: uiImage)
+                                animalImage = image
+                            } else {
+                                photoPickerFailed = true
+                            }
+                        }
+                    }
+                    .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
+                        Button("OK") { }
+                    } message: {
+                        Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
+                    }
                 }
-                .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
-                    Button("OK") { }
-                } message: {
-                    Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
-                }
+                .frame(maxHeight: .infinity)
             }
-            .navigationTitle("Ajouter un animal")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sauvegarder") {
@@ -95,6 +98,9 @@ struct AddPetView: View {
                     .focused($focusedField, equals: .race)
             }
             .padding(.bottom)
+            .onTapGesture {
+                hideKeyboard()
+            }
 
             VStack(alignment: .leading, spacing: 20) {
                 Label("Genre", systemImage: "questionmark.circle.fill")
@@ -136,6 +142,9 @@ struct AddPetView: View {
                 .submitLabel(.done)
                 .focused($focusedField, equals: .eyeColor)
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
         .padding(.bottom)
     }
 
@@ -154,6 +163,9 @@ struct AddPetView: View {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .frame(maxWidth: .infinity)
+        }
+        .onTapGesture {
+            hideKeyboard()
         }
         .frame(maxWidth: .infinity)
     }

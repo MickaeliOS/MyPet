@@ -9,7 +9,12 @@ import Foundation
 
 extension Calendar {
     func numberOfDaysBetween(_ from: Date, and: Date) -> Int? {
-        let numberOfDays = dateComponents([.day], from: from, to: and)
+        let correctTimeZone = and.convertToTimeZone(
+            initTimeZone: TimeZone.current,
+            timeZone: TimeZone(identifier: "Europe/Paris")!
+        )
+        
+        let numberOfDays = dateComponents([.day], from: from, to: correctTimeZone)
         return numberOfDays.day
     }
 }

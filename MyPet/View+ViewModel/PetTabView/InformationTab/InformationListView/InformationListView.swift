@@ -35,15 +35,26 @@ struct InformationListView: View {
                         Spacer()
 
                         HStack {
-                            InformationListButton(
-                                showView: $showInformationView,
-                                buttonSystemImage: "info.circle.fill"
-                            )
+                            VStack {
+                                InformationListButton(
+                                    showView: $showInformationView,
+                                    buttonSystemImage: "info.circle.fill"
+                                )
+
+                                Text("Infos. Générales")
+                                    .font(.title2)
+                            }
+
+                            VStack {
 
                             InformationListButton(
                                 showView: $showHealthInformationView,
                                 buttonSystemImage: "cross.case.fill"
                             )
+
+                            Text("Infos. Médicales")
+                                .font(.title2)
+                            }
                         }
                         .frame(maxWidth: .infinity)
                         .padding([.leading, .trailing])

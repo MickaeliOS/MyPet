@@ -19,39 +19,41 @@ struct EditHealthInformationView: View {
 
     var body: some View {
         NavigationStack {
-            VStack {
-                Toggle("Stérélisé ?", isOn: $isSterelized)
-                    .onChange(of: isSterelized) {
-                        isSterelizedChanged = true
-                    }
-                    .padding()
+            ScrollView {
+                VStack {
+                    Toggle("Stérilisé ?", isOn: $isSterelized)
+                        .onChange(of: isSterelized) {
+                            isSterelizedChanged = true
+                        }
+                        .padding()
 
-                EditListView(list: $allergies, viewModel: .init(dataType: .allergy))
-                EditListView(list: $intolerances, viewModel: .init(dataType: .intolerance))
-            }
-            .navigationTitle("Modif Infos. Medicales")
-            .onAppear {
-                if let health = pet.health {
-                    allergies = health.allergies ?? []
-                    intolerances = health.intolerances ?? []
+                    EditListView(list: $allergies, viewModel: .init(dataType: .allergy))
+                    EditListView(list: $intolerances, viewModel: .init(dataType: .intolerance))
+                }
+                .navigationTitle("Modif Infos. Medicales")
+                .onAppear {
+                    if let health = pet.health {
+                        allergies = health.allergies ?? []
+                        intolerances = health.intolerances ?? []
 
-                    if let isSterelized = health.isSterelized {
-                        self.isSterelized = isSterelized
+                        if let isSterelized = health.isSterelized {
+                            self.isSterelized = isSterelized
+                        }
                     }
                 }
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Sauvegarder") {
-                        if pet.health == nil {
-                            pet.health = Health()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Sauvegarder") {
+                            if pet.health == nil {
+                                pet.health = Health()
+                            }
+
+                            pet.health?.allergies = viewModel.isListValid(allergies) ? allergies : nil
+                            pet.health?.intolerances = viewModel.isListValid(intolerances) ? intolerances : nil
+                            if isSterelizedChanged { pet.health?.isSterelized = isSterelized }
+
+                            dismiss()
                         }
-
-                        pet.health?.allergies = viewModel.isListValid(allergies) ? allergies : nil
-                        pet.health?.intolerances = viewModel.isListValid(intolerances) ? intolerances : nil
-                        if isSterelizedChanged { pet.health?.isSterelized = isSterelized }
-
-                        dismiss()
                     }
                 }
             }

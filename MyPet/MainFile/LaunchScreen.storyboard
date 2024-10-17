@@ -15,24 +15,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchscreen_bg" translatesAutoresizingMaskIntoConstraints="NO" id="ukn-5d-J8w">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mypet_launchscreen" translatesAutoresizingMaskIntoConstraints="NO" id="V3P-tQ-q2H">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mypet_logo" translatesAutoresizingMaskIntoConstraints="NO" id="X45-eh-CVd">
-                                <rect key="frame" x="10" y="-86" width="373.00000000000006" height="1024"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ukn-5d-J8w" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="3zf-sH-qRc"/>
-                            <constraint firstAttribute="trailing" secondItem="X45-eh-CVd" secondAttribute="trailing" constant="10" id="9US-pO-6Om"/>
-                            <constraint firstItem="X45-eh-CVd" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="GaD-HP-LGP"/>
-                            <constraint firstItem="X45-eh-CVd" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="10" id="TnU-UA-515"/>
-                            <constraint firstAttribute="bottom" secondItem="ukn-5d-J8w" secondAttribute="bottom" id="YO4-SJ-hcM"/>
-                            <constraint firstItem="X45-eh-CVd" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Z1m-Ie-62A"/>
-                            <constraint firstItem="ukn-5d-J8w" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="duf-fQ-UZI"/>
-                            <constraint firstItem="ukn-5d-J8w" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="s9E-gT-Ena"/>
+                            <constraint firstItem="V3P-tQ-q2H" firstAttribute="trailing" secondItem="Bcu-3y-fUS" secondAttribute="trailing" id="AIQ-J3-7I1"/>
+                            <constraint firstItem="V3P-tQ-q2H" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="dOQ-Y9-nAR"/>
+                            <constraint firstItem="V3P-tQ-q2H" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="vGH-9K-qnJ"/>
+                            <constraint firstAttribute="bottom" secondItem="V3P-tQ-q2H" secondAttribute="bottom" id="wlb-pW-aW6"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -42,7 +35,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="launchscreen_bg" width="1024" height="1024"/>
-        <image name="mypet_logo" width="1024" height="1024"/>
+        <image name="mypet_launchscreen" width="1080" height="1920"/>
     </resources>
 </document>

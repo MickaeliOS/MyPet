@@ -20,34 +20,43 @@ struct AddMedicineView: View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 30) {
-                        MedicineMainInformationView(addMedicineViewModel: $viewModel)
-                        MedicineTypeView(selectedMedicineType: $viewModel.selectedMedicineType)
-                        MedicineFrequencyView(addMedicineViewModel: $viewModel)
-                        MedicineSchedulesView(addMedicineViewModel: $viewModel, scrollToEnd: $scrollToEnd)
-                    }
-                    .frame(alignment: .topLeading)
-                    .navigationTitle("Ajouter un médicament")
-                    .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Button("Sauvegarder") {
-                                if var medicine = viewModel.createMedicine() {
-                                    if pet.medicine == nil {
-                                        pet.medicine = []
-                                    }
+                    ZStack {
+                        Color.clear
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                hideKeyboard()
+                            }
+                        
+                        VStack(alignment: .leading, spacing: 30) {
+                            MedicineMainInformationView(addMedicineViewModel: $viewModel)
+                            MedicineTypeView(selectedMedicineType: $viewModel.selectedMedicineType)
+                            MedicineFrequencyView(addMedicineViewModel: $viewModel)
+                            MedicineSchedulesView(addMedicineViewModel: $viewModel, scrollToEnd: $scrollToEnd)
+                        }
+                        .frame(alignment: .topLeading)
+                        .navigationTitle("Ajouter un médicament")
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Sauvegarder") {
+                                    if var medicine = viewModel.createMedicineFlow() {
+                                        if pet.medicine == nil {
+                                            pet.medicine = []
+                                        }
 
-                                    viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
-                                    medicine.notificationIDs = viewModel.notificationIDs
-                                    pet.medicine?.append(medicine)
-                                    dismiss()
+//                                        viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
+                                        viewModel.scheduleNotifications(medicine: medicine, petName: pet.information.name)
+                                        medicine.notificationIDs = viewModel.notificationIDs
+                                        pet.medicine?.append(medicine)
+                                        dismiss()
+                                    }
                                 }
                             }
                         }
-                    }
-                    .alert("Erreur", isPresented: $viewModel.showingAlert) {
-                        Button("OK") { }
-                    } message: {
-                        Text(viewModel.errorMessage)
+                        .alert("Erreur", isPresented: $viewModel.showingAlert) {
+                            Button("OK") { }
+                        } message: {
+                            Text(viewModel.errorMessage)
+                        }
                     }
                 }
                 .onChange(of: scrollToEnd) {
@@ -173,7 +182,7 @@ struct MedicineFrequencyView: View {
                     } label: {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("Sélectionner les jours (\(addMedicineViewModel.medicineDates.count) sélectionnés)")
+                            Text("Sélectionner les jours (\(addMedicineViewModel.multiDatePickerDateSet.count) sélectionnés)")
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -187,7 +196,7 @@ struct MedicineFrequencyView: View {
                                 .font(.headline)
                                 .padding()
 
-                            MultiDatePicker("Sélectionnez vos jours", selection: $addMedicineViewModel.medicineDates)
+                            MultiDatePicker("Sélectionnez vos jours", selection: $addMedicineViewModel.multiDatePickerDateSet)
                                 .padding()
 
                             Button("Fermer") {

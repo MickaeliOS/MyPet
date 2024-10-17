@@ -17,71 +17,81 @@ struct EditListView: View {
     var body: some View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
-                VStack(alignment: .leading) {
-                    HStack {
-                        CategoryTitleView(
-                            text: viewModel.dataType.rawValue,
-                            systemImage: viewModel.dataType.imageName
-                        )
-                        .padding(.leading)
-                        
-                        Button {
-                            list.append("")
-                            scrollToEnd = true
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.title2)
-                            }
-                            .font(.title3)
-                            .padding(.trailing)
+                ZStack {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            hideKeyboard()
                         }
-                        .id("addButton")
-                    }
-                    
-                    VStack {
-                        if list.isEmpty {
-                            EmptyListView(
-                                emptyListMessage: "La liste est vide, appuyez sur l'icône +",
-                                messageFontSize: .title2
+
+                    VStack(alignment: .leading) {
+                        HStack {
+                            CategoryTitleView(
+                                text: viewModel.dataType.rawValue,
+                                systemImage: viewModel.dataType.imageName
                             )
-                        } else {
-                            ScrollView {
-                                
-                                ForEach(list.indices, id: \.self) { index in
-                                    // Minus Button + Allergy TextField
-                                    HStack {
-                                        Button {
-                                            if list.indices.contains(index) {
-                                                list.remove(at: index)
+                            .padding(.leading)
+                            
+                            Button {
+                                list.append("")
+                                scrollToEnd = true
+                            } label: {
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "plus.circle.fill")
+                                        .font(.title2)
+                                }
+                                .font(.title3)
+                                .padding(.trailing)
+                            }
+                            .id("addButton")
+                        }
+                        
+                        VStack {
+                            if list.isEmpty {
+                                EmptyListView(
+                                    emptyListMessage: "La liste est vide, appuyez sur l'icône +",
+                                    messageFontSize: .title2
+                                )
+                            } else {
+                                ScrollView {
+                                    
+                                    ForEach(list.indices, id: \.self) { index in
+                                        // Minus Button + Allergy TextField
+                                        HStack {
+                                            Button {
+                                                if list.indices.contains(index) {
+                                                    list.remove(at: index)
+                                                }
+                                            } label: {
+                                                Image(systemName: "minus.circle.fill")
                                             }
-                                        } label: {
-                                            Image(systemName: "minus.circle.fill")
+                                            .font(.title3)
+                                            .padding()
+
+                                            if list.indices.contains(index) {
+                                                TextField(
+                                                    viewModel.dataType == .allergy ?
+                                                    "Allergie \(index + 1)" :
+                                                        "Intolérance \(index + 1)",
+                                                    text: $list[index]
+                                                )
+                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            }
                                         }
-                                        
-                                        if list.indices.contains(index) {
-                                            TextField(
-                                                viewModel.dataType == .allergy ?
-                                                "Allergie \(index + 1)" :
-                                                    "Intolérance \(index + 1)",
-                                                text: $list[index]
-                                            )
-                                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                                        }
+                                        .id(index)
                                     }
-                                    .id(index)
                                 }
                             }
                         }
-                    }
-                    .padding([.leading, .trailing])
-                    .onChange(of: scrollToEnd) {
-                        if scrollToEnd {
-                            withAnimation {
-                                scrollViewProxy.scrollTo(list.indices.last, anchor: .bottom)
+                        .padding([.leading, .trailing])
+                        .onChange(of: scrollToEnd) {
+                            if scrollToEnd {
+                                withAnimation {
+                                    scrollViewProxy.scrollTo(list.indices.last, anchor: .bottom)
+                                }
+                                scrollToEnd = false
                             }
-                            scrollToEnd = false
                         }
                     }
                 }

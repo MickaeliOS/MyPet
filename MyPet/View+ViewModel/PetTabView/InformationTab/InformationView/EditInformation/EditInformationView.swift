@@ -28,37 +28,42 @@ struct EditInformationView: View {
 
         NavigationStack {
             ScrollView {
-                VStack(alignment: .leading) {
-                    principalInformationsView(pet: $pet)
-                    colorInformationsView(pet: $pet)
-                    photoView()
-                    identificationView(pet: $pet)
-                    favoriteView(pet: $pet)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .padding([.leading, .trailing])
-                .onChange(of: animalItem) {
-                    Task {
-                        if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
-                           let uiImage = UIImage(data: imageData) {
+                ZStack {
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            hideKeyboard()
+                        }
 
-                            pet.information.photo = imageData
-                            let image = Image(uiImage: uiImage)
-                            animalImage = image
-                        } else {
-                            photoPickerFailed = true
+                    VStack(alignment: .leading) {
+                        principalInformationsView(pet: $pet)
+                        colorInformationsView(pet: $pet)
+                        photoView()
+                        identificationView(pet: $pet)
+                        favoriteView(pet: $pet)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .padding([.leading, .trailing])
+                    .onChange(of: animalItem) {
+                        Task {
+                            if let imageData = try? await animalItem?.loadTransferable(type: Data.self),
+                               let uiImage = UIImage(data: imageData) {
+
+                                pet.information.photo = imageData
+                                let image = Image(uiImage: uiImage)
+                                animalImage = image
+                            } else {
+                                photoPickerFailed = true
+                            }
                         }
                     }
-                }
-                .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
-                    Button("OK") { }
-                } message: {
-                    Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
+                    .alert("Une erreur est survenue.", isPresented: $photoPickerFailed) {
+                        Button("OK") { }
+                    } message: {
+                        Text("Il semble y avoir un problème avec votre photo, essayez-en une autre.")
+                    }
                 }
             }
-//            .onTapGesture {
-//                hideKeyboard()
-//            }
             .onSubmit {
                 if focusedField != .place {
                     focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
