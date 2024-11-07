@@ -9,11 +9,11 @@ import Foundation
 import SwiftUI
 
 extension Image {
-    init?(data: Data?) {
+    init(data: Data?, systemName: String) {
         if let imageData = data, let uiImage = UIImage(data: imageData) {
             self.init(uiImage: uiImage)
         } else {
-            return nil
+            self.init(systemName: systemName)
         }
     }
 }

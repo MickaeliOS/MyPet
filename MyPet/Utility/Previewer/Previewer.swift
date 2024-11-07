@@ -10,15 +10,18 @@ import SwiftData
 
 @MainActor
 final class Previewer {
+
+    // MARK: - PROPERTY
     let container: ModelContainer
     let firstPet: Pet
     let secondPet: Pet
 
+    // MARK: - INIT
     init() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try ModelContainer(for: Pet.self, configurations: config)
 
-        // Pet1
+        // Building first pet
         let firstPetInfo = Information(
             name: "MrCat",
             gender: .male,
@@ -30,7 +33,7 @@ final class Previewer {
             photo: nil
         )
 
-        // Pet2
+        // Building second pet
         let secondPetInfo = Information(
             name: "MrsDog",
             gender: .female,

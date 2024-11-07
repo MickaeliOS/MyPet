@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct AddMedicineView: View {
-    @Environment(Pet.self) var pet
-    @Environment(\.dismiss) var dismiss
+
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
+    @Environment(\.dismiss) private var dismiss
 
     @State private var viewModel = ViewModel()
     @State private var scrollToEnd = false
 
+    // MARK: - BODY
     var body: some View {
         @Bindable var pet = pet
 
@@ -21,12 +24,8 @@ struct AddMedicineView: View {
             ScrollViewReader { scrollViewProxy in
                 ScrollView {
                     ZStack {
-                        Color.clear
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                hideKeyboard()
-                            }
-                        
+                        HideKeyboardView()
+
                         VStack(alignment: .leading, spacing: 30) {
                             MedicineMainInformationView(addMedicineViewModel: $viewModel)
                             MedicineTypeView(selectedMedicineType: $viewModel.selectedMedicineType)
@@ -43,11 +42,16 @@ struct AddMedicineView: View {
                                             pet.medicine = []
                                         }
 
-//                                        viewModel.handleNotifications(medicine: medicine, petName: pet.information.name)
-                                        viewModel.scheduleNotifications(medicine: medicine, petName: pet.information.name)
-                                        medicine.notificationIDs = viewModel.notificationIDs
-                                        pet.medicine?.append(medicine)
-                                        dismiss()
+                                        Task {
+                                            await viewModel.scheduleNotifications(
+                                                medicine: medicine,
+                                                petName: pet.information.name
+                                            )
+                                            print("VIEW MODEL FINISH")
+                                            medicine.notificationIDs = viewModel.notificationIDs
+                                            pet.medicine?.append(medicine)
+                                            dismiss()
+                                        }
                                     }
                                 }
                             }
@@ -72,6 +76,7 @@ struct AddMedicineView: View {
     }
 }
 
+// MARK: - CHILD VIEW
 struct MedicineMainInformationView: View {
     @Binding var addMedicineViewModel: AddMedicineView.ViewModel
     @FocusState private var focusedField: AddMedicineView.FocusedField?
@@ -130,7 +135,7 @@ struct MedicineTypeView: View {
                     .background(
                         Group {
                             if selectedMedicineType == medicine {
-                                AnyView(LinearGradient.linearBlue)
+                                AnyView(Color.blue)
                             } else {
                                 AnyView(Color.clear)
                             }
@@ -171,7 +176,7 @@ struct MedicineFrequencyView: View {
                         .toolbar {
                             ToolbarItemGroup(placement: .keyboard) {
                                 Spacer()
-                                Button("Done") {
+                                Button("terminé") {
                                     durationIsFocused = false
                                 }
                             }
@@ -182,22 +187,26 @@ struct MedicineFrequencyView: View {
                     } label: {
                         HStack {
                             Image(systemName: "plus.circle.fill")
-                            Text("Sélectionner les jours (\(addMedicineViewModel.multiDatePickerDateSet.count) sélectionnés)")
+                            Text("Sélectionner les jours (\(addMedicineViewModel.multiDatePickerDateSet.count))")
                         }
                     }
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(LinearGradient.linearBlue)
+                    .background(.blue)
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding(.top)
                     .sheet(isPresented: $isDatePickerPresented) {
                         VStack {
                             Text("Sélectionner les jours")
                                 .font(.headline)
                                 .padding()
 
-                            MultiDatePicker("Sélectionnez vos jours", selection: $addMedicineViewModel.multiDatePickerDateSet)
-                                .padding()
+                            MultiDatePicker(
+                                "Sélectionnez vos jours",
+                                selection: $addMedicineViewModel.multiDatePickerDateSet
+                            )
+                            .padding()
 
                             Button("Fermer") {
                                 isDatePickerPresented = false
@@ -239,6 +248,7 @@ struct MedicineSchedulesView: View {
                             } label: {
                                 Image(systemName: "minus.circle.fill")
                                     .foregroundColor(.red)
+                                    .font(.title)
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
@@ -263,15 +273,17 @@ struct MedicineSchedulesView: View {
                 .id("addButton")
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(LinearGradient.linearBlue)
+                .background(.blue)
                 .foregroundStyle(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
+                .padding([.top, .bottom])
             }
             .padding([.leading, .trailing])
         }
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()

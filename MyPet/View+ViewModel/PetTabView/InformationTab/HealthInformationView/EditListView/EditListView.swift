@@ -8,21 +8,18 @@
 import SwiftUI
 
 struct EditListView: View {
-    @Environment(\.dismiss) var dismiss
-    
-    @Binding var list: [String]
+
+    // MARK: - PROPERTY
     @State var viewModel: ViewModel
     @State private var scrollToEnd = false
-    
+    @Binding var list: [String]
+
+    // MARK: - BODY
     var body: some View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
                 ZStack {
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            hideKeyboard()
-                        }
+                    HideKeyboardView()
 
                     VStack(alignment: .leading) {
                         HStack {
@@ -31,7 +28,7 @@ struct EditListView: View {
                                 systemImage: viewModel.dataType.imageName
                             )
                             .padding(.leading)
-                            
+
                             Button {
                                 list.append("")
                                 scrollToEnd = true
@@ -46,7 +43,7 @@ struct EditListView: View {
                             }
                             .id("addButton")
                         }
-                        
+
                         VStack {
                             if list.isEmpty {
                                 EmptyListView(
@@ -55,9 +52,8 @@ struct EditListView: View {
                                 )
                             } else {
                                 ScrollView {
-                                    
                                     ForEach(list.indices, id: \.self) { index in
-                                        // Minus Button + Allergy TextField
+                                        // Minus Button + TextField
                                         HStack {
                                             Button {
                                                 if list.indices.contains(index) {
@@ -67,7 +63,7 @@ struct EditListView: View {
                                                 Image(systemName: "minus.circle.fill")
                                             }
                                             .font(.title3)
-                                            .padding()
+                                            .padding(5)
 
                                             if list.indices.contains(index) {
                                                 TextField(
@@ -84,7 +80,7 @@ struct EditListView: View {
                                 }
                             }
                         }
-                        .padding([.leading, .trailing])
+                        .padding([.leading, .trailing, .bottom])
                         .onChange(of: scrollToEnd) {
                             if scrollToEnd {
                                 withAnimation {
@@ -100,16 +96,15 @@ struct EditListView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
-        
+
         return EditListView(
-            list: .constant([]),
-            viewModel: EditListView.ViewModel(dataType: .allergy)
+            viewModel: EditListView.ViewModel(dataType: .allergy), list: .constant([])
         )
         .environment(previewer.firstPet)
-        
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

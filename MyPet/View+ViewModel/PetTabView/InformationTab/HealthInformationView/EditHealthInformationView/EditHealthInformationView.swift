@@ -8,38 +8,31 @@
 import SwiftUI
 
 struct EditHealthInformationView: View {
-    @Environment(Pet.self) var pet
-    @Environment(\.dismiss) var dismiss
 
-    @State private var allergies: [String] = []
-    @State private var intolerances: [String] = []
-    @State private var isSterelized = false
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
+    @Environment(\.dismiss) private var dismiss
+
     @State private var isSterelizedChanged = false
     @State private var viewModel = ViewModel()
 
+    // MARK: - BODY
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    Toggle("Stérilisé ?", isOn: $isSterelized)
-                        .onChange(of: isSterelized) {
+                    Toggle("Stérilisé ?", isOn: $viewModel.isSterelized)
+                        .onChange(of: viewModel.isSterelized) {
                             isSterelizedChanged = true
                         }
                         .padding()
 
-                    EditListView(list: $allergies, viewModel: .init(dataType: .allergy))
-                    EditListView(list: $intolerances, viewModel: .init(dataType: .intolerance))
+                    EditListView(viewModel: .init(dataType: .allergy), list: $viewModel.allergies)
+                    EditListView(viewModel: .init(dataType: .intolerance), list: $viewModel.intolerances)
                 }
                 .navigationTitle("Modif Infos. Medicales")
                 .onAppear {
-                    if let health = pet.health {
-                        allergies = health.allergies ?? []
-                        intolerances = health.intolerances ?? []
-
-                        if let isSterelized = health.isSterelized {
-                            self.isSterelized = isSterelized
-                        }
-                    }
+                    viewModel.setupHealthInformations(with: pet.health)
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -48,9 +41,9 @@ struct EditHealthInformationView: View {
                                 pet.health = Health()
                             }
 
-                            pet.health?.allergies = viewModel.isListValid(allergies) ? allergies : nil
-                            pet.health?.intolerances = viewModel.isListValid(intolerances) ? intolerances : nil
-                            if isSterelizedChanged { pet.health?.isSterelized = isSterelized }
+                            pet.health?.allergies = viewModel.isAllergyListValid() ? viewModel.allergies : nil
+                            pet.health?.intolerances = viewModel.isIntoleranceListValid() ? viewModel.intolerances : nil
+                            if isSterelizedChanged { pet.health?.isSterelized = viewModel.isSterelized }
 
                             dismiss()
                         }
@@ -61,6 +54,7 @@ struct EditHealthInformationView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()

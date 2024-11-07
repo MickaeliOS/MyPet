@@ -8,6 +8,8 @@
 import Foundation
 
 struct Information: Codable {
+
+    // MARK: - PROPERTY
     var name: String
     var gender: Gender
     var type: String
@@ -18,6 +20,7 @@ struct Information: Codable {
     var photo: Data?
 }
 
+// MARK: - EXTENSION
 extension Information {
     enum Gender: String, Codable, CaseIterable {
         case male = "Mâle"
@@ -27,13 +30,18 @@ extension Information {
 
     var getStringAge: String {
         let calendar = Calendar.current
-        let currentDate = Date()
-        let ageComponents = calendar.dateComponents([.year], from: birthdate, to: currentDate)
+        let now = Date()
 
-        if let age = ageComponents.year {
-            return String(age)
+        let components = calendar.dateComponents([.year, .month, .day], from: birthdate, to: now)
+
+        if let years = components.year, years > 0 {
+            return "\(years) an" + (years > 1 ? "s" : "")
+        } else if let months = components.month, months > 0 {
+            return "\(months) mois"
+        } else if let days = components.day, days > 0 {
+            return "\(days) jour" + (days > 1 ? "s" : "")
         } else {
-            return "Âge inconnu"
+            return "Aujourd'hui"
         }
     }
 }

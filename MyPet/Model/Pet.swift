@@ -11,6 +11,8 @@ import UserNotifications
 
 @Model
 final class Pet {
+
+    // MARK: - PROPERTY
     var information: Information
     var identification: Identification?
     var favorite: Favorite?
@@ -19,6 +21,7 @@ final class Pet {
     var medicine: [Medicine]?
     var weights: [Weight]?
 
+    // MARK: - INIT
     init(
         information: Information,
         identification: Identification? = nil,
@@ -38,6 +41,7 @@ final class Pet {
     }
 }
 
+// MARK: - EXTENSION
 extension Pet {
     func addMedicine(medicine: Medicine) {
         self.medicine?.append(medicine)
@@ -65,13 +69,14 @@ extension Pet {
 
     func deletePetNotifications() {
         medicine?.forEach({ med in
+            let notificationCenter = UNUserNotificationCenter.current()
+
             guard let notificationIDs = med.notificationIDs else {
                 return
             }
 
-            UNUserNotificationCenter.current().removePendingNotificationRequests(
-                withIdentifiers: notificationIDs
-            )
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+            notificationCenter.removeDeliveredNotifications(withIdentifiers: notificationIDs)
         })
     }
 
@@ -86,10 +91,4 @@ extension Pet {
     func deleteWeight(offsets: IndexSet) {
         weights?.remove(atOffsets: offsets)
     }
-
-//    func sortMedicineByTakingTime() {
-//        medicine?.forEach({ medicine in
-//            medicine.takingTimes = medicine.takingTimes.sorted(by: <)
-//        })
-//    }
 }

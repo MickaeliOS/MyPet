@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct PetTabView: View {
-    @Environment(Pet.self) var pet
-    @State private var selectedCategory: Category = .infos
+
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
     @Binding var showPetTabView: Bool
 
+    // MARK: BODY
     var body: some View {
         TabView {
             InformationListView(showPetTabView: $showPetTabView)
@@ -49,27 +51,38 @@ struct PetTabView: View {
     }
 }
 
-enum Category: String, CaseIterable {
-    case infos = "Infos"
-    case health = "Santé"
-    case veterinarian = "Vétérinaire"
-    case charts = "Suivi"
+// MARK: EXTENSION
+extension PetTabView {
+    enum Category: String, CaseIterable {
+        case infos = "Infos"
+        case health = "Santé"
+        case veterinarian = "Vétérinaire"
+        case charts = "Suivi"
 
-    var imageName: String {
-        switch self {
-        case .infos:
-            return "list.bullet.clipboard"
-        case .health:
-            return "heart"
-        case .veterinarian:
-            return "cross.case.fill"
-        case .charts:
-            return "chart.xyaxis.line"
+        var imageName: String {
+            switch self {
+            case .infos:
+                return "list.bullet.clipboard"
+            case .health:
+                return "heart"
+            case .veterinarian:
+                return "cross.case.fill"
+            case .charts:
+                return "chart.xyaxis.line"
+            }
         }
     }
 }
 
+// MARK: PREVIEW
 #Preview {
-    PetTabView(showPetTabView: .constant(false))
-        .environment(try? Previewer().firstPet)
+    do {
+        let previewer = try Previewer()
+
+        return
+            PetTabView(showPetTabView: .constant(true))
+                .environment(previewer.firstPet)
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
+    }
 }

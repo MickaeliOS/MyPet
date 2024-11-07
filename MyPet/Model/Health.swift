@@ -8,10 +8,13 @@
 import Foundation
 
 struct Health: Codable {
+
+    // MARK: - PROPERTY
     var isSterelized: Bool?
     var intolerances: [String]?
     var allergies: [String]?
 
+    // MARK: - INIT
     init(
         isSterelized: Bool? = nil,
         intolerances: [String]? = nil,

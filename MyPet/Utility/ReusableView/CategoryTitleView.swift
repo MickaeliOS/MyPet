@@ -12,7 +12,7 @@ struct CategoryTitleView<S: ShapeStyle>: View {
     let systemImage: String
     var foregroundStyle: S
 
-    init(text: String, systemImage: String, foregroundStyle: S = LinearGradient.linearBlue) {
+    init(text: String, systemImage: String, foregroundStyle: S = .blue) {
         self.text = text
         self.systemImage = systemImage
         self.foregroundStyle = foregroundStyle

@@ -8,34 +8,39 @@
 import SwiftUI
 
 struct VeterinarianView: View {
-    @Environment(Pet.self) var pet
-    @State private var isPresentingEditVeterinarianView = false
-    private let viewModel = ViewModel()
 
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
+    @State private var isPresentingEditVeterinarianView = false
+//    private let viewModel = ViewModel()
+
+    // MARK: - BODY
     var body: some View {
+        @Bindable var pet = pet
+
         NavigationStack {
             VStack(alignment: .leading) {
                 Text("Nom")
                     .bold()
-                Text(viewModel.orDefault(pet.veterinarian?.name))
+                Text((pet.veterinarian?.name).orDefault())
                     .padding(.bottom, 6)
 
                 Text("Adresse")
                     .bold()
-                Text(viewModel.orDefault(pet.veterinarian?.address))
+                Text((pet.veterinarian?.address).orDefault())
                     .padding(.bottom, 6)
 
                 Text("Téléphone")
                     .bold()
 
-                Text(viewModel.orDefault(pet.veterinarian?.phone.map { "\($0)" }))
+                Text((pet.veterinarian?.phone).orDefault())
                     .padding(.bottom, 6)
 
                 Text("Site web")
                     .bold()
                     .textInputAutocapitalization(.none)
 
-                Text(viewModel.orDefault(pet.veterinarian?.website))
+                Text((pet.veterinarian?.website).orDefault())
             }
             .navigationTitle("Vétérinaire")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -57,14 +62,23 @@ struct VeterinarianView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
 
-        return NavigationStack {
-            VeterinarianView()
+        return TabView {
+            NavigationStack {
+                VeterinarianView()
+            }
+            .environment(previewer.firstPet)
+            .tabItem {
+                Label(
+                    PetTabView.Category.veterinarian.rawValue,
+                    systemImage: PetTabView.Category.veterinarian.imageName
+                )
+            }
         }
-        .environment(previewer.firstPet)
 
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")

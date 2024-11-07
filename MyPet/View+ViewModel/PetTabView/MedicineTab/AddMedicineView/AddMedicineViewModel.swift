@@ -7,10 +7,10 @@
 
 import Foundation
 import UserNotifications
+import UIKit
 
 extension AddMedicineView {
-
-    // MARK: ENUM
+    // MARK: - ENUM
     enum FocusedField {
         case name
         case dosage
@@ -34,6 +34,7 @@ extension AddMedicineView {
         }
     }
 
+    // MARK: - VIEWMODEL
     @Observable
     final class ViewModel {
 
@@ -50,17 +51,19 @@ extension AddMedicineView {
         var showingAlert = false
         var notificationIDs: [String] = []
         let today = Calendar.current.startOfDay(for: Date.now)
+        let userDefault = UserDefaults.standard
+        private let center = UNUserNotificationCenter.current()
 
         // MARK: FUNCTION
         func createMedicineFlow() -> Medicine? {
             do {
                 let lastDay = try calculateLastDay()
-                var days = Set<DateComponents>()
+                var days: [DateComponents] = []
 
                 if everyDay, duration != nil {
                     days = createDays(lastDay: lastDay)
                 } else {
-                    days = multiDatePickerDateSet
+                    days = sortedDateComponentsSet(set: multiDatePickerDateSet)
                 }
 
                 let medicineDates = setupTakingTimesToDays(days: days)
@@ -74,6 +77,7 @@ extension AddMedicineView {
                     dates: medicineDates,
                     additionalInformation: additionalInformations,
                     lastDay: lastDay,
+                    timeZone: .current,
                     notificationIDs: nil
                 )
             } catch {
@@ -113,36 +117,131 @@ extension AddMedicineView {
             }
         }
 
-//        func handleNotifications(medicine: Medicine, petName: String) {
-//            // If user is in first date mode, we have to build every dates
-//            // between start day to lastDay.
-//            if medicine.everyDay, duration != nil {
-//                var allDates: Set<DateComponents> = []
-//                var currentDate = today
-//
-//                while currentDate < medicine.lastDay {
-//                    let dateComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate)
-//                    allDates.insert(dateComponent)
-//
-//                    if let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) {
-//                        currentDate = nextDay
-//                    }
-//                }
-//
-//                scheduleNotificationFlow(for: allDates, medicine: medicine, petName: petName)
-//
-//                // Second date mode, we don't have to build every dates,
-//                // we already have them so the calculation is different.
-//            } else {
-//                guard let dates = medicine.dates else {
-//                    errorMessage = handleError(error: AddMedicineError.cannotHandleNotification)
-//                    showingAlert = true
-//                    return
-//                }
-//
-//                scheduleNotificationFlow(for: dates, medicine: medicine, petName: petName)
-//            }
-//        }
+        func scheduleNotifications(medicine: Medicine, petName: String) async {
+            // AUTORISATION
+            let settings = await center.notificationSettings()
+
+            guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .ephemeral else {
+                return
+            }
+
+            let pendingNotifications = await center.pendingNotificationRequests()
+
+            guard let medicineDates = medicine.dates else {
+                return
+            }
+
+            for dateComponents in medicineDates {
+                guard let date = Calendar.current.date(from: dateComponents), date > Date.now else {
+                    return
+                }
+
+                // Setting up the Notification's Content
+                let content = UNMutableNotificationContent()
+                content.title = "Prise de médicament"
+                content.body = "C'est le moment de donner \(medicine.name), \(medicine.dosage) à \(petName) !"
+                content.sound = UNNotificationSound.default
+
+                // Trigger's creation
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+
+                // ID
+                let id = UUID().uuidString
+
+                if await isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications) {
+                    // Badge handling
+                    if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                        badgeCount += 1
+                        userDefault.set(badgeCount, forKey: "badgeCount")
+                        content.badge = NSNumber(value: badgeCount)
+                    } else {
+                        userDefault.set(1, forKey: "badgeCount")
+                        content.badge = 1
+                    }
+
+                    // Notification is fully constructed with the Request
+                    let request = UNNotificationRequest(
+                        identifier: id,
+                        content: content,
+                        trigger: trigger
+                    )
+
+                    // Adding the Notification in NotificationCenter
+                    do {
+                        try await center.add(request)
+                        notificationIDs.append(id)
+                    } catch {
+                        if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                            badgeCount -= 1
+                            userDefault.set(badgeCount, forKey: "badgeCount")
+                        }
+                    }
+                } else {
+                    center.removeAllPendingNotificationRequests()
+                    userDefault.set(0, forKey: "badgeCount")
+
+                    var notificationsTransit = await NotificationHelper.convertPendingNotification()
+                    notificationsTransit.append(NotificationTransit(identifier: id, content: content, date: date, trigger: trigger))
+                    let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
+
+                    for sortedNotification in sortedNotifications {
+
+                        // New Content
+                        let newContent = UNMutableNotificationContent()
+                        newContent.title = sortedNotification.content.title
+                        newContent.body = sortedNotification.content.body
+                        newContent.sound = sortedNotification.content.sound
+
+                        // New Trigger
+                        let newTrigger = sortedNotification.trigger
+
+                        // New ID
+                        let newID = sortedNotification.identifier
+
+                        // Badge handling
+                        if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                            badgeCount += 1
+                            userDefault.set(badgeCount, forKey: "badgeCount")
+                            newContent.badge = NSNumber(value: badgeCount)
+                        } else {
+                            userDefault.set(1, forKey: "badgeCount")
+                            newContent.badge = 1
+                        }
+
+                        // Notification is fully constructed with the Request
+                        let newRequest = UNNotificationRequest(
+                            identifier: newID,
+                            content: newContent,
+                            trigger: newTrigger
+                        )
+
+                        // Adding the Notification in NotificationCenter
+                        do {
+                            try await center.add(newRequest)
+                        } catch {
+                            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                                badgeCount -= 1
+                                userDefault.set(badgeCount, forKey: "badgeCount")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        func isNewNotificationDateGreater(date: Date, pendingNotifications: [UNNotificationRequest]) async -> Bool {
+            guard pendingNotifications.isEmpty == false else {
+                return true
+            }
+
+            let allDatesAreEarlier = pendingNotifications.compactMap { request in
+                (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
+            }.allSatisfy { existingDate in
+                date > existingDate
+            }
+
+            return allDatesAreEarlier ? true : false
+        }
 
         func nextField(focusedField: FocusedField) -> FocusedField {
             let transitions: [FocusedField: FocusedField] = [
@@ -154,62 +253,6 @@ extension AddMedicineView {
         }
 
         // MARK: PRIVATE FUNCTION
-//        private func scheduleNotificationFlow(
-//            for dateComponents: Set<DateComponents>,
-//            medicine: Medicine,
-//            petName: String
-//        ) {
-//            for dateComponent in dateComponents {
-//                for takingTime in medicine.takingTimes {
-//                    do {
-//                        try scheduleNotification(
-//                            for: dateComponent,
-//                            at: takingTime.date,
-//                            medicine: medicine,
-//                            petName: petName
-//                        )
-//                    } catch let error {
-//                        errorMessage = handleError(error: error)
-//                        showingAlert = true
-//                    }
-//                }
-//            }
-//        }
-
-//        private func scheduleNotification(
-//            for dateComponents: DateComponents,
-//            at time: Date,
-//            medicine: Medicine,
-//            petName: String
-//        ) throws {
-//            // Setting up the Notification's Content
-//            let content = UNMutableNotificationContent()
-//            content.title = "Prise de médicament"
-//            content.body = "C'est le moment de donner \(medicine.name), \(medicine.dosage) à \(petName) !"
-//            content.sound = UNNotificationSound.default
-//
-//            // Building the correct Date for the Notification
-//            var dateComponentsCopy = dateComponents
-//            let timeComponents = Calendar.current.dateComponents([.hour, .minute], from: time)
-//            dateComponentsCopy.hour = timeComponents.hour
-//            dateComponentsCopy.minute = timeComponents.minute
-//
-//            // Trigger's creation
-//            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponentsCopy, repeats: false)
-//
-//            // Notification is fully constructed with the Request
-//            let id = UUID().uuidString
-//            let request = UNNotificationRequest(
-//                identifier: id,
-//                content: content,
-//                trigger: trigger
-//            )
-//
-//            // Adding the Notification in NotificationCenter
-//            UNUserNotificationCenter.current().add(request)
-//            notificationIDs.append(id)
-//        }
-
         private func handleError(error: Error) -> String {
             switch error {
             case let addMedicineError as AddMedicineError:
@@ -219,9 +262,8 @@ extension AddMedicineView {
             }
         }
 
-        // MARK: - REFACTORING
-        private func createDays(lastDay: Date) -> Set<DateComponents> {
-            var allDates: Set<DateComponents> = []
+        private func createDays(lastDay: Date) -> [DateComponents] {
+            var allDates: [DateComponents] = []
 
             // If user is in first date mode, we have to build every dates
             // between start day to lastDay.
@@ -230,7 +272,7 @@ extension AddMedicineView {
 
                 while currentDate < lastDay {
                     let dateComponent = Calendar.current.dateComponents([.year, .month, .day], from: currentDate)
-                    allDates.insert(dateComponent)
+                    allDates.append(dateComponent)
 
                     if let nextDay = Calendar.current.date(byAdding: .day, value: 1, to: currentDate) {
                         currentDate = nextDay
@@ -241,8 +283,8 @@ extension AddMedicineView {
             return allDates
         }
 
-        private func setupTakingTimesToDays(days: Set<DateComponents>) -> Set<DateComponents> {
-            var updatedSet = Set<DateComponents>()
+        private func setupTakingTimesToDays(days: [DateComponents]) -> [DateComponents] {
+            var updatedArray: [DateComponents] = []
 
             days.forEach { dateComponents in
                 takingTimes.forEach { takingTime in
@@ -251,37 +293,28 @@ extension AddMedicineView {
 
                     dateComponentsCopy.hour = timeComponents.hour
                     dateComponentsCopy.minute = timeComponents.minute
+                    dateComponentsCopy.timeZone = TimeZone.current
 
-                    updatedSet.insert(dateComponentsCopy)
+                    updatedArray.append(dateComponentsCopy)
                 }
             }
 
-            return updatedSet
+            return updatedArray
         }
 
-        func scheduleNotifications(medicine: Medicine, petName: String) {
-            medicine.dates?.forEach { date in
-                // Setting up the Notification's Content
-                let content = UNMutableNotificationContent()
-                content.title = "Prise de médicament"
-                content.body = "C'est le moment de donner \(medicine.name), \(medicine.dosage) à \(petName) !"
-                content.sound = UNNotificationSound.default
-
-                // Trigger's creation
-                let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
-
-                // Notification is fully constructed with the Request
-                let id = UUID().uuidString
-                let request = UNNotificationRequest(
-                    identifier: id,
-                    content: content,
-                    trigger: trigger
-                )
-
-                // Adding the Notification in NotificationCenter
-                UNUserNotificationCenter.current().add(request)
-                notificationIDs.append(id)
-            }
+        private func sortedDateComponentsSet(set: Set<DateComponents>) -> [DateComponents] {
+            return multiDatePickerDateSet
+                .compactMap { dateComponents in
+                    dateComponents.date.map { date in
+                        (dateComponents, date)
+                    }
+                }
+                .sorted { firstTuple, secondTuple in
+                    firstTuple.1 < secondTuple.1
+                }
+                .map { tuple in
+                    tuple.0
+                }
         }
     }
 }

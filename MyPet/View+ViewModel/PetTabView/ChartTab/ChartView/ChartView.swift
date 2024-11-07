@@ -9,11 +9,13 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-    @Environment(Pet.self) var pet
+    
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
     @State private var viewModel = ViewModel()
     @State private var showWeightHistoryView = false
-
-    var gradientColor: LinearGradient {
+    
+    private var gradientColor: LinearGradient {
         LinearGradient(
             gradient: Gradient(
                 colors: [
@@ -25,26 +27,26 @@ struct ChartView: View {
             endPoint: .bottom
         )
     }
-
+    
+    // MARK: - BODY
     var body: some View {
         @Bindable var pet = pet
-
+        
         NavigationStack {
             GeometryReader { geometry in
-                Color.clear
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        hideKeyboard()
-                    }
+                HideKeyboardView()
                 
                 VStack(alignment: .leading) {
                     if let weights = pet.weights, !weights.isEmpty {
                         Chart {
                             ForEach(weights) { weight in
-                                LineMark(x: .value("Jour", weight.day, unit: .day), y: .value("Poids", weight.weight))
-                                    .symbol(.circle)
-
-                                AreaMark(x: .value("Jour", weight.day), y: .value("Poids", weight.weight))
+                                LineMark(
+                                    x: .value("Jour", weight.day, unit: .day),
+                                    y: .value("Poids", weight.weight)
+                                )
+                                .symbol(.circle)
+                                
+                                AreaMark(x: .value("Jour", weight.day, unit: .day), y: .value("Poids", weight.weight))
                                     .foregroundStyle(gradientColor)
                             }
                         }
@@ -75,42 +77,46 @@ struct ChartView: View {
                         HStack {
                             Image(systemName: "chart.xyaxis.line")
                                 .font(.system(size: 80))
-
+                            
                             Text("Aucun poids enregistré, ajoutez-en un juste en bas.")
                                 .font(.title2)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .foregroundStyle(.gray)
                     }
-
+                    
                     Spacer()
-
+                    
                     VStack {
                         HStack {
                             TextField("Poids en Kg", value: $viewModel.weight, format: .number)
                                 .textFieldStyle(.roundedBorder)
-
+                                .keyboardType(.numbersAndPunctuation)
+                                .submitLabel(.done)
+                            
                             DatePicker("Date", selection: $viewModel.day, displayedComponents: .date)
                                 .labelsHidden()
                         }
-
+                        
                         Button("Ajouter") {
                             guard let weight = viewModel.weight else {
                                 return
                             }
-
+                            
                             if pet.weights == nil {
                                 pet.weights = []
                             }
-
+                            
                             let newWeight = Weight(day: viewModel.day, weight: weight)
                             pet.addWeight(weight: newWeight)
+                            viewModel.weight = nil
                         }
                         .frame(maxWidth: .infinity)
                         .font(.title2)
-                        .disabled(!viewModel.isFormValid)
                         .padding()
-                        .background(LinearGradient.linearBlue)
+                        .background(.blue)
+                        .disabled(!viewModel.isFormValid)
+                        .opacity(viewModel.isFormValid ? 1 : 0.2)
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
@@ -135,15 +141,24 @@ struct ChartView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
-
-        return NavigationStack {
-            ChartView()
+        
+        return TabView {
+            NavigationStack {
+                ChartView()
+            }
+            .environment(previewer.firstPet)
+            .tabItem {
+                Label(
+                    PetTabView.Category.charts.rawValue,
+                    systemImage: PetTabView.Category.charts.imageName
+                )
+            }
         }
-        .environment(previewer.firstPet)
-
+        
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

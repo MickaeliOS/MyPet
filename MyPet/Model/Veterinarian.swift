@@ -8,8 +8,8 @@
 import Foundation
 
 struct Veterinarian: Codable {
-    let name: String?
-    let address: String?
-    let phone: Int?
-    let website: String?
+    var name: String?
+    var address: String?
+    var phone: String?
+    var website: String?
 }

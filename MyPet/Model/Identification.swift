@@ -8,7 +8,7 @@
 import Foundation
 
 struct Identification: Codable {
-    var chip: Int?
+    var chip: String?
     var chipLocation: String?
     var tatoo: String?
     var tatooLocation: String?

@@ -10,9 +10,11 @@ import SwiftData
 
 struct PetListView: View {
 
-    // MARK: - PROPERTIES
-    @Query var pets: [Pet]
-    @Environment(\.modelContext) var modelContext
+    // MARK: - PROPERTY
+    @Environment(\.modelContext) private var modelContext
+
+    @Query private var pets: [Pet]
+
     @State private var isPresentingAddPetView = false
     @State private var path = NavigationPath()
     @State private var selectedPet: Pet?
@@ -26,48 +28,37 @@ struct PetListView: View {
         } else {
             NavigationStack(path: $path) {
                 GeometryReader { geometry in
-                    if pets.isEmpty {
-                        EmptyListView(
-                            emptyListMessage: """
-                            La liste est vide, ajouter vos animaux en appuyant \
-                            sur le bouton + situé en haut à droite de l'écran.
-                            """,
-                            messageFontSize: .title2,
-                            orientation: .vertical
-                        )
-                        .position(x: geometry.frame(in: .local).midX,
-                                  y: geometry.frame(in: .local).midY)
-                    } else {
-                        List {
-                            ForEach(pets) { pet in
-                                PetView(petPhotoData: pet.information.photo, petName: pet.information.name)
-                                    .listRowInsets(EdgeInsets())
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: geometry.size.height * 0.3)
-                                    .onTapGesture {
-                                        withAnimation(.easeInOut) {
-                                            selectedPet = pet
-                                            showPetTabView = true
-                                        }
-                                    }
+                    List {
+                        ForEach(pets) { pet in
+                            PetView(petPhotoData: pet.information.photo,
+                                    petName: pet.information.name)
+                            .listRowInsets(EdgeInsets())
+                            .frame(maxWidth: .infinity)
+                            .frame(height: geometry.size.height * 0.3)
+                            .onTapGesture {
+                                withAnimation(.easeInOut) {
+                                    selectedPet = pet
+                                    showPetTabView = true
+                                }
                             }
-                            .onDelete(perform: deletePet)
                         }
-                        .listRowSpacing(15)
+                        .onDelete(perform: deletePet)
+
+                        Button {
+                            isPresentingAddPetView = true
+                        } label: {
+                            AddPetTile()
+                        }
+                    }
+                    .listRowSpacing(15)
+                    .toolbar {
+                        if pets.count > 0 {
+                            EditButton()
+                                .environment(\.locale, .init(identifier: "fr"))
+                        }
                     }
                 }
                 .navigationTitle("Mes animaux")
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            isPresentingAddPetView = true
-                        }, label: {
-                            Image(systemName: "plus.circle.fill")
-                        })
-                        .foregroundStyle(LinearGradient.linearBlue)
-                        .font(.title2)
-                    }
-                }
                 .sheet(isPresented: $isPresentingAddPetView) {
                     AddPetView()
                 }
@@ -104,7 +95,7 @@ struct PetView: View {
             }
 
             Text(petName)
-                .minimumScaleFactor(0.5)
+                .minimumScaleFactor(0.2)
                 .font(.system(size: 80, weight: .bold))
                 .foregroundColor(.white)
                 .shadow(color: petPhotoData != nil ? .white : .black, radius: 2)
@@ -113,15 +104,28 @@ struct PetView: View {
     }
 }
 
+struct AddPetTile: View {
+    var body: some View {
+        VStack {
+            Image(systemName: "plus.circle.fill")
+                .frame(maxWidth: .infinity)
+                .font(.system(size: 80, weight: .bold))
+
+            Text("Ajouter un animal")
+                .font(.title)
+        }
+        .foregroundStyle(.gray)
+    }
+}
+
 // MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
 
-        return NavigationStack {
-            PetListView()
-        }
-        .modelContainer(previewer.container)
+        return PetListView()
+            .modelContainer(previewer.container)
+            .environment(previewer.firstPet)
 
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")

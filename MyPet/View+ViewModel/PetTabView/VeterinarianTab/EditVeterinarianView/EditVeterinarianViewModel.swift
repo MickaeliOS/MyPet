@@ -11,10 +11,7 @@ extension EditVeterinarianView {
 
     @Observable
     final class ViewModel {
-        var name = ""
-        var address = ""
-        var phone: Int?
-        var website = ""
+        let sampleVeterinarian = Veterinarian(name: nil, address: nil, phone: nil, website: nil)
 
         func nextField(focusedField: FocusedField) -> FocusedField {
             let transitions: [FocusedField: FocusedField] = [
@@ -25,13 +22,8 @@ extension EditVeterinarianView {
 
             return transitions[focusedField] ?? .name
         }
-
-        var isFormValid: Bool {
-            name.isReallyEmpty || address.isReallyEmpty
-        }
     }
 
-    // MARK: ENUM
     enum FocusedField {
         case name
         case address

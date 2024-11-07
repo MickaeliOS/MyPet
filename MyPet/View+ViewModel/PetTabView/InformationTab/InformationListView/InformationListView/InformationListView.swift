@@ -7,53 +7,50 @@
 
 import SwiftUI
 
-// MARK: - MAIN VIEW
 struct InformationListView: View {
-    @Environment(Pet.self) var pet
 
-    @State var viewModel = ViewModel()
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
+
+    @State private var viewModel = ViewModel()
     @State private var showInformationView = false
     @State private var showHealthInformationView = false
+    @State private var showEditInformationListView = false
 
     @Binding var showPetTabView: Bool
 
+    // MARK: - BODY
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 15) {
                         ZStack(alignment: .bottomLeading) {
-                            ProfilePictureView(geometry: geometry)
-                            PetToolBarView(showPetTabView: $showPetTabView, viewModel: viewModel)
+                            profilePictureView(geometry: geometry)
+                            petToolBarView()
                         }
 
-                        GeneralInformation(
-                            geometry: geometry,
-                            viewModel: viewModel
-                        )
+                        generalInformations()
 
-                        Spacer()
+                        CategoryTitleView(text: "Informations", systemImage: "info.circle.fill")
+                            .padding(.leading)
 
                         HStack {
                             VStack {
                                 InformationListButton(
                                     showView: $showInformationView,
+                                    buttonName: "Générales",
                                     buttonSystemImage: "info.circle.fill"
                                 )
-
-                                Text("Infos. Générales")
-                                    .font(.title2)
                             }
 
                             VStack {
 
-                            InformationListButton(
-                                showView: $showHealthInformationView,
-                                buttonSystemImage: "cross.case.fill"
-                            )
-
-                            Text("Infos. Médicales")
-                                .font(.title2)
+                                InformationListButton(
+                                    showView: $showHealthInformationView,
+                                    buttonName: "Médicales",
+                                    buttonSystemImage: "cross.case.fill"
+                                )
                             }
                         }
                         .frame(maxWidth: .infinity)
@@ -69,44 +66,50 @@ struct InformationListView: View {
                 HealthInformationView()
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onAppear {
-                viewModel.requestAuthorizationForNotifications()
+            .task {
+                await viewModel.requestAuthorizationForNotifications()
             }
             .alert("Erreur", isPresented: $viewModel.showingAlert) {
                 Button("OK") { }
             } message: {
                 Text(viewModel.errorMessage)
             }
-        }
-    }
-}
-
-#Preview {
-    do {
-        let previewer = try Previewer()
-
-        return TabView {
-            InformationListView(showPetTabView: .constant(true))
-                .environment(previewer.firstPet)
-                .tabItem {
-                    Label(
-                        Category.infos.rawValue,
-                        systemImage: Category.infos.imageName
-                    )
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showEditInformationListView = true
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .font(.title2)
+                    .foregroundStyle(.blue)
                 }
+            }
+            .sheet(isPresented: $showEditInformationListView) {
+                EditInformationListView()
+            }
         }
-    } catch {
-        return Text("Failed to create preview: \(error.localizedDescription)")
     }
-}
 
-// MARK: - CHILD VIEWS
-struct PetToolBarView: View {
-    @Environment(Pet.self) var pet
-    @Binding var showPetTabView: Bool
-    var viewModel: InformationListView.ViewModel
+    // MARK: - VIEWBUILDER
+    @ViewBuilder private func profilePictureView(geometry: GeometryProxy) -> some View {
+        VStack {
+            viewModel.petPhoto?
+                .resizable()
+                .scaledToFill()
+                .frame(height: 300)
+                .clipped()
+        }
+        .frame(maxWidth: geometry.size.width)
+        .onAppear {
+            viewModel.setupPetPhoto(with: pet.information.photo)
+        }
+        .onChange(of: pet.information.photo) {
+            viewModel.setupPetPhoto(with: pet.information.photo)
+        }
+    }
 
-    var body: some View {
+    @ViewBuilder private func petToolBarView() -> some View {
         HStack {
             HStack {
                 Text(pet.information.name)
@@ -122,7 +125,7 @@ struct PetToolBarView: View {
             .background(.white)
             .foregroundStyle(.black)
             .clipShape(RoundedRectangle(cornerRadius: 15))
-            .shadow(radius: 15)
+            .shadow(color: Color(UIColor.label).opacity(0.5), radius: 15)
             .padding(.leading)
 
             Spacer()
@@ -135,7 +138,7 @@ struct PetToolBarView: View {
                 Image(systemName: "arrow.left.arrow.right")
                     .foregroundStyle(.white)
                     .padding(10)
-                    .background(LinearGradient.linearBlue)
+                    .background(.blue)
                     .clipShape(Circle())
             }
             .overlay {
@@ -149,51 +152,14 @@ struct PetToolBarView: View {
             value[VerticalAlignment.center]
         })
     }
-}
 
-struct ProfilePictureView: View {
-    @Environment(Pet.self) var pet
-    @State private var petPhoto: Image?
-
-    let geometry: GeometryProxy
-
-    var body: some View {
-        VStack {
-            petPhoto?
-                .resizable()
-                .scaledToFill()
-                .frame(height: 300)
-                .clipped()
-        }
-        .frame(maxWidth: geometry.size.width)
-        .onAppear {
-            setupPetPhoto()
-        }
-    }
-
-    private func setupPetPhoto() {
-        if let imageData = pet.information.photo,
-           let uiImage = UIImage(data: imageData) {
-
-            petPhoto = Image(uiImage: uiImage)
-        } else {
-            petPhoto = Image(systemName: "pawprint.fill")
-        }
-    }
-}
-
-struct GeneralInformation: View {
-    @Environment(Pet.self) var pet
-    let geometry: GeometryProxy
-    var viewModel: InformationListView.ViewModel
-
-    var body: some View {
+    @ViewBuilder private func generalInformations() -> some View {
         VStack(alignment: .leading, spacing: 15) {
             VStack {
                 Text("""
                  \(pet.information.type), \
                  \(pet.information.race), \
-                 \(pet.information.getStringAge) \(pet.information.getStringAge > "1" ? "ans" : "an")
+                 \(pet.information.getStringAge)
                  """)
                 .font(.title2)
             }
@@ -202,7 +168,7 @@ struct GeneralInformation: View {
                 Label {
                     Text(pet.information.birthdate.dateToStringDMY)
                 } icon: {
-                    Image(systemName: "calendar")
+                    Image(systemName: "birthday.cake")
                 }
 
                 Label {
@@ -223,22 +189,48 @@ struct GeneralInformation: View {
     }
 }
 
+// MARK: - CHILD VIEW
 struct InformationListButton: View {
     @Binding var showView: Bool
+    let buttonName: String
     let buttonSystemImage: String
 
     var body: some View {
         Button {
             showView = true
         } label: {
-            Image(systemName: buttonSystemImage)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .font(.title)
-                .foregroundStyle(.white)
-                .background(LinearGradient.linearBlue)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-                .shadow(color: .blue, radius: 5)
+            HStack {
+                Image(systemName: buttonSystemImage)
+                    .font(.title)
+
+                Text(buttonName)
+                    .font(.title3)
+            }
+            .padding()
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(.white)
+            .background(.blue)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
+    }
+}
+
+// MARK: - PREVIEW
+#Preview {
+    do {
+        let previewer = try Previewer()
+
+        return TabView {
+            InformationListView(showPetTabView: .constant(true))
+                .environment(previewer.firstPet)
+                .tabItem {
+                    Label(
+                        PetTabView.Category.infos.rawValue,
+                        systemImage: PetTabView.Category.infos.imageName
+                    )
+                }
+        }
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

@@ -8,25 +8,28 @@
 import Foundation
 
 struct Medicine: Codable, Hashable, Identifiable {
+
+    // MARK: - PROPERTY
     var id = UUID()
     let name: String
     let dosage: String
     let medicineType: MedicineType
     let everyDay: Bool
     let takingTimes: [TakingTime]
-    let dates: Set<DateComponents>?
+    let dates: [DateComponents]?
     let additionalInformation: String?
     let lastDay: Date
+    var timeZone: TimeZone
     var notificationIDs: [String]?
 }
 
+// MARK: - EXTENSION
 extension Medicine {
     struct TakingTime: Codable, Hashable, Identifiable {
         var id = UUID()
         var date: Date
     }
-}
-extension Medicine {
+
     enum MedicineType: CaseIterable, Codable {
         case pill
         case syringe
@@ -43,9 +46,7 @@ extension Medicine {
             }
         }
     }
-}
 
-extension Medicine {
     static let sampleMedicine = Medicine(
         name: "Medicine",
         dosage: "10mg",
@@ -58,6 +59,7 @@ extension Medicine {
         dates: nil,
         additionalInformation: "After lunch.",
         lastDay: .now,
+        timeZone: .current,
         notificationIDs: nil
     )
 }

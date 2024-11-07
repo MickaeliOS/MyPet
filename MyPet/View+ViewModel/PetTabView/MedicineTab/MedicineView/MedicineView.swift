@@ -9,7 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct MedicineView: View {
-    @Environment(Pet.self) var pet
+
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
     @State private var isPresentingEditMedicineView = false
     @State private var path = NavigationPath()
 
@@ -19,11 +21,11 @@ struct MedicineView: View {
 
             return sortedMedicinelist
         } else {
-
             return []
         }
     }
 
+    // MARK: - BODY
     var body: some View {
         NavigationStack(path: $path) {
             VStack(alignment: .leading) {
@@ -42,7 +44,10 @@ struct MedicineView: View {
                         }
                     }
                     .listStyle(.plain)
-
+                    .toolbar {
+                        EditButton()
+                            .environment(\.locale, .init(identifier: "fr"))
+                    }
                 } else {
                     EmptyListView(
                         emptyListMessage: """
@@ -66,7 +71,7 @@ struct MedicineView: View {
                         Image(systemName: "plus.circle.fill")
                     })
                     .font(.title2)
-                    .foregroundStyle(LinearGradient.linearBlue)
+                    .foregroundStyle(.blue)
                 }
             }
             .sheet(isPresented: $isPresentingEditMedicineView) {
@@ -76,13 +81,23 @@ struct MedicineView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
 
-        return MedicineView()
+        return TabView {
+            NavigationStack {
+                MedicineView()
+            }
             .environment(previewer.firstPet)
-
+            .tabItem {
+                Label(
+                    PetTabView.Category.health.rawValue,
+                    systemImage: PetTabView.Category.health.imageName
+                )
+            }
+        }
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

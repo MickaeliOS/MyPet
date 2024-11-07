@@ -13,7 +13,6 @@ extension EditInformationView {
     final class ViewModel {
         let sampleIdentification = Identification(chip: nil, chipLocation: nil, tatoo: nil, tatooLocation: nil)
         let sampleFavorite = Favorite(toy: nil, food: nil, place: nil)
-        var photo: Data?
 
         func nextField(focusedField: FocusedField) -> FocusedField {
             let transitions: [FocusedField: FocusedField] = [

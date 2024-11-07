@@ -45,11 +45,9 @@
 		83CD7E5F2C85ECE20091FB50 /* CategoryTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */; };
 		83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E622C85FC070091FB50 /* Medicine.swift */; };
 		83CD7E672C8606F40091FB50 /* VeterinarianView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E662C8606F40091FB50 /* VeterinarianView.swift */; };
-		83CD7E692C8607250091FB50 /* VeterinarianViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */; };
 		83CD7E6F2C8890560091FB50 /* AddMedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */; };
 		83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E752C8894E40091FB50 /* EditListView.swift */; };
 		83CD7E782C889C1B0091FB50 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E772C889C1B0091FB50 /* EmptyListView.swift */; };
-		83CD7E7C2C88AD0E0091FB50 /* OpenModalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */; };
 		83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E812C8F201C0091FB50 /* MedicineView.swift */; };
 		83CD7E842C8F208D0091FB50 /* MedicineCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */; };
 		83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */; };
@@ -58,8 +56,13 @@
 		83CD7EA82C9319270091FB50 /* HealthInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA72C9319270091FB50 /* HealthInformationView.swift */; };
 		83CD7EAA2C93240A0091FB50 /* EditHealthInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA92C93240A0091FB50 /* EditHealthInformationView.swift */; };
 		83CD7EAE2C9339540091FB50 /* EditListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EAD2C9339540091FB50 /* EditListViewModel.swift */; };
+		83D15E762CD282D70007ADC1 /* PhotoPickerCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15E752CD282D70007ADC1 /* PhotoPickerCenter.swift */; };
+		83D15E782CD3B0AF0007ADC1 /* HideKeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15E772CD3B0AF0007ADC1 /* HideKeyboardView.swift */; };
+		83D15E7C2CDBC85E0007ADC1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */; };
 		83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */; };
 		83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441452C809CFA00EBAEDB /* OptionalExtension.swift */; };
+		83E912CD2CC9456F00A18A19 /* EditInformationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E912CC2CC9456F00A18A19 /* EditInformationListView.swift */; };
+		83E912CF2CC9470000A18A19 /* EditInformationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,11 +105,9 @@
 		83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTitleView.swift; sourceTree = "<group>"; };
 		83CD7E622C85FC070091FB50 /* Medicine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Medicine.swift; sourceTree = "<group>"; };
 		83CD7E662C8606F40091FB50 /* VeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianView.swift; sourceTree = "<group>"; };
-		83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VeterinarianViewModel.swift; sourceTree = "<group>"; };
 		83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineView.swift; sourceTree = "<group>"; };
 		83CD7E752C8894E40091FB50 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
 		83CD7E772C889C1B0091FB50 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
-		83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenModalButton.swift; sourceTree = "<group>"; };
 		83CD7E812C8F201C0091FB50 /* MedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineView.swift; sourceTree = "<group>"; };
 		83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineCardView.swift; sourceTree = "<group>"; };
 		83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineViewModel.swift; sourceTree = "<group>"; };
@@ -115,8 +116,13 @@
 		83CD7EA72C9319270091FB50 /* HealthInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthInformationView.swift; sourceTree = "<group>"; };
 		83CD7EA92C93240A0091FB50 /* EditHealthInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHealthInformationView.swift; sourceTree = "<group>"; };
 		83CD7EAD2C9339540091FB50 /* EditListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListViewModel.swift; sourceTree = "<group>"; };
+		83D15E752CD282D70007ADC1 /* PhotoPickerCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPickerCenter.swift; sourceTree = "<group>"; };
+		83D15E772CD3B0AF0007ADC1 /* HideKeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyboardView.swift; sourceTree = "<group>"; };
+		83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationListViewModel.swift; sourceTree = "<group>"; };
 		83D441452C809CFA00EBAEDB /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
+		83E912CC2CC9456F00A18A19 /* EditInformationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationListView.swift; sourceTree = "<group>"; };
+		83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,8 +139,9 @@
 		830DC6912C650D46000A0698 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				83D15E742CD282C80007ADC1 /* Helper */,
+				83D15E712CD26B9C0007ADC1 /* Previewer */,
 				83A23C482C6E369200B7DEC3 /* ReusableView */,
-				830DC6922C650D53000A0698 /* Previewer.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -298,7 +305,6 @@
 			isa = PBXGroup;
 			children = (
 				83CD7E662C8606F40091FB50 /* VeterinarianView.swift */,
-				83CD7E682C8607250091FB50 /* VeterinarianViewModel.swift */,
 			);
 			path = VeterinarianView;
 			sourceTree = "<group>";
@@ -344,7 +350,7 @@
 				83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */,
 				83CD7E5E2C85ECE20091FB50 /* CategoryTitleView.swift */,
 				83CD7E772C889C1B0091FB50 /* EmptyListView.swift */,
-				83CD7E7B2C88AD0E0091FB50 /* OpenModalButton.swift */,
+				83D15E772CD3B0AF0007ADC1 /* HideKeyboardView.swift */,
 			);
 			path = ReusableView;
 			sourceTree = "<group>";
@@ -438,8 +444,8 @@
 		83CD7EA32C93168A0091FB50 /* InformationListView */ = {
 			isa = PBXGroup;
 			children = (
-				83BB91512C6660A70063185C /* InformationListView.swift */,
-				83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */,
+				83E912CA2CC9455500A18A19 /* InformationListView */,
+				83E912CB2CC9456000A18A19 /* EditInformationListView */,
 			);
 			path = InformationListView;
 			sourceTree = "<group>";
@@ -452,6 +458,41 @@
 				83CD7E742C8894D70091FB50 /* EditListView */,
 			);
 			path = HealthInformationView;
+			sourceTree = "<group>";
+		};
+		83D15E712CD26B9C0007ADC1 /* Previewer */ = {
+			isa = PBXGroup;
+			children = (
+				830DC6922C650D53000A0698 /* Previewer.swift */,
+			);
+			path = Previewer;
+			sourceTree = "<group>";
+		};
+		83D15E742CD282C80007ADC1 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				83D15E752CD282D70007ADC1 /* PhotoPickerCenter.swift */,
+				83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
+		83E912CA2CC9455500A18A19 /* InformationListView */ = {
+			isa = PBXGroup;
+			children = (
+				83BB91512C6660A70063185C /* InformationListView.swift */,
+				83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */,
+			);
+			path = InformationListView;
+			sourceTree = "<group>";
+		};
+		83E912CB2CC9456000A18A19 /* EditInformationListView */ = {
+			isa = PBXGroup;
+			children = (
+				83E912CC2CC9456F00A18A19 /* EditInformationListView.swift */,
+				83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */,
+			);
+			path = EditInformationListView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -556,22 +597,24 @@
 				8355171E2C62666B006D111B /* AddPetViewModel.swift in Sources */,
 				83CD7E582C85E7FB0091FB50 /* Veterinarian.swift in Sources */,
 				83A02ECB2CAC33B0003360A4 /* ViewModifier.swift in Sources */,
+				83E912CF2CC9470000A18A19 /* EditInformationListViewModel.swift in Sources */,
 				83A02EBE2CA2EC42003360A4 /* ChartView.swift in Sources */,
 				8316B6902C985B1800CCD571 /* EditHealthInformationViewModel.swift in Sources */,
 				83BA03F42C7379F100391642 /* PetTabView.swift in Sources */,
+				83D15E782CD3B0AF0007ADC1 /* HideKeyboardView.swift in Sources */,
 				83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */,
+				83D15E7C2CDBC85E0007ADC1 /* NotificationHelper.swift in Sources */,
 				83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */,
 				8316B69A2C99B80100CCD571 /* MedicineDetailView.swift in Sources */,
-				83CD7E692C8607250091FB50 /* VeterinarianViewModel.swift in Sources */,
 				83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
 				83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */,
+				83E912CD2CC9456F00A18A19 /* EditInformationListView.swift in Sources */,
 				83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */,
 				83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */,
 				83CD7E5F2C85ECE20091FB50 /* CategoryTitleView.swift in Sources */,
 				83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */,
 				83BA040A2C7CADDD00391642 /* EditInformationViewModel.swift in Sources */,
-				83CD7E7C2C88AD0E0091FB50 /* OpenModalButton.swift in Sources */,
 				83CD7EA12C9311BE0091FB50 /* Health.swift in Sources */,
 				83CD7E672C8606F40091FB50 /* VeterinarianView.swift in Sources */,
 				83BA04002C7762E200391642 /* EditInformationView.swift in Sources */,
@@ -592,6 +635,7 @@
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,
 				8383B3792CB699E10040F440 /* WeightHistoryView.swift in Sources */,
 				83CD7EAA2C93240A0091FB50 /* EditHealthInformationView.swift in Sources */,
+				83D15E762CD282D70007ADC1 /* PhotoPickerCenter.swift in Sources */,
 				83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */,
 				83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */,
 				83CD7EA52C9316BB0091FB50 /* InformationView.swift in Sources */,
@@ -655,7 +699,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -712,7 +756,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -738,8 +782,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -770,8 +814,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

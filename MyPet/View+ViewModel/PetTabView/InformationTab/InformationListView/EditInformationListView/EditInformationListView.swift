@@ -1,44 +1,37 @@
 //
-//  AddPetView.swift
+//  EditInformationListView.swift
 //  MyPet
 //
-//  Created by Mickaël Horn on 01/08/2024.
+//  Created by Mickaël Horn on 23/10/2024.
 //
 
 import SwiftUI
-import SwiftData
 import PhotosUI
 
-struct AddPetView: View {
+struct EditInformationListView: View {
 
     // MARK: - PROPERTY
-    @Environment(\.modelContext) private var modelContext
+    @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
 
     @FocusState private var focusedField: FocusedField?
 
-    @State private var viewModel = AddPetView.ViewModel()
+    @State private var viewModel = ViewModel()
     @State private var photoPickerCenter = PhotoPickerCenter()
 
     // MARK: - BODY
     var body: some View {
+        @Bindable var pet = pet
+
         NavigationStack {
             ScrollView {
                 ZStack {
                     HideKeyboardView()
 
                     VStack(alignment: .leading) {
-                        principalInformationsView()
-                        colorInformationsView()
+                        principalInformationsView(pet: $pet)
+                        colorInformationsView(pet: $pet)
                         photoView()
-                    }
-                    .navigationTitle("Ajouter un animal")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                    .padding([.leading, .trailing])
-                    .onSubmit {
-                        if focusedField != .eyeColor {
-                            focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
-                        }
                     }
                     .onChange(of: photoPickerCenter.item) {
                         Task {
@@ -46,7 +39,7 @@ struct AddPetView: View {
                                 return
                             }
 
-                            viewModel.photo = photo
+                            pet.information.photo = photo
                         }
                     }
                     .alert("Une erreur est survenue.", isPresented: $photoPickerCenter.showingAlert) {
@@ -55,49 +48,49 @@ struct AddPetView: View {
                         Text(photoPickerCenter.errorMessage)
                     }
                 }
-                .frame(maxHeight: .infinity)
             }
+            .navigationTitle("Modifier l'animal")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Sauvegarder") {
-                        viewModel.addPet(modelContext: modelContext)
+                    Button("Terminer") {
                         dismiss()
                     }
-                    .disabled(viewModel.isFormValid)
                 }
             }
+            .padding()
         }
     }
 
-    @ViewBuilder private func principalInformationsView() -> some View {
-        VStack {
+    // MARK: - VIEWBUILDER
+    @ViewBuilder private func principalInformationsView(pet: Bindable<Pet>) -> some View {
+        VStack(alignment: .leading) {
+            CategoryTitleView(text: "Informations", systemImage: "info.square.fill")
+                .padding(.top)
+
             VStack(alignment: .leading) {
-                TextField("Nom", text: $viewModel.name)
+                TextField("Nom", text: pet.information.name)
                     .customTextField(with: Image(systemName: "person.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .name)
 
-                TextField("Type", text: $viewModel.type)
+                TextField("Type", text: pet.information.type)
                     .customTextField(with: Image(systemName: "pawprint.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .type)
 
-                TextField("Race", text: $viewModel.race)
+                TextField("Race", text: pet.information.race)
                     .customTextField(with: Image(systemName: "questionmark.circle.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .race)
             }
             .padding(.bottom)
-            .onTapGesture {
-                hideKeyboard()
-            }
 
             VStack(alignment: .leading, spacing: 20) {
                 Label("Genre", systemImage: "questionmark.circle.fill")
                     .imageScale(.large)
                     .font(.title3)
 
-                Picker("Genre", selection: $viewModel.gender) {
+                Picker("Genre", selection: pet.information.gender) {
                     ForEach(Information.Gender.allCases, id: \.self) { gender in
                         Text(gender.rawValue)
                     }
@@ -111,7 +104,7 @@ struct AddPetView: View {
 
                     Spacer()
 
-                    DatePicker("Date de naissance", selection: $viewModel.birthdate, displayedComponents: [.date])
+                    DatePicker("Date de naissance", selection: pet.information.birthdate, displayedComponents: [.date])
                         .bold()
                         .labelsHidden()
                 }
@@ -120,20 +113,17 @@ struct AddPetView: View {
         .padding(.bottom)
     }
 
-    @ViewBuilder private func colorInformationsView() -> some View {
+    @ViewBuilder private func colorInformationsView(pet: Bindable<Pet>) -> some View {
         VStack {
-            TextField("Couleur", text: $viewModel.color)
+            TextField("Couleur", text: pet.information.color)
                 .customTextField(with: Image(systemName: "paintpalette.fill"))
                 .submitLabel(.next)
                 .focused($focusedField, equals: .color)
 
-            TextField("Couleur des yeux", text: $viewModel.eyeColor)
+            TextField("Couleur des yeux", text: pet.information.eyeColor)
                 .customTextField(with: Image(systemName: "eye.fill"))
-                .submitLabel(.done)
+                .submitLabel(.next)
                 .focused($focusedField, equals: .eyeColor)
-        }
-        .onTapGesture {
-            hideKeyboard()
         }
         .padding(.bottom)
     }
@@ -154,9 +144,6 @@ struct AddPetView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .frame(maxWidth: .infinity, maxHeight: 400)
         }
-        .onTapGesture {
-            hideKeyboard()
-        }
         .frame(maxWidth: .infinity)
     }
 }
@@ -166,8 +153,8 @@ struct AddPetView: View {
     do {
         let previewer = try Previewer()
 
-        return AddPetView()
-            .modelContainer(previewer.container)
+        return EditInformationListView()
+            .environment(previewer.firstPet)
 
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")

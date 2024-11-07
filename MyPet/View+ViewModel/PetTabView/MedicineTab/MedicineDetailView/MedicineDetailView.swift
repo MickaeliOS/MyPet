@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct MedicineDetailView: View {
+
+    // MARK: - PROPERTY
+    @State private var daysLeft: Int?
+
     let medicine: Medicine
     let medicineDatesGrid = [
         GridItem(.flexible(), spacing: 10),
@@ -15,8 +19,7 @@ struct MedicineDetailView: View {
         GridItem(.flexible(), spacing: 10)
     ]
 
-    @State private var daysLeft: Int?
-
+    // MARK: - BODY
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
@@ -24,7 +27,7 @@ struct MedicineDetailView: View {
                     Image(systemName: medicine.medicineType.imageSystemName)
                         .font(.system(size: 140))
                         .frame(width: 200, height: 200)
-                        .foregroundStyle(LinearGradient.linearBlue)
+                        .foregroundStyle(.blue)
                         .frame(maxWidth: .infinity)
 
                     Text("\(medicine.name), \(medicine.dosage)")
@@ -43,20 +46,18 @@ struct MedicineDetailView: View {
 
                     if let dates = medicine.dates {
                         let nonNilDates = dates.compactMap { $0.date }
-                        let sortedDates = nonNilDates.sorted(by: { $0 > $1 })
+                        let sortedDates = nonNilDates.sorted(by: { $0 < $1 })
 
                         LazyVGrid(columns: medicineDatesGrid, spacing: 10) {
                             ForEach(sortedDates, id: \.self) { date in
                                 Text(date, format: .dateTime.day().month().year())
-                                    .padding(3)
+                                    .padding(5)
                                     .font(.title3)
                                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                                     .background {
-                                        RoundedRectangle(cornerRadius: 6)
-                                            .stroke(LinearGradient.linearBlue, lineWidth: 5)
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(.blue, lineWidth: 2)
                                     }
-                                    .padding()
                             }
                         }
                     }
@@ -74,7 +75,7 @@ struct MedicineDetailView: View {
                             Text(takingTime.date, format: .dateTime.hour().minute())
                                 .foregroundStyle(.white)
                                 .padding()
-                                .background(LinearGradient.linearBlue)
+                                .background(.blue)
                                 .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .bold()
                         }
@@ -103,19 +104,30 @@ struct MedicineDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .padding([.leading, .trailing, .bottom])
         .onAppear {
-            daysLeft = Calendar.current.numberOfDaysBetween(Calendar.current.startOfDay(for: Date.now),
-                                                            and: medicine.lastDay)
+            daysLeft = Calendar.current.numberOfDaysBetween(.now,
+                                                            and: medicine.lastDay,
+                                                            from: medicine.timeZone)
         }
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
 
-        return NavigationStack { MedicineDetailView(medicine: Medicine.sampleMedicine) }
+        return TabView {
+            NavigationStack {
+                MedicineDetailView(medicine: Medicine.sampleMedicine)
+            }
             .environment(previewer.firstPet)
-
+            .tabItem {
+                Label(
+                    PetTabView.Category.health.rawValue,
+                    systemImage: PetTabView.Category.health.imageName
+                )
+            }
+        }
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

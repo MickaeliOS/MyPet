@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct HealthInformationView: View {
-    @Environment(Pet.self) var pet
-
+    @Environment(Pet.self) private var pet
     @State private var showEditHealthInformations = false
 
     var body: some View {
@@ -40,23 +39,9 @@ struct HealthInformationView: View {
     }
 }
 
-#Preview {
-    do {
-        let previewer = try Previewer()
-
-        return NavigationStack {
-            HealthInformationView()
-                .environment(previewer.firstPet)
-        }
-
-    } catch {
-        return Text("Failed to create preview: \(error.localizedDescription)")
-    }
-}
-
-// MARK: - CHILD VIEWS
+// MARK: - CHILD VIEW
 struct SterelizedView: View {
-    @Environment(Pet.self) var pet
+    @Environment(Pet.self) private var pet
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -86,7 +71,7 @@ struct AllergyView: View {
 
             if let allergies {
                 Text(allergies.joined(separator: ", "))
-                    .padding()
+                    .padding([.top, .bottom])
             } else {
                 EmptyListView(
                     emptyListMessage: """
@@ -111,7 +96,7 @@ struct IntoleranceView: View {
 
             if let intolerance {
                 Text(intolerance.joined(separator: ", "))
-                    .padding()
+                    .padding([.top, .bottom])
             } else {
                 EmptyListView(
                     emptyListMessage: """
@@ -122,5 +107,27 @@ struct IntoleranceView: View {
                 )
             }
         }
+    }
+}
+
+// MARK: - PREVIEW
+#Preview {
+    do {
+        let previewer = try Previewer()
+
+        return TabView {
+            NavigationStack {
+                HealthInformationView()
+            }
+            .tabItem {
+                Label(
+                    PetTabView.Category.infos.rawValue,
+                    systemImage: PetTabView.Category.infos.imageName
+                )
+            }
+            .environment(previewer.firstPet)
+        }
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }

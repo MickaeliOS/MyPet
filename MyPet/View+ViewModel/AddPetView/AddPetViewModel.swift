@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftData
 
 extension AddPetView {
 
+    // MARK: - ENUM
     enum FocusedField {
         case name
         case type
@@ -17,8 +19,11 @@ extension AddPetView {
         case eyeColor
     }
 
+    // MARK: - VIEWMODEL
     @Observable
     final class ViewModel {
+
+        // MARK: PROPERTY
         var name = ""
         var gender = Information.Gender.male
         var race = ""
@@ -28,6 +33,7 @@ extension AddPetView {
         var color = ""
         var photo: Data?
 
+        // MARK: FUNCTIONS
         var isFormValid: Bool {
             (
                 name.isReallyEmpty ||
@@ -48,6 +54,21 @@ extension AddPetView {
             ]
 
             return transitions[focusedField] ?? .name
+        }
+
+        func addPet(modelContext: ModelContext) {
+            let information = Information(
+                name: name,
+                gender: gender,
+                type: type,
+                race: race,
+                birthdate: birthdate,
+                color: color,
+                eyeColor: eyeColor,
+                photo: photo
+            )
+
+            modelContext.insert(Pet(information: information))
         }
     }
 }

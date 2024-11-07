@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct WeightHistoryView: View {
-    @Environment(Pet.self) var pet
-    @Environment(\.dismiss) var dismiss
 
+    // MARK: - PROPERTY
+    @Environment(Pet.self) private var pet
+    @Environment(\.dismiss) private var dismiss
+
+    // MARK: - BODY
     var body: some View {
         NavigationStack {
             Group {
@@ -27,6 +30,7 @@ struct WeightHistoryView: View {
                     }
                     .toolbar {
                         EditButton()
+                            .environment(\.locale, .init(identifier: "fr"))
                     }
                 } else {
                     EmptyListView(emptyListMessage: "Historique vide", messageFontSize: .title2)
@@ -35,10 +39,10 @@ struct WeightHistoryView: View {
             .navigationTitle("Historique de poids")
             .navigationBarTitleDisplayMode(.large)
         }
-        .environment(\.locale, .init(identifier: "fr"))
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     do {
         let previewer = try Previewer()
@@ -47,7 +51,6 @@ struct WeightHistoryView: View {
             WeightHistoryView()
                 .environment(previewer.firstPet)
         }
-
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

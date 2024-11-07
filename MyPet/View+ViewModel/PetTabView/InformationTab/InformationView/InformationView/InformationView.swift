@@ -7,9 +7,9 @@
 
 import SwiftUI
 
+// MARK: - MAIN VIEW
 struct InformationView: View {
     @State private var isPresentingEditInformationView = false
-    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         ScrollView {
@@ -17,8 +17,6 @@ struct InformationView: View {
                 IdentificationView()
                 FavoriteView()
             }
-//            .navigationBarBackButtonHidden(true)
-//            .customBackButtonToolBar(with: "Profil", dismiss: { dismiss() })
             .navigationTitle("Informations")
             .navigationBarTitleDisplayMode(.large)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -30,7 +28,7 @@ struct InformationView: View {
                         Image(systemName: "pencil")
                     }
                     .font(.title2)
-                    .foregroundStyle(LinearGradient.linearBlue)
+                    .foregroundStyle(.blue)
                 }
             }
             .sheet(isPresented: $isPresentingEditInformationView) {
@@ -40,8 +38,9 @@ struct InformationView: View {
     }
 }
 
+// MARK: - CHILD VIEW
 struct IdentificationView: View {
-    @Environment(Pet.self) var pet
+    @Environment(Pet.self) private var pet
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -52,7 +51,7 @@ struct IdentificationView: View {
                 VStack(alignment: .leading) {
                     Text("Puce")
                         .bold()
-                    Text(pet.identification?.chip.map { "\($0)" } ?? "Non renseigné")
+                    Text((pet.identification?.chip).orDefault())
                 }
                 .padding([.bottom, .top], 6)
 
@@ -77,7 +76,6 @@ struct IdentificationView: View {
                     Text((pet.identification?.tatooLocation).orDefault())
                 }
                 .padding(.bottom, 6)
-
             }
             .padding(.leading)
         }
@@ -86,7 +84,7 @@ struct IdentificationView: View {
 }
 
 struct FavoriteView: View {
-    @Environment(Pet.self) var pet
+    @Environment(Pet.self) private var pet
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -123,11 +121,19 @@ struct FavoriteView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
-    TabView {
-        NavigationStack {
-            InformationView()
-                .environment(try? Previewer().firstPet)
+    do {
+        let previewer = try Previewer()
+
+        return TabView {
+            NavigationStack {
+                InformationView()
+            }
         }
+        .environment(previewer.firstPet)
+
+    } catch {
+        return Text("Failed to create preview: \(error.localizedDescription)")
     }
 }
