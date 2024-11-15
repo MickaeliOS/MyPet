@@ -15,12 +15,14 @@ extension EditHealthInformationView {
         var intolerances: [String] = []
         var isSterelized = false
 
-        func isAllergyListValid() -> Bool {
-            return !allergies.isEmpty && allergies.allSatisfy { !$0.isEmpty }
-        }
+        func removeEmptyElement() {
+            if !allergies.isEmpty {
+                allergies = allergies.removeEmptyElement()
+            }
 
-        func isIntoleranceListValid() -> Bool {
-            return !intolerances.isEmpty && intolerances.allSatisfy { !$0.isEmpty }
+            if !intolerances.isEmpty {
+                intolerances = intolerances.removeEmptyElement()
+            }
         }
 
         func setupHealthInformations(with health: Health?) {

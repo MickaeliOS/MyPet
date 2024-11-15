@@ -13,6 +13,11 @@ struct MedicineCardView: View {
     @State private var daysLeft: Int?
 
     private let calendar = Calendar.current
+    private let takingTimesGrid = [
+        GridItem(.flexible(minimum: 0), spacing: 0),
+        GridItem(.flexible(minimum: 0), spacing: 0),
+        GridItem(.flexible(minimum: 0), spacing: 0)
+    ]
     let medicine: Medicine
 
     // MARK: - BODY
@@ -49,7 +54,7 @@ struct MedicineCardView: View {
 
                     if let daysLeft {
                         HStack {
-                            Text("Durée du traitement : ")
+                            Text("Durée : ")
                             Text(daysLeft <= 0 ? "Expiré." :
                                     daysLeft == 1 ? "Dernier jour !" :
                                     "\(daysLeft) jour(s)")
@@ -58,7 +63,7 @@ struct MedicineCardView: View {
                         .foregroundStyle(Color(UIColor.label))
                     }
 
-                    HStack {
+                    LazyVGrid(columns: takingTimesGrid, alignment: .leading) {
                         ForEach(medicine.takingTimes) { takingTime in
                             Text(takingTime.date, format: .dateTime.hour().minute())
                                 .padding(5)

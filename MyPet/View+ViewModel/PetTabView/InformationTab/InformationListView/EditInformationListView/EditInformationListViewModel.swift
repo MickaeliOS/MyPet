@@ -18,8 +18,7 @@ extension EditInformationListView {
                 .name: .type,
                 .type: .race,
                 .race: .color,
-                .color: .eyeColor,
-                .eyeColor: .eyeColor
+                .color: .eyeColor
             ]
 
             return transitions[focusedField] ?? .name

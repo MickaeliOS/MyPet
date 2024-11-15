@@ -34,6 +34,7 @@
 		83A02ED42CAECA5B003360A4 /* LinearGradientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */; };
 		83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */; };
 		83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */; };
+		83B0076D2CE6624800247383 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B0076C2CE6624800247383 /* ArrayExtension.swift */; };
 		83BA03F42C7379F100391642 /* PetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetTabView.swift */; };
 		83BA04002C7762E200391642 /* EditInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03FF2C7762E200391642 /* EditInformationView.swift */; };
 		83BA04022C77656900391642 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04012C77656900391642 /* Favorite.swift */; };
@@ -94,6 +95,7 @@
 		83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientExtension.swift; sourceTree = "<group>"; };
 		83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickDividerView.swift; sourceTree = "<group>"; };
+		83B0076C2CE6624800247383 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		83BA03F32C7379F100391642 /* PetTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabView.swift; sourceTree = "<group>"; };
 		83BA03FF2C7762E200391642 /* EditInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationView.swift; sourceTree = "<group>"; };
 		83BA04012C77656900391642 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				83A02ECA2CAC33B0003360A4 /* ViewModifier.swift */,
 				83A02ECC2CAC355B003360A4 /* View.swift */,
 				83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */,
+				83B0076C2CE6624800247383 /* ArrayExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
 				83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */,
+				83B0076D2CE6624800247383 /* ArrayExtension.swift in Sources */,
 				83E912CD2CC9456F00A18A19 /* EditInformationListView.swift in Sources */,
 				83BA040C2C7CC3B600391642 /* BindingExtension.swift in Sources */,
 				83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */,
@@ -782,6 +786,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -814,6 +820,8 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -43,11 +43,11 @@ struct AddMedicineView: View {
                                         }
 
                                         Task {
-                                            await viewModel.scheduleNotifications(
+                                            await viewModel.scheduleNotificationsFlow(
                                                 medicine: medicine,
                                                 petName: pet.information.name
                                             )
-                                            print("VIEW MODEL FINISH")
+
                                             medicine.notificationIDs = viewModel.notificationIDs
                                             pet.medicine?.append(medicine)
                                             dismiss()

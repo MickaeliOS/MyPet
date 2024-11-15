@@ -42,6 +42,11 @@ struct EditInformationListView: View {
                             pet.information.photo = photo
                         }
                     }
+                    .onSubmit {
+                        if focusedField != .eyeColor {
+                            focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
+                        }
+                    }
                     .alert("Une erreur est survenue.", isPresented: $photoPickerCenter.showingAlert) {
                         Button("OK") { }
                     } message: {
@@ -122,7 +127,7 @@ struct EditInformationListView: View {
 
             TextField("Couleur des yeux", text: pet.information.eyeColor)
                 .customTextField(with: Image(systemName: "eye.fill"))
-                .submitLabel(.next)
+                .submitLabel(.done)
                 .focused($focusedField, equals: .eyeColor)
         }
         .padding(.bottom)

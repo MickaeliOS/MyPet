@@ -12,7 +12,6 @@ struct VeterinarianView: View {
     // MARK: - PROPERTY
     @Environment(Pet.self) private var pet
     @State private var isPresentingEditVeterinarianView = false
-//    private let viewModel = ViewModel()
 
     // MARK: - BODY
     var body: some View {

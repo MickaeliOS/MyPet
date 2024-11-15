@@ -54,6 +54,9 @@ extension Medicine {
         everyDay: true,
         takingTimes: [
             TakingTime(date: Date()),
+            TakingTime(date: Date()),
+            TakingTime(date: Date()),
+            TakingTime(date: Date()),
             TakingTime(date: Date())
         ],
         dates: nil,

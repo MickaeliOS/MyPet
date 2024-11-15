@@ -41,7 +41,6 @@ struct EditListView: View {
                                 .font(.title3)
                                 .padding(.trailing)
                             }
-                            .id("addButton")
                         }
 
                         VStack {
@@ -61,8 +60,9 @@ struct EditListView: View {
                                                 }
                                             } label: {
                                                 Image(systemName: "minus.circle.fill")
+                                                    .foregroundColor(.red)
+                                                    .font(.title)
                                             }
-                                            .font(.title3)
                                             .padding(5)
 
                                             if list.indices.contains(index) {
@@ -75,7 +75,6 @@ struct EditListView: View {
                                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                             }
                                         }
-                                        .id(index)
                                     }
                                 }
                             }
@@ -84,12 +83,13 @@ struct EditListView: View {
                         .onChange(of: scrollToEnd) {
                             if scrollToEnd {
                                 withAnimation {
-                                    scrollViewProxy.scrollTo(list.indices.last, anchor: .bottom)
+                                    scrollViewProxy.scrollTo("Bottom", anchor: .bottom)
                                 }
                                 scrollToEnd = false
                             }
                         }
                     }
+                    .id("Bottom")
                 }
             }
         }

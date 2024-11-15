@@ -117,8 +117,7 @@ extension AddMedicineView {
             }
         }
 
-        func scheduleNotifications(medicine: Medicine, petName: String) async {
-            // AUTORISATION
+        func scheduleNotificationsFlow(medicine: Medicine, petName: String) async {
             let settings = await center.notificationSettings()
 
             guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .ephemeral else {
@@ -149,98 +148,11 @@ extension AddMedicineView {
                 let id = UUID().uuidString
 
                 if await isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications) {
-                    // Badge handling
-                    if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                        badgeCount += 1
-                        userDefault.set(badgeCount, forKey: "badgeCount")
-                        content.badge = NSNumber(value: badgeCount)
-                    } else {
-                        userDefault.set(1, forKey: "badgeCount")
-                        content.badge = 1
-                    }
-
-                    // Notification is fully constructed with the Request
-                    let request = UNNotificationRequest(
-                        identifier: id,
-                        content: content,
-                        trigger: trigger
-                    )
-
-                    // Adding the Notification in NotificationCenter
-                    do {
-                        try await center.add(request)
-                        notificationIDs.append(id)
-                    } catch {
-                        if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                            badgeCount -= 1
-                            userDefault.set(badgeCount, forKey: "badgeCount")
-                        }
-                    }
+                    await addGreaterDateNotification(id: id, content: content, trigger: trigger)
                 } else {
-                    center.removeAllPendingNotificationRequests()
-                    userDefault.set(0, forKey: "badgeCount")
-
-                    var notificationsTransit = await NotificationHelper.convertPendingNotification()
-                    notificationsTransit.append(NotificationTransit(identifier: id, content: content, date: date, trigger: trigger))
-                    let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
-
-                    for sortedNotification in sortedNotifications {
-
-                        // New Content
-                        let newContent = UNMutableNotificationContent()
-                        newContent.title = sortedNotification.content.title
-                        newContent.body = sortedNotification.content.body
-                        newContent.sound = sortedNotification.content.sound
-
-                        // New Trigger
-                        let newTrigger = sortedNotification.trigger
-
-                        // New ID
-                        let newID = sortedNotification.identifier
-
-                        // Badge handling
-                        if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                            badgeCount += 1
-                            userDefault.set(badgeCount, forKey: "badgeCount")
-                            newContent.badge = NSNumber(value: badgeCount)
-                        } else {
-                            userDefault.set(1, forKey: "badgeCount")
-                            newContent.badge = 1
-                        }
-
-                        // Notification is fully constructed with the Request
-                        let newRequest = UNNotificationRequest(
-                            identifier: newID,
-                            content: newContent,
-                            trigger: newTrigger
-                        )
-
-                        // Adding the Notification in NotificationCenter
-                        do {
-                            try await center.add(newRequest)
-                        } catch {
-                            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                                badgeCount -= 1
-                                userDefault.set(badgeCount, forKey: "badgeCount")
-                            }
-                        }
-                    }
+                    await addLowerDateNotification(id: id, content: content, date: date, trigger: trigger)
                 }
             }
-        }
-
-        func isNewNotificationDateGreater(date: Date, pendingNotifications: [UNNotificationRequest]) async -> Bool {
-            guard pendingNotifications.isEmpty == false else {
-                return true
-            }
-
-            let allDatesAreEarlier = pendingNotifications.compactMap { request in
-                (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
-            }.allSatisfy { existingDate in
-                date > existingDate
-            }
-
-            return allDatesAreEarlier ? true : false
         }
 
         func nextField(focusedField: FocusedField) -> FocusedField {
@@ -302,6 +214,99 @@ extension AddMedicineView {
             return updatedArray
         }
 
+        private func addGreaterDateNotification(
+            id: String,
+            content: UNMutableNotificationContent,
+            trigger: UNCalendarNotificationTrigger
+        ) async {
+            // Badge handling
+            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                badgeCount += 1
+                userDefault.set(badgeCount, forKey: "badgeCount")
+                content.badge = NSNumber(value: badgeCount)
+            } else {
+                userDefault.set(1, forKey: "badgeCount")
+                content.badge = 1
+            }
+
+            // Notification is fully constructed with the Request
+            let request = UNNotificationRequest(
+                identifier: id,
+                content: content,
+                trigger: trigger
+            )
+
+            // Adding the Notification in NotificationCenter
+            do {
+                try await center.add(request)
+                notificationIDs.append(id)
+            } catch {
+                if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                    badgeCount -= 1
+                    userDefault.set(badgeCount, forKey: "badgeCount")
+                }
+            }
+        }
+
+        private func addLowerDateNotification(
+            id: String,
+            content: UNMutableNotificationContent,
+            date: Date,
+            trigger: UNCalendarNotificationTrigger
+        ) async {
+            center.removeAllPendingNotificationRequests()
+            userDefault.set(0, forKey: "badgeCount")
+
+            var notificationsTransit = await NotificationHelper.convertPendingNotification()
+            let newNotification = NotificationTransit(identifier: id, content: content, date: date, trigger: trigger)
+            notificationsTransit.append(newNotification)
+            let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
+
+            for sortedNotification in sortedNotifications {
+                // New Content
+                let newContent = UNMutableNotificationContent()
+                newContent.title = sortedNotification.content.title
+                newContent.body = sortedNotification.content.body
+                newContent.sound = sortedNotification.content.sound
+
+                // New Trigger
+                let newTrigger = sortedNotification.trigger
+
+                // New ID
+                let newID = sortedNotification.identifier
+
+                // Badge handling
+                if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                    badgeCount += 1
+                    userDefault.set(badgeCount, forKey: "badgeCount")
+                    newContent.badge = NSNumber(value: badgeCount)
+                } else {
+                    userDefault.set(1, forKey: "badgeCount")
+                    newContent.badge = 1
+                }
+
+                // Notification is fully constructed with the Request
+                let newRequest = UNNotificationRequest(
+                    identifier: newID,
+                    content: newContent,
+                    trigger: newTrigger
+                )
+
+                // Adding the Notification in NotificationCenter
+                do {
+                    try await center.add(newRequest)
+                    if sortedNotification.identifier == newNotification.identifier {
+                        notificationIDs.append(newID)
+                    }
+                } catch {
+                    if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                        badgeCount -= 1
+                        userDefault.set(badgeCount, forKey: "badgeCount")
+                    }
+                }
+            }
+        }
+
         private func sortedDateComponentsSet(set: Set<DateComponents>) -> [DateComponents] {
             return multiDatePickerDateSet
                 .compactMap { dateComponents in
@@ -315,6 +320,23 @@ extension AddMedicineView {
                 .map { tuple in
                     tuple.0
                 }
+        }
+
+        private func isNewNotificationDateGreater(
+            date: Date,
+            pendingNotifications: [UNNotificationRequest]
+        ) async -> Bool {
+            guard pendingNotifications.isEmpty == false else {
+                return true
+            }
+
+            let allDatesAreEarlier = pendingNotifications.compactMap { request in
+                (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
+            }.allSatisfy { existingDate in
+                date > existingDate
+            }
+
+            return allDatesAreEarlier ? true : false
         }
     }
 }

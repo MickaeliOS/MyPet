@@ -16,7 +16,7 @@ struct HealthInformationView: View {
             VStack(alignment: .leading, spacing: 40) {
                 SterelizedView()
                 AllergyView(allergies: pet.health?.allergies)
-                IntoleranceView(intolerance: pet.health?.intolerances)
+                IntoleranceView(intolerances: pet.health?.intolerances)
             }
             .navigationTitle("Infos. Médicales")
             .navigationBarTitleDisplayMode(.large)
@@ -69,7 +69,8 @@ struct AllergyView: View {
                 CategoryTitleView(text: "Allergies", systemImage: "allergens.fill")
             }
 
-            if let allergies {
+            if let allergies, !allergies.isEmpty {
+                Text("number: \(allergies.count)")
                 Text(allergies.joined(separator: ", "))
                     .padding([.top, .bottom])
             } else {
@@ -86,7 +87,7 @@ struct AllergyView: View {
 }
 
 struct IntoleranceView: View {
-    let intolerance: [String]?
+    let intolerances: [String]?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -94,8 +95,10 @@ struct IntoleranceView: View {
                 CategoryTitleView(text: "Intolérances", systemImage: "exclamationmark.octagon.fill")
             }
 
-            if let intolerance {
-                Text(intolerance.joined(separator: ", "))
+            if let intolerances, !intolerances.isEmpty {
+                Text("number: \(intolerances.count)")
+
+                Text(intolerances.joined(separator: ", "))
                     .padding([.top, .bottom])
             } else {
                 EmptyListView(

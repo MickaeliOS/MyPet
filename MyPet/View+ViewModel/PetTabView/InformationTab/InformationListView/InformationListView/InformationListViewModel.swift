@@ -12,6 +12,21 @@ import SwiftUI
 
 extension InformationListView {
 
+    enum InformationListViewModelError: Error {
+        case authError
+
+        var description: String {
+            switch self {
+            case .authError:
+                """
+                Oups, une erreur est survenue concernant les notifications.
+                Essayez de redémarrer l'application et/ou d'activer manuellement
+                les notifications dans les paramètres de votre
+                téléphone.
+                """
+            }
+        }
+    }
     @Observable
     final class ViewModel {
         var petPhoto: Image?
@@ -30,12 +45,7 @@ extension InformationListView {
             do {
                 try await center.requestAuthorization(options: [.alert, .sound, .badge])
             } catch {
-                errorMessage = """
-                Oups, une erreur est survenue concernant les notifications.
-                Essayez de redémarrer l'application et/ou d'activer manuellement
-                les notifications dans les paramètres de votre
-                téléphone.
-                """
+                errorMessage = InformationListViewModelError.authError.description
                 showingAlert = true
             }
         }

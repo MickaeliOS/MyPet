@@ -88,9 +88,6 @@ struct AddPetView: View {
                     .focused($focusedField, equals: .race)
             }
             .padding(.bottom)
-            .onTapGesture {
-                hideKeyboard()
-            }
 
             VStack(alignment: .leading, spacing: 20) {
                 Label("Genre", systemImage: "questionmark.circle.fill")
@@ -132,9 +129,6 @@ struct AddPetView: View {
                 .submitLabel(.done)
                 .focused($focusedField, equals: .eyeColor)
         }
-        .onTapGesture {
-            hideKeyboard()
-        }
         .padding(.bottom)
     }
 
@@ -153,9 +147,6 @@ struct AddPetView: View {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 15))
                 .frame(maxWidth: .infinity, maxHeight: 400)
-        }
-        .onTapGesture {
-            hideKeyboard()
         }
         .frame(maxWidth: .infinity)
     }

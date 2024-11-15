@@ -41,8 +41,20 @@ struct EditHealthInformationView: View {
                                 pet.health = Health()
                             }
 
-                            pet.health?.allergies = viewModel.isAllergyListValid() ? viewModel.allergies : nil
-                            pet.health?.intolerances = viewModel.isIntoleranceListValid() ? viewModel.intolerances : nil
+                            if !viewModel.allergies.isEmpty {
+                                viewModel.allergies = viewModel.allergies.removeEmptyElement()
+                                pet.health?.allergies = viewModel.allergies
+                            } else {
+                                pet.health?.allergies = nil
+                            }
+
+                            if !viewModel.intolerances.isEmpty {
+                                viewModel.intolerances = viewModel.intolerances.removeEmptyElement()
+                                pet.health?.intolerances = viewModel.intolerances
+                            } else {
+                                pet.health?.intolerances = nil
+                            }
+
                             if isSterelizedChanged { pet.health?.isSterelized = viewModel.isSterelized }
 
                             dismiss()

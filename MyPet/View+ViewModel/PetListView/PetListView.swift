@@ -12,6 +12,7 @@ struct PetListView: View {
 
     // MARK: - PROPERTY
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
 
     @Query private var pets: [Pet]
 
@@ -28,6 +29,9 @@ struct PetListView: View {
         } else {
             NavigationStack(path: $path) {
                 GeometryReader { geometry in
+                    Color(.bg)
+                        .ignoresSafeArea()
+
                     List {
                         ForEach(pets) { pet in
                             PetView(petPhotoData: pet.information.photo,

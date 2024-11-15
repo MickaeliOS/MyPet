@@ -9,12 +9,12 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-    
+
     // MARK: - PROPERTY
     @Environment(Pet.self) private var pet
     @State private var viewModel = ViewModel()
     @State private var showWeightHistoryView = false
-    
+
     private var gradientColor: LinearGradient {
         LinearGradient(
             gradient: Gradient(
@@ -27,15 +27,15 @@ struct ChartView: View {
             endPoint: .bottom
         )
     }
-    
+
     // MARK: - BODY
     var body: some View {
         @Bindable var pet = pet
-        
+
         NavigationStack {
             GeometryReader { geometry in
                 HideKeyboardView()
-                
+
                 VStack(alignment: .leading) {
                     if let weights = pet.weights, !weights.isEmpty {
                         Chart {
@@ -45,7 +45,7 @@ struct ChartView: View {
                                     y: .value("Poids", weight.weight)
                                 )
                                 .symbol(.circle)
-                                
+
                                 AreaMark(x: .value("Jour", weight.day, unit: .day), y: .value("Poids", weight.weight))
                                     .foregroundStyle(gradientColor)
                             }
@@ -77,51 +77,46 @@ struct ChartView: View {
                         HStack {
                             Image(systemName: "chart.xyaxis.line")
                                 .font(.system(size: 80))
-                            
+
                             Text("Aucun poids enregistré, ajoutez-en un juste en bas.")
                                 .font(.title2)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .foregroundStyle(.gray)
                     }
-                    
+
                     Spacer()
-                    
-                    VStack {
-                        HStack {
+
+                    HStack {
+                        VStack(alignment: .leading) {
                             TextField("Poids en Kg", value: $viewModel.weight, format: .number)
                                 .textFieldStyle(.roundedBorder)
                                 .keyboardType(.numbersAndPunctuation)
                                 .submitLabel(.done)
-                            
-                            DatePicker("Date", selection: $viewModel.day, displayedComponents: .date)
-                                .labelsHidden()
+                                .onSubmit {
+                                    if viewModel.isFormValid {
+                                        addWeight()
+                                    }
+                                }
+
+                            DatePicker("Date :", selection: $viewModel.day, displayedComponents: .date)
                         }
-                        
+                        .frame(width: geometry.size.width * 0.5)
+
                         Button("Ajouter") {
-                            guard let weight = viewModel.weight else {
-                                return
-                            }
-                            
-                            if pet.weights == nil {
-                                pet.weights = []
-                            }
-                            
-                            let newWeight = Weight(day: viewModel.day, weight: weight)
-                            pet.addWeight(weight: newWeight)
-                            viewModel.weight = nil
+                            addWeight()
                         }
-                        .frame(maxWidth: .infinity)
                         .font(.title2)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding()
-                        .background(.blue)
-                        .disabled(!viewModel.isFormValid)
-                        .opacity(viewModel.isFormValid ? 1 : 0.2)
                         .foregroundStyle(.white)
+                        .background(.blue)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
+                    .frame(height: geometry.size.height * 0.12)
                     .padding()
                 }
+                .navigationTitle("Poids")
                 .environment(\.locale, .init(identifier: "fr"))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -135,9 +130,22 @@ struct ChartView: View {
                 .navigationDestination(isPresented: $showWeightHistoryView) {
                     WeightHistoryView()
                 }
-                .navigationTitle("Poids")
             }
         }
+    }
+
+    private func addWeight() {
+        guard let weight = viewModel.weight else {
+            return
+        }
+
+        if pet.weights == nil {
+            pet.weights = []
+        }
+
+        let newWeight = Weight(day: viewModel.day, weight: weight)
+        pet.addWeight(weight: newWeight)
+        viewModel.weight = nil
     }
 }
 
@@ -145,7 +153,7 @@ struct ChartView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-        
+
         return TabView {
             NavigationStack {
                 ChartView()
@@ -158,7 +166,7 @@ struct ChartView: View {
                 )
             }
         }
-        
+
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

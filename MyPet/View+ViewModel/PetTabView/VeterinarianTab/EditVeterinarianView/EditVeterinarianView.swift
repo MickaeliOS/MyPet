@@ -28,7 +28,7 @@ struct EditVeterinarianView: View {
                     TextField("Nom", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).name ?? "")
                         .focused($focusedField, equals: .name)
                         .submitLabel(.next)
-                        .customTextField(with: Image(systemName: "person"))
+                        .customTextField(with: Image(systemName: "person.fill"))
 
                     TextField("Adresse", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).address ?? "")
                         .focused($focusedField, equals: .address)
@@ -50,7 +50,9 @@ struct EditVeterinarianView: View {
                 .padding()
                 .frame(maxHeight: .infinity, alignment: .topLeading)
                 .onSubmit {
-                    focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
+                    if focusedField != .website {
+                        focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
+                    }
                 }
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
@@ -64,7 +66,7 @@ struct EditVeterinarianView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Sauvegarder") {
+                        Button("Terminer") {
                             dismiss()
                         }
                     }
