@@ -1,5 +1,5 @@
 //
-//  MedicineView.swift
+//  MedicineListView.swift
 //  MyPet
 //
 //  Created by Mickaël Horn on 09/09/2024.
@@ -8,12 +8,15 @@
 import SwiftUI
 import SwiftData
 
-struct MedicineView: View {
+struct MedicineListView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
+    @Environment(\.modelContext) private var modelContext
+
     @State private var isPresentingEditMedicineView = false
     @State private var path = NavigationPath()
+    @State private var viewModel = ViewModel()
 
     var sortedMedicineList: [Medicine] {
         if let medicineList = pet.medicine, !medicineList.isEmpty {
@@ -25,7 +28,7 @@ struct MedicineView: View {
         }
     }
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack(path: $path) {
             VStack(alignment: .leading) {
@@ -39,8 +42,12 @@ struct MedicineView: View {
                                 .listRowSeparator(.hidden)
                         }
                         .onDelete {
-                            pet.deleteNotifications(with: sortedMedicineList, offsets: $0)
-                            pet.deleteMedicineFromOffSets(with: sortedMedicineList, offsets: $0)
+                            viewModel.deleteMedicine(
+                                pet: pet,
+                                context: modelContext,
+                                sortedMedicineList: sortedMedicineList,
+                                offsets: $0
+                            )
                         }
                     }
                     .listStyle(.plain)
@@ -77,6 +84,11 @@ struct MedicineView: View {
             .sheet(isPresented: $isPresentingEditMedicineView) {
                 AddMedicineView()
             }
+            .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
+            }
         }
     }
 }
@@ -88,8 +100,9 @@ struct MedicineView: View {
 
         return TabView {
             NavigationStack {
-                MedicineView()
+                MedicineListView()
             }
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
             .tabItem {
                 Label(

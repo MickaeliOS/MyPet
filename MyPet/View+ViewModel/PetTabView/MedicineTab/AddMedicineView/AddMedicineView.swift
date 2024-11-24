@@ -9,14 +9,18 @@ import SwiftUI
 
 struct AddMedicineView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     @State private var viewModel = ViewModel()
     @State private var scrollToEnd = false
 
-    // MARK: - BODY
+    private let center = UNUserNotificationCenter.current()
+    private let notificationHelper = NotificationHelper()
+
+    // MARK: BODY
     var body: some View {
         @Bindable var pet = pet
 
@@ -37,26 +41,37 @@ struct AddMedicineView: View {
                         .toolbar {
                             ToolbarItem(placement: .topBarTrailing) {
                                 Button("Sauvegarder") {
+                                    let medicineCopy = pet.medicine
+
                                     if var medicine = viewModel.createMedicineFlow() {
                                         if pet.medicine == nil {
                                             pet.medicine = []
                                         }
 
                                         Task {
-                                            await viewModel.scheduleNotificationsFlow(
-                                                medicine: medicine,
-                                                petName: pet.information.name
-                                            )
+                                            if await notificationHelper.areNotificationsAuthorized() {
+                                                await viewModel.scheduleNotificationsFlow(
+                                                    medicine: medicine,
+                                                    petName: pet.information.name
+                                                )
 
-                                            medicine.notificationIDs = viewModel.notificationIDs
+                                                medicine.notificationIDs = viewModel.notificationIDs
+                                            }
+
                                             pet.medicine?.append(medicine)
-                                            dismiss()
+
+                                            if viewModel.savePet(context: modelContext) {
+                                                dismiss()
+                                            } else {
+                                                viewModel.deleteNotifications()
+                                                pet.medicine = medicineCopy
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
-                        .alert("Erreur", isPresented: $viewModel.showingAlert) {
+                        .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
                             Button("OK") { }
                         } message: {
                             Text(viewModel.errorMessage)
@@ -174,10 +189,12 @@ struct MedicineFrequencyView: View {
                         .keyboardType(.numberPad)
                         .focused($durationIsFocused)
                         .toolbar {
-                            ToolbarItemGroup(placement: .keyboard) {
-                                Spacer()
-                                Button("terminé") {
-                                    durationIsFocused = false
+                            if durationIsFocused {
+                                ToolbarItemGroup(placement: .keyboard) {
+                                    Spacer()
+                                    Button("terminé") {
+                                        durationIsFocused = false
+                                    }
                                 }
                             }
                         }
@@ -289,6 +306,7 @@ struct MedicineSchedulesView: View {
         let previewer = try Previewer()
 
         return AddMedicineView()
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
 
     } catch {

@@ -8,6 +8,8 @@
 import Foundation
 
 extension Array where Element == String {
+
+    // MARK: FUNCTION
     func removeEmptyElement() -> Array {
         self.filter { !$0.isEmpty }
     }

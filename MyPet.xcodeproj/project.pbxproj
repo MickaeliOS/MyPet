@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -35,6 +35,7 @@
 		83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */; };
 		83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */; };
 		83B0076D2CE6624800247383 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B0076C2CE6624800247383 /* ArrayExtension.swift */; };
+		83B699502CEE37F800AB80D9 /* SwiftDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */; };
 		83BA03F42C7379F100391642 /* PetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetTabView.swift */; };
 		83BA04002C7762E200391642 /* EditInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03FF2C7762E200391642 /* EditInformationView.swift */; };
 		83BA04022C77656900391642 /* Favorite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA04012C77656900391642 /* Favorite.swift */; };
@@ -49,7 +50,7 @@
 		83CD7E6F2C8890560091FB50 /* AddMedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */; };
 		83CD7E762C8894E40091FB50 /* EditListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E752C8894E40091FB50 /* EditListView.swift */; };
 		83CD7E782C889C1B0091FB50 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E772C889C1B0091FB50 /* EmptyListView.swift */; };
-		83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E812C8F201C0091FB50 /* MedicineView.swift */; };
+		83CD7E822C8F201C0091FB50 /* MedicineListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E812C8F201C0091FB50 /* MedicineListView.swift */; };
 		83CD7E842C8F208D0091FB50 /* MedicineCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */; };
 		83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */; };
 		83CD7EA12C9311BE0091FB50 /* Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83CD7EA02C9311BE0091FB50 /* Health.swift */; };
@@ -62,9 +63,21 @@
 		83D15E7C2CDBC85E0007ADC1 /* NotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */; };
 		83D441442C7E171B00EBAEDB /* InformationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */; };
 		83D441462C809CFA00EBAEDB /* OptionalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D441452C809CFA00EBAEDB /* OptionalExtension.swift */; };
+		83E0FAA62CEF7B84004339E7 /* PetListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0FAA52CEF7B84004339E7 /* PetListViewModel.swift */; };
+		83E0FAA82CEF7DEC004339E7 /* MedicineListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E0FAA72CEF7DEC004339E7 /* MedicineListViewModel.swift */; };
 		83E912CD2CC9456F00A18A19 /* EditInformationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E912CC2CC9456F00A18A19 /* EditInformationListView.swift */; };
 		83E912CF2CC9470000A18A19 /* EditInformationListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		839D65FE2CE8DF970057E2CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 83636B812C5BCE7B004E1EE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83636B882C5BCE7B004E1EE5;
+			remoteInfo = MyPet;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		830DC6922C650D53000A0698 /* Previewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Previewer.swift; sourceTree = "<group>"; };
@@ -83,6 +96,7 @@
 		83636BA42C5BCF1D004E1EE5 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
 		8383B3782CB699E10040F440 /* WeightHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightHistoryView.swift; sourceTree = "<group>"; };
 		8383B37C2CB815390040F440 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		839D65FA2CE8DF970057E2CF /* MyPetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		83A02EB42C99D070003360A4 /* CalendarExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarExtension.swift; sourceTree = "<group>"; };
 		83A02EB62CA174C7003360A4 /* ModelContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelContext.swift; sourceTree = "<group>"; };
 		83A02EB82CA2DEAC003360A4 /* EditVeterinarianView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVeterinarianView.swift; sourceTree = "<group>"; };
@@ -96,6 +110,7 @@
 		83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickDividerView.swift; sourceTree = "<group>"; };
 		83B0076C2CE6624800247383 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
+		83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataHelper.swift; sourceTree = "<group>"; };
 		83BA03F32C7379F100391642 /* PetTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabView.swift; sourceTree = "<group>"; };
 		83BA03FF2C7762E200391642 /* EditInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationView.swift; sourceTree = "<group>"; };
 		83BA04012C77656900391642 /* Favorite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favorite.swift; sourceTree = "<group>"; };
@@ -110,7 +125,7 @@
 		83CD7E6E2C8890560091FB50 /* AddMedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineView.swift; sourceTree = "<group>"; };
 		83CD7E752C8894E40091FB50 /* EditListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditListView.swift; sourceTree = "<group>"; };
 		83CD7E772C889C1B0091FB50 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
-		83CD7E812C8F201C0091FB50 /* MedicineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineView.swift; sourceTree = "<group>"; };
+		83CD7E812C8F201C0091FB50 /* MedicineListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineListView.swift; sourceTree = "<group>"; };
 		83CD7E832C8F208D0091FB50 /* MedicineCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineCardView.swift; sourceTree = "<group>"; };
 		83CD7E892C8F315C0091FB50 /* AddMedicineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMedicineViewModel.swift; sourceTree = "<group>"; };
 		83CD7EA02C9311BE0091FB50 /* Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Health.swift; sourceTree = "<group>"; };
@@ -123,12 +138,25 @@
 		83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationHelper.swift; sourceTree = "<group>"; };
 		83D441432C7E171B00EBAEDB /* InformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationListViewModel.swift; sourceTree = "<group>"; };
 		83D441452C809CFA00EBAEDB /* OptionalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionalExtension.swift; sourceTree = "<group>"; };
+		83E0FAA52CEF7B84004339E7 /* PetListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetListViewModel.swift; sourceTree = "<group>"; };
+		83E0FAA72CEF7DEC004339E7 /* MedicineListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicineListViewModel.swift; sourceTree = "<group>"; };
 		83E912CC2CC9456F00A18A19 /* EditInformationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationListView.swift; sourceTree = "<group>"; };
 		83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		839D65FB2CE8DF970057E2CF /* MyPetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MyPetTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		83636B862C5BCE7B004E1EE5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		839D65F72CE8DF970057E2CF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -243,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				835517172C60D882006D111B /* PetListView.swift */,
+				83E0FAA52CEF7B84004339E7 /* PetListViewModel.swift */,
 			);
 			path = PetListView;
 			sourceTree = "<group>";
@@ -251,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				83636B8B2C5BCE7B004E1EE5 /* MyPet */,
+				839D65FB2CE8DF970057E2CF /* MyPetTests */,
 				83636B8A2C5BCE7B004E1EE5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -259,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				83636B892C5BCE7B004E1EE5 /* MyPet.app */,
+				839D65FA2CE8DF970057E2CF /* MyPetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,10 +299,10 @@
 			children = (
 				835517192C6253E5006D111B /* Model */,
 				83636BA62C5BD1FF004E1EE5 /* View+ViewModel */,
-				83636B942C5BCE7D004E1EE5 /* Preview Content */,
-				83636BA72C5BD212004E1EE5 /* MainFile */,
 				830DC6912C650D46000A0698 /* Utility */,
 				8355171F2C626E9E006D111B /* Extension */,
+				83636BA72C5BD212004E1EE5 /* MainFile */,
+				83636B942C5BCE7D004E1EE5 /* Preview Content */,
 			);
 			path = MyPet;
 			sourceTree = "<group>";
@@ -421,7 +452,8 @@
 		83CD7E802C8F20040091FB50 /* MedicineView */ = {
 			isa = PBXGroup;
 			children = (
-				83CD7E812C8F201C0091FB50 /* MedicineView.swift */,
+				83CD7E812C8F201C0091FB50 /* MedicineListView.swift */,
+				83E0FAA72CEF7DEC004339E7 /* MedicineListViewModel.swift */,
 			);
 			path = MedicineView;
 			sourceTree = "<group>";
@@ -476,6 +508,7 @@
 			children = (
 				83D15E752CD282D70007ADC1 /* PhotoPickerCenter.swift */,
 				83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */,
+				83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -519,6 +552,29 @@
 			productReference = 83636B892C5BCE7B004E1EE5 /* MyPet.app */;
 			productType = "com.apple.product-type.application";
 		};
+		839D65F92CE8DF970057E2CF /* MyPetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 839D66002CE8DF970057E2CF /* Build configuration list for PBXNativeTarget "MyPetTests" */;
+			buildPhases = (
+				839D65F62CE8DF970057E2CF /* Sources */,
+				839D65F72CE8DF970057E2CF /* Frameworks */,
+				839D65F82CE8DF970057E2CF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				839D65FF2CE8DF970057E2CF /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				839D65FB2CE8DF970057E2CF /* MyPetTests */,
+			);
+			name = MyPetTests;
+			packageProductDependencies = (
+			);
+			productName = MyPetTests;
+			productReference = 839D65FA2CE8DF970057E2CF /* MyPetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -526,11 +582,16 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					83636B882C5BCE7B004E1EE5 = {
 						CreatedOnToolsVersion = 15.4;
+					};
+					839D65F92CE8DF970057E2CF = {
+						CreatedOnToolsVersion = 16.1;
+						LastSwiftMigration = 1610;
+						TestTargetID = 83636B882C5BCE7B004E1EE5;
 					};
 				};
 			};
@@ -548,6 +609,7 @@
 			projectRoot = "";
 			targets = (
 				83636B882C5BCE7B004E1EE5 /* MyPet */,
+				839D65F92CE8DF970057E2CF /* MyPetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -560,6 +622,13 @@
 				8383B37D2CB815390040F440 /* LaunchScreen.storyboard in Resources */,
 				83636B962C5BCE7D004E1EE5 /* Preview Assets.xcassets in Resources */,
 				83636B932C5BCE7D004E1EE5 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		839D65F82CE8DF970057E2CF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -607,9 +676,11 @@
 				83D15E782CD3B0AF0007ADC1 /* HideKeyboardView.swift in Sources */,
 				83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */,
 				83D15E7C2CDBC85E0007ADC1 /* NotificationHelper.swift in Sources */,
-				83CD7E822C8F201C0091FB50 /* MedicineView.swift in Sources */,
+				83CD7E822C8F201C0091FB50 /* MedicineListView.swift in Sources */,
 				8316B69A2C99B80100CCD571 /* MedicineDetailView.swift in Sources */,
+				83E0FAA62CEF7B84004339E7 /* PetListViewModel.swift in Sources */,
 				83A02EB72CA174C7003360A4 /* ModelContext.swift in Sources */,
+				83E0FAA82CEF7DEC004339E7 /* MedicineListViewModel.swift in Sources */,
 				835517212C626EAC006D111B /* StringExtension.swift in Sources */,
 				83CD7E632C85FC070091FB50 /* Medicine.swift in Sources */,
 				83B0076D2CE6624800247383 /* ArrayExtension.swift in Sources */,
@@ -633,6 +704,7 @@
 				83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */,
 				8355171B2C6253F2006D111B /* Identification.swift in Sources */,
 				83CD7E782C889C1B0091FB50 /* EmptyListView.swift in Sources */,
+				83B699502CEE37F800AB80D9 /* SwiftDataHelper.swift in Sources */,
 				83A02EC02CA2ED84003360A4 /* Weight.swift in Sources */,
 				83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
@@ -648,7 +720,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		839D65F62CE8DF970057E2CF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		839D65FF2CE8DF970057E2CF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83636B882C5BCE7B004E1EE5 /* MyPet */;
+			targetProxy = 839D65FE2CE8DF970057E2CF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		83636B972C5BCE7D004E1EE5 /* Debug */ = {
@@ -837,6 +924,47 @@
 			};
 			name = Release;
 		};
+		839D66012CE8DF970057E2CF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UF8VBT3FGJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mickaelhorn.MyPetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyPet";
+			};
+			name = Debug;
+		};
+		839D66022CE8DF970057E2CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = UF8VBT3FGJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mickaelhorn.MyPetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyPet.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyPet";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -854,6 +982,15 @@
 			buildConfigurations = (
 				83636B9A2C5BCE7D004E1EE5 /* Debug */,
 				83636B9B2C5BCE7D004E1EE5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		839D66002CE8DF970057E2CF /* Build configuration list for PBXNativeTarget "MyPetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				839D66012CE8DF970057E2CF /* Debug */,
+				839D66022CE8DF970057E2CF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HideKeyboardView: View {
+
+    // MARK: BODY
     var body: some View {
         Color.clear
             .contentShape(Rectangle())
@@ -17,6 +19,7 @@ struct HideKeyboardView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     HideKeyboardView()
 }

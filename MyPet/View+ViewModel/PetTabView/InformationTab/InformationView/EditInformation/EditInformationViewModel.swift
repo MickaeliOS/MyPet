@@ -6,14 +6,40 @@
 //
 
 import Foundation
+import SwiftData
 
 extension EditInformationView {
 
+    // MARK: - ENUM
+    enum FocusedField {
+        case name
+        case type
+        case race
+        case color
+        case eyeColor
+        case chip
+        case chipLocation
+        case tatoo
+        case tatooLocation
+        case toy
+        case food
+        case place
+    }
+
+    // MARK: - VIEW MODEL
     @Observable
     final class ViewModel {
+
+        // MARK: PROPERTY
         let sampleIdentification = Identification(chip: nil, chipLocation: nil, tatoo: nil, tatooLocation: nil)
         let sampleFavorite = Favorite(toy: nil, food: nil, place: nil)
 
+        var identification: Identification?
+        var favorite: Favorite?
+        var errorMessage = ""
+        var showingAlert = false
+
+        // MARK: FUNCTION
         func nextField(focusedField: FocusedField) -> FocusedField {
             let transitions: [FocusedField: FocusedField] = [
                 .name: .type,
@@ -32,20 +58,24 @@ extension EditInformationView {
 
             return transitions[focusedField] ?? .name
         }
-    }
 
-    enum FocusedField {
-        case name
-        case type
-        case race
-        case color
-        case eyeColor
-        case chip
-        case chipLocation
-        case tatoo
-        case tatooLocation
-        case toy
-        case food
-        case place
+        func savePet(pet: Pet, context: ModelContext, undoManager: UndoManager?) -> Bool {
+            let identificationCopy = pet.identification
+            let favoriteCopy = pet.favorite
+
+            pet.identification = identification
+            pet.favorite = favorite
+
+            do {
+                try SwiftDataHelper.save(with: context)
+                return true
+            } catch {
+                pet.identification = identificationCopy
+                pet.favorite = favoriteCopy
+                errorMessage = error.description
+                showingAlert = true
+                return false
+            }
+        }
     }
 }

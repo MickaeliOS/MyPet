@@ -11,12 +11,12 @@ import SwiftData
 @MainActor
 final class Previewer {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     let container: ModelContainer
     let firstPet: Pet
     let secondPet: Pet
 
-    // MARK: - INIT
+    // MARK: INIT
     init() throws {
         let config = ModelConfiguration(isStoredInMemoryOnly: true)
         container = try ModelContainer(for: Pet.self, configurations: config)

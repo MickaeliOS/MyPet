@@ -12,6 +12,7 @@ import SwiftUI
 
 extension InformationListView {
 
+    // MARK: - ENUM
     enum InformationListViewModelError: Error {
         case authError
 
@@ -27,12 +28,17 @@ extension InformationListView {
             }
         }
     }
+
+    // MARK: - VIEW MODEL
     @Observable
     final class ViewModel {
+
+        // MARK: PROPERTY
         var petPhoto: Image?
         var errorMessage = ""
         var showingAlert = false
 
+        // MARK: FUNCTION
         func getGender(gender: Information.Gender) -> String {
             return gender == .male ? "male" :
             gender == .female ? "female" :

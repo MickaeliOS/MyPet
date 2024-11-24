@@ -8,8 +8,10 @@
 import Foundation
 import UserNotifications
 import UIKit
+import SwiftData
 
 extension AddMedicineView {
+
     // MARK: - ENUM
     enum FocusedField {
         case name
@@ -53,6 +55,7 @@ extension AddMedicineView {
         let today = Calendar.current.startOfDay(for: Date.now)
         let userDefault = UserDefaults.standard
         private let center = UNUserNotificationCenter.current()
+        private let notificationHelper = NotificationHelper()
 
         // MARK: FUNCTION
         func createMedicineFlow() -> Medicine? {
@@ -118,12 +121,6 @@ extension AddMedicineView {
         }
 
         func scheduleNotificationsFlow(medicine: Medicine, petName: String) async {
-            let settings = await center.notificationSettings()
-
-            guard settings.authorizationStatus == .authorized || settings.authorizationStatus == .ephemeral else {
-                return
-            }
-
             let pendingNotifications = await center.pendingNotificationRequests()
 
             guard let medicineDates = medicine.dates else {
@@ -147,6 +144,7 @@ extension AddMedicineView {
                 // ID
                 let id = UUID().uuidString
 
+                // We must be sure that the badge count is in order
                 if await isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications) {
                     await addGreaterDateNotification(id: id, content: content, trigger: trigger)
                 } else {
@@ -162,6 +160,21 @@ extension AddMedicineView {
             ]
 
             return transitions[focusedField] ?? .name
+        }
+
+        func savePet(context: ModelContext) -> Bool {
+            do {
+                try SwiftDataHelper.save(with: context)
+                return true
+            } catch {
+                errorMessage = error.description
+                showingAlert = true
+                return false
+            }
+        }
+
+        func deleteNotifications() {
+            center.removePendingNotificationRequests(withIdentifiers: notificationIDs)
         }
 
         // MARK: PRIVATE FUNCTION
@@ -254,13 +267,14 @@ extension AddMedicineView {
             date: Date,
             trigger: UNCalendarNotificationTrigger
         ) async {
-            center.removeAllPendingNotificationRequests()
             userDefault.set(0, forKey: "badgeCount")
 
-            var notificationsTransit = await NotificationHelper.convertPendingNotification()
+            var notificationsTransit = await notificationHelper.convertPendingNotification()
             let newNotification = NotificationTransit(identifier: id, content: content, date: date, trigger: trigger)
             notificationsTransit.append(newNotification)
             let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
+
+            center.removeAllPendingNotificationRequests()
 
             for sortedNotification in sortedNotifications {
                 // New Content

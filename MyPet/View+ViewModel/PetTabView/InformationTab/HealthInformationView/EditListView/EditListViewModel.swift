@@ -9,15 +9,7 @@ import Foundation
 
 extension EditListView {
 
-    @Observable
-    final class ViewModel {
-        var dataType: DataType
-
-        init(dataType: DataType) {
-            self.dataType = dataType
-        }
-    }
-
+    // MARK: - ENUM
     enum DataType: String {
         case allergy = "Allergies"
         case intolerance = "Intolérances"
@@ -29,6 +21,16 @@ extension EditListView {
             case .intolerance:
                 "exclamationmark.octagon.fill"
             }
+        }
+    }
+
+    // MARK: - VIEW MODEL
+    @Observable
+    final class ViewModel {
+        var dataType: DataType
+
+        init(dataType: DataType) {
+            self.dataType = dataType
         }
     }
 }

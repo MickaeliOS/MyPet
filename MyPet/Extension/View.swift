@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 extension View {
+
+    // MARK: FUNCTION
     func customTextField(with icon: Image) -> some View {
         modifier(CustomTextField(icon: icon))
     }

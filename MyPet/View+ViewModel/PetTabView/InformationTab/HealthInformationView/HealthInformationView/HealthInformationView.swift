@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct HealthInformationView: View {
+
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @State private var showEditHealthInformations = false
 
+    // MARK: BODY
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 40) {
@@ -70,7 +73,6 @@ struct AllergyView: View {
             }
 
             if let allergies, !allergies.isEmpty {
-                Text("number: \(allergies.count)")
                 Text(allergies.joined(separator: ", "))
                     .padding([.top, .bottom])
             } else {
@@ -96,8 +98,6 @@ struct IntoleranceView: View {
             }
 
             if let intolerances, !intolerances.isEmpty {
-                Text("number: \(intolerances.count)")
-
                 Text(intolerances.joined(separator: ", "))
                     .padding([.top, .bottom])
             } else {
@@ -128,6 +128,7 @@ struct IntoleranceView: View {
                     systemImage: PetTabView.Category.infos.imageName
                 )
             }
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
         }
     } catch {

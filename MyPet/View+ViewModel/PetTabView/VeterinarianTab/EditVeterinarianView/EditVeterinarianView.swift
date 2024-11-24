@@ -9,39 +9,38 @@ import SwiftUI
 
 struct EditVeterinarianView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
 
     @FocusState private var focusedField: FocusedField?
     @State private var viewModel = ViewModel()
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
-        @Bindable var pet = pet
-
         NavigationStack {
             ZStack {
                 HideKeyboardView()
 
                 VStack {
-                    TextField("Nom", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).name ?? "")
+                    TextField("Nom", text: ($viewModel.veterinarian ?? viewModel.sampleVeterinarian).name ?? "")
                         .focused($focusedField, equals: .name)
                         .submitLabel(.next)
                         .customTextField(with: Image(systemName: "person.fill"))
 
-                    TextField("Adresse", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).address ?? "")
+                    TextField("Adresse", text: ($viewModel.veterinarian ?? viewModel.sampleVeterinarian).address ?? "")
                         .focused($focusedField, equals: .address)
                         .submitLabel(.next)
                         .customTextField(with: Image(systemName: "mappin.circle.fill"))
 
-                    TextField("Téléphone", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).phone ?? "")
+                    TextField("Téléphone", text: ($viewModel.veterinarian ?? viewModel.sampleVeterinarian).phone ?? "")
                         .focused($focusedField, equals: .phone)
                         .submitLabel(.next)
                         .keyboardType(.phonePad)
                         .customTextField(with: Image(systemName: "phone.fill"))
 
-                    TextField("Site web", text: ($pet.veterinarian ?? viewModel.sampleVeterinarian).website ?? "")
+                    TextField("Site web", text: ($viewModel.veterinarian ?? viewModel.sampleVeterinarian).website ?? "")
                         .focused($focusedField, equals: .website)
                         .submitLabel(.done)
                         .customTextField(with: Image(systemName: "globe"))
@@ -66,10 +65,20 @@ struct EditVeterinarianView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button("Terminer") {
-                            dismiss()
+                        Button("Sauvegarder") {
+                            if viewModel.savePet(pet: pet, context: modelContext) {
+                                dismiss()
+                            }
                         }
                     }
+                }
+                .onAppear {
+                    viewModel.veterinarian = pet.veterinarian
+                }
+                .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.errorMessage)
                 }
             }
         }
@@ -82,6 +91,7 @@ struct EditVeterinarianView: View {
         let previewer = try Previewer()
 
         return EditVeterinarianView()
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
 
     } catch {

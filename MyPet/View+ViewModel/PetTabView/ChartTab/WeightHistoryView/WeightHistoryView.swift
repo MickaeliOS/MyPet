@@ -9,11 +9,11 @@ import SwiftUI
 
 struct WeightHistoryView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack {
             Group {
@@ -49,6 +49,7 @@ struct WeightHistoryView: View {
 
         return NavigationStack {
             WeightHistoryView()
+                .modelContainer(previewer.container)
                 .environment(previewer.firstPet)
         }
     } catch {

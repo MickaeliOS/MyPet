@@ -76,7 +76,6 @@ extension Pet {
             }
 
             notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
-            notificationCenter.removeDeliveredNotifications(withIdentifiers: notificationIDs)
         })
     }
 

@@ -13,7 +13,8 @@ struct EditInformationListView: View {
     // MARK: - PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
-
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.undoManager) var undoManager
     @FocusState private var focusedField: FocusedField?
 
     @State private var viewModel = ViewModel()
@@ -21,16 +22,14 @@ struct EditInformationListView: View {
 
     // MARK: - BODY
     var body: some View {
-        @Bindable var pet = pet
-
         NavigationStack {
             ScrollView {
                 ZStack {
                     HideKeyboardView()
 
                     VStack(alignment: .leading) {
-                        principalInformationsView(pet: $pet)
-                        colorInformationsView(pet: $pet)
+                        principalInformationsView()
+                        colorInformationsView()
                         photoView()
                     }
                     .onChange(of: photoPickerCenter.item) {
@@ -39,13 +38,18 @@ struct EditInformationListView: View {
                                 return
                             }
 
-                            pet.information.photo = photo
+                            viewModel.information?.photo = photo
                         }
                     }
                     .onSubmit {
                         if focusedField != .eyeColor {
                             focusedField = viewModel.nextField(focusedField: focusedField ?? .name)
                         }
+                    }
+                    .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                        Button("OK") { }
+                    } message: {
+                        Text(viewModel.errorMessage)
                     }
                     .alert("Une erreur est survenue.", isPresented: $photoPickerCenter.showingAlert) {
                         Button("OK") { }
@@ -57,33 +61,38 @@ struct EditInformationListView: View {
             .navigationTitle("Modifier l'animal")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Terminer") {
-                        dismiss()
+                    Button("Sauvegarder") {
+                        if viewModel.savePet(pet: pet, context: modelContext, undoManager: undoManager) {
+                            dismiss()
+                        }
                     }
                 }
             }
             .padding()
         }
+        .onAppear {
+            viewModel.information = pet.information
+        }
     }
 
     // MARK: - VIEWBUILDER
-    @ViewBuilder private func principalInformationsView(pet: Bindable<Pet>) -> some View {
+    @ViewBuilder private func principalInformationsView() -> some View {
         VStack(alignment: .leading) {
             CategoryTitleView(text: "Informations", systemImage: "info.square.fill")
                 .padding(.top)
 
             VStack(alignment: .leading) {
-                TextField("Nom", text: pet.information.name)
+                TextField("Nom", text: ($viewModel.information ?? viewModel.sampleInformation).name)
                     .customTextField(with: Image(systemName: "person.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .name)
 
-                TextField("Type", text: pet.information.type)
+                TextField("Type", text: ($viewModel.information ?? viewModel.sampleInformation).type)
                     .customTextField(with: Image(systemName: "pawprint.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .type)
 
-                TextField("Race", text: pet.information.race)
+                TextField("Race", text: ($viewModel.information ?? viewModel.sampleInformation).race)
                     .customTextField(with: Image(systemName: "questionmark.circle.fill"))
                     .submitLabel(.next)
                     .focused($focusedField, equals: .race)
@@ -95,7 +104,7 @@ struct EditInformationListView: View {
                     .imageScale(.large)
                     .font(.title3)
 
-                Picker("Genre", selection: pet.information.gender) {
+                Picker("Genre", selection: ($viewModel.information ?? viewModel.sampleInformation).gender) {
                     ForEach(Information.Gender.allCases, id: \.self) { gender in
                         Text(gender.rawValue)
                     }
@@ -109,23 +118,27 @@ struct EditInformationListView: View {
 
                     Spacer()
 
-                    DatePicker("Date de naissance", selection: pet.information.birthdate, displayedComponents: [.date])
-                        .bold()
-                        .labelsHidden()
+                    DatePicker(
+                        "Date de naissance",
+                        selection: ($viewModel.information ?? viewModel.sampleInformation).birthdate,
+                        displayedComponents: [.date]
+                    )
+                    .bold()
+                    .labelsHidden()
                 }
             }
         }
         .padding(.bottom)
     }
 
-    @ViewBuilder private func colorInformationsView(pet: Bindable<Pet>) -> some View {
+    @ViewBuilder private func colorInformationsView() -> some View {
         VStack {
-            TextField("Couleur", text: pet.information.color)
+            TextField("Couleur", text: ($viewModel.information ?? viewModel.sampleInformation).color)
                 .customTextField(with: Image(systemName: "paintpalette.fill"))
                 .submitLabel(.next)
                 .focused($focusedField, equals: .color)
 
-            TextField("Couleur des yeux", text: pet.information.eyeColor)
+            TextField("Couleur des yeux", text: ($viewModel.information ?? viewModel.sampleInformation).eyeColor)
                 .customTextField(with: Image(systemName: "eye.fill"))
                 .submitLabel(.done)
                 .focused($focusedField, equals: .eyeColor)
@@ -159,8 +172,8 @@ struct EditInformationListView: View {
         let previewer = try Previewer()
 
         return EditInformationListView()
-            .environment(previewer.firstPet)
-
+                .modelContainer(previewer.container)
+                .environment(previewer.firstPet)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

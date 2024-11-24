@@ -19,6 +19,17 @@ extension AddPetView {
         case eyeColor
     }
 
+    enum AddPetViewModelError: Error {
+        case invalidFields
+
+        var description: String {
+            switch self {
+            case .invalidFields:
+                "Veuillez vérifier que tous les champs sont correctement remplis."
+            }
+        }
+    }
+
     // MARK: - VIEWMODEL
     @Observable
     final class ViewModel {
@@ -32,16 +43,12 @@ extension AddPetView {
         var eyeColor = ""
         var color = ""
         var photo: Data?
+        var errorMessage = ""
+        var showingAlert = false
 
         // MARK: FUNCTIONS
         var isFormValid: Bool {
-            (
-                name.isReallyEmpty ||
-                race.isReallyEmpty ||
-                type.isReallyEmpty ||
-                eyeColor.isReallyEmpty ||
-                color.isReallyEmpty
-            )
+            String.areStringsValid(strings: name, race, type, eyeColor, color)
         }
 
         func nextField(focusedField: FocusedField) -> FocusedField {
@@ -55,7 +62,13 @@ extension AddPetView {
             return transitions[focusedField] ?? .name
         }
 
-        func addPet(modelContext: ModelContext) {
+        func addPet(modelContext: ModelContext) -> Bool {
+            guard isFormValid else {
+                errorMessage = AddPetViewModelError.invalidFields.description
+                showingAlert = true
+                return false
+            }
+
             let information = Information(
                 name: name,
                 gender: gender,
@@ -68,6 +81,16 @@ extension AddPetView {
             )
 
             modelContext.insert(Pet(information: information))
+
+            do {
+                try SwiftDataHelper.save(with: modelContext)
+                return true
+            } catch {
+                modelContext.rollback()
+                errorMessage = error.description
+                showingAlert = true
+                return false
+            }
         }
     }
 }

@@ -131,6 +131,7 @@ struct FavoriteView: View {
                 InformationView()
             }
         }
+        .modelContainer(previewer.container)
         .environment(previewer.firstPet)
 
     } catch {

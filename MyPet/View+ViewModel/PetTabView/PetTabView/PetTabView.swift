@@ -24,7 +24,7 @@ struct PetTabView: View {
                     )
                 }
 
-            MedicineView()
+            MedicineListView()
                 .tabItem {
                     Label(
                         Category.health.rawValue,
@@ -82,6 +82,7 @@ extension PetTabView {
         return
             PetTabView(showPetTabView: .constant(true))
                 .environment(previewer.firstPet)
+                .modelContainer(previewer.container)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

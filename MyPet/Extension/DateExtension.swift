@@ -8,6 +8,8 @@
 import Foundation
 
 extension Date {
+
+    // MARK: PROPERTY
     var dateToStringDMY: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd/MM/yyyy"

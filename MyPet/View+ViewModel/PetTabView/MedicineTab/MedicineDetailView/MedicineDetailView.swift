@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MedicineDetailView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @State private var daysLeft: Int?
 
     let medicine: Medicine
@@ -19,7 +19,7 @@ struct MedicineDetailView: View {
         GridItem(.flexible(), spacing: 10)
     ]
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 30) {
@@ -120,6 +120,7 @@ struct MedicineDetailView: View {
             NavigationStack {
                 MedicineDetailView(medicine: Medicine.sampleMedicine)
             }
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
             .tabItem {
                 Label(

@@ -9,18 +9,18 @@ import SwiftUI
 
 struct EmptyListView: View {
 
-    // MARK: - ENUM
+    // MARK: ENUM
     enum Orientation {
         case vertical
         case horizontal
     }
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     private let emptyListMessage: String
     private let messageFontSize: Font
     private let orientation: Orientation
 
-    // MARK: - INIT
+    // MARK: INIT
     init(
         emptyListMessage: String,
         messageFontSize: Font,
@@ -31,7 +31,7 @@ struct EmptyListView: View {
         self.orientation = orientation
     }
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         switch orientation {
         case .vertical:

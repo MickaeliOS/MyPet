@@ -8,6 +8,8 @@
 import Foundation
 
 extension Calendar {
+
+    // MARK: FUNCTION
     func numberOfDaysBetween(_ today: Date, and endDate: Date, from timeZone: TimeZone) -> Int? {
         var components = DateComponents()
         components.calendar = .current

@@ -9,12 +9,12 @@ import SwiftUI
 
 struct EditListView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @State var viewModel: ViewModel
     @State private var scrollToEnd = false
     @Binding var list: [String]
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack {
             ScrollViewReader { scrollViewProxy in
@@ -104,6 +104,7 @@ struct EditListView: View {
         return EditListView(
             viewModel: EditListView.ViewModel(dataType: .allergy), list: .constant([])
         )
+        .modelContainer(previewer.container)
         .environment(previewer.firstPet)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")

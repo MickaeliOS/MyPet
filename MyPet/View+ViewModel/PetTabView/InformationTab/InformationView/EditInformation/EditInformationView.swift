@@ -9,26 +9,26 @@ import SwiftUI
 
 struct EditInformationView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
+    @Environment(\.modelContext) private var modelContext
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.undoManager) private var undoManager
 
     @FocusState private var focusedField: FocusedField?
 
-    private let viewModel = ViewModel()
+    @State private var viewModel = ViewModel()
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
-        @Bindable var pet = pet
-
         NavigationStack {
             ScrollView {
                 ZStack {
                     HideKeyboardView()
 
                     VStack(alignment: .leading) {
-                        identificationView(pet: $pet)
-                        favoriteView(pet: $pet)
+                        identificationView()
+                        favoriteView()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding([.leading, .trailing])
@@ -42,22 +42,33 @@ struct EditInformationView: View {
             .navigationTitle("Modifier l'animal")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button("Terminer") {
-                        dismiss()
+                    Button("Sauvegarder") {
+                        if viewModel.savePet(pet: pet, context: modelContext, undoManager: undoManager) {
+                            dismiss()
+                        }
                     }
                 }
+            }
+            .onAppear {
+                viewModel.identification = pet.identification
+                viewModel.favorite = pet.favorite
+            }
+            .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
             }
         }
     }
 
-    // MARK: - VIEWBUILDER
-    @ViewBuilder private func identificationView(pet: Bindable<Pet>) -> some View {
+    // MARK: VIEWBUILDER
+    @ViewBuilder private func identificationView() -> some View {
         VStack(alignment: .leading) {
             CategoryTitleView(text: "Identification", systemImage: "cpu.fill")
 
             TextField(
                 "Puce",
-                text: (pet.identification ?? viewModel.sampleIdentification).chip ?? ""
+                text: ($viewModel.identification ?? viewModel.sampleIdentification).chip ?? ""
             )
             .customTextField(with: Image(systemName: "cpu.fill"))
             .focused($focusedField, equals: .chip)
@@ -75,7 +86,7 @@ struct EditInformationView: View {
 
             TextField(
                 "Localisation Puce",
-                text: (pet.identification ?? viewModel.sampleIdentification).chipLocation ?? ""
+                text: ($viewModel.identification ?? viewModel.sampleIdentification).chipLocation ?? ""
             )
             .customTextField(with: Image(systemName: "mappin.circle.fill"))
             .submitLabel(.next)
@@ -83,7 +94,7 @@ struct EditInformationView: View {
 
             TextField(
                 "Tatouage",
-                text: (pet.identification ?? viewModel.sampleIdentification).tatoo ?? ""
+                text: ($viewModel.identification ?? viewModel.sampleIdentification).tatoo ?? ""
             )
             .customTextField(with: Image(systemName: "pencil.and.scribble"))
             .submitLabel(.next)
@@ -91,7 +102,7 @@ struct EditInformationView: View {
 
             TextField(
                 "Localisation Tatouage",
-                text: (pet.identification ?? viewModel.sampleIdentification).tatooLocation ?? ""
+                text: ($viewModel.identification ?? viewModel.sampleIdentification).tatooLocation ?? ""
             )
             .customTextField(with: Image(systemName: "mappin.circle.fill"))
             .submitLabel(.next)
@@ -100,13 +111,13 @@ struct EditInformationView: View {
         .padding(.top)
     }
 
-    @ViewBuilder private func favoriteView(pet: Bindable<Pet>) -> some View {
+    @ViewBuilder private func favoriteView() -> some View {
         VStack(alignment: .leading) {
             CategoryTitleView(text: "Favoris", systemImage: "star.fill")
 
             TextField(
                 "Jouet",
-                text: (pet.favorite ?? viewModel.sampleFavorite).toy ?? ""
+                text: ($viewModel.favorite ?? viewModel.sampleFavorite).toy ?? ""
             )
             .customTextField(with: Image(systemName: "teddybear.fill"))
             .submitLabel(.next)
@@ -114,7 +125,7 @@ struct EditInformationView: View {
 
             TextField(
                 "Nourriture",
-                text: (pet.favorite ?? viewModel.sampleFavorite).food ?? ""
+                text: ($viewModel.favorite ?? viewModel.sampleFavorite).food ?? ""
             )
             .customTextField(with: Image(systemName: "carrot.fill"))
             .submitLabel(.next)
@@ -122,7 +133,7 @@ struct EditInformationView: View {
 
             TextField(
                 "Endroit",
-                text: (pet.favorite ?? viewModel.sampleFavorite).place ?? ""
+                text: ($viewModel.favorite ?? viewModel.sampleFavorite).place ?? ""
             )
             .customTextField(with: Image(systemName: "map.fill"))
             .submitLabel(.done)
@@ -138,6 +149,7 @@ struct EditInformationView: View {
         let previewer = try Previewer()
 
         return EditInformationView()
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
 
     } catch {

@@ -9,11 +9,11 @@ import SwiftUI
 
 struct VeterinarianView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @State private var isPresentingEditVeterinarianView = false
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         @Bindable var pet = pet
 
@@ -70,6 +70,7 @@ struct VeterinarianView: View {
             NavigationStack {
                 VeterinarianView()
             }
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
             .tabItem {
                 Label(

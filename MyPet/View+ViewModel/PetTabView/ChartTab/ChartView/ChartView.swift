@@ -10,8 +10,9 @@ import Charts
 
 struct ChartView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
+    @Environment(\.modelContext) private var modelContext
     @State private var viewModel = ViewModel()
     @State private var showWeightHistoryView = false
 
@@ -28,10 +29,8 @@ struct ChartView: View {
         )
     }
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
-        @Bindable var pet = pet
-
         NavigationStack {
             GeometryReader { geometry in
                 HideKeyboardView()
@@ -95,7 +94,7 @@ struct ChartView: View {
                                 .submitLabel(.done)
                                 .onSubmit {
                                     if viewModel.isFormValid {
-                                        addWeight()
+                                        viewModel.addWeight(for: pet, context: modelContext)
                                     }
                                 }
 
@@ -104,7 +103,7 @@ struct ChartView: View {
                         .frame(width: geometry.size.width * 0.5)
 
                         Button("Ajouter") {
-                            addWeight()
+                            viewModel.addWeight(for: pet, context: modelContext)
                         }
                         .font(.title2)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -112,6 +111,8 @@ struct ChartView: View {
                         .foregroundStyle(.white)
                         .background(.blue)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .disabled(!viewModel.isFormValid)
+                        .opacity(viewModel.isFormValid ? 1 : 0.4)
                     }
                     .frame(height: geometry.size.height * 0.12)
                     .padding()
@@ -130,22 +131,13 @@ struct ChartView: View {
                 .navigationDestination(isPresented: $showWeightHistoryView) {
                     WeightHistoryView()
                 }
+                .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.errorMessage)
+                }
             }
         }
-    }
-
-    private func addWeight() {
-        guard let weight = viewModel.weight else {
-            return
-        }
-
-        if pet.weights == nil {
-            pet.weights = []
-        }
-
-        let newWeight = Weight(day: viewModel.day, weight: weight)
-        pet.addWeight(weight: newWeight)
-        viewModel.weight = nil
     }
 }
 
@@ -158,6 +150,7 @@ struct ChartView: View {
             NavigationStack {
                 ChartView()
             }
+            .modelContainer(previewer.container)
             .environment(previewer.firstPet)
             .tabItem {
                 Label(

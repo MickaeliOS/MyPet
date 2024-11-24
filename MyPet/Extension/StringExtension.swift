@@ -8,7 +8,14 @@
 import Foundation
 
 extension String {
+
+    // MARK: PROPERTY
     var isReallyEmpty: Bool {
         self.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    // MARK: FUNCTION
+    static func areStringsValid(strings: String...) -> Bool {
+        return !strings.contains { $0.isReallyEmpty }
     }
 }

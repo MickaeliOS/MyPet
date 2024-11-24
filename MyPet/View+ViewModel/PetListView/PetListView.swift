@@ -20,6 +20,7 @@ struct PetListView: View {
     @State private var path = NavigationPath()
     @State private var selectedPet: Pet?
     @State private var showPetTabView = false
+    @State private var viewModel = ViewModel()
 
     // MARK: - BODY
     var body: some View {
@@ -66,17 +67,18 @@ struct PetListView: View {
                 .sheet(isPresented: $isPresentingAddPetView) {
                     AddPetView()
                 }
+                .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                    Button("OK") { }
+                } message: {
+                    Text(viewModel.errorMessage)
+                }
             }
         }
     }
 
     // MARK: - PRIVATE FUNCTIONS
     private func deletePet(at offsets: IndexSet) {
-        for offset in offsets {
-            let pet = pets[offset]
-            pet.deletePetNotifications()
-            modelContext.delete(pet)
-        }
+        viewModel.deletePet(at: offsets, pets: pets, context: modelContext)
     }
 }
 

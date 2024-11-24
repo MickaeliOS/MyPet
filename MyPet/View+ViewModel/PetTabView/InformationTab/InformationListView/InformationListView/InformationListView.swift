@@ -45,7 +45,6 @@ struct InformationListView: View {
                             }
 
                             VStack {
-
                                 InformationListButton(
                                     showView: $showHealthInformationView,
                                     buttonName: "Médicales",
@@ -69,7 +68,7 @@ struct InformationListView: View {
             .task {
                 await viewModel.requestAuthorizationForNotifications()
             }
-            .alert("Erreur", isPresented: $viewModel.showingAlert) {
+            .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
                 Button("OK") { }
             } message: {
                 Text(viewModel.errorMessage)
@@ -222,6 +221,7 @@ struct InformationListButton: View {
 
         return TabView {
             InformationListView(showPetTabView: .constant(true))
+                .modelContainer(previewer.container)
                 .environment(previewer.firstPet)
                 .tabItem {
                     Label(

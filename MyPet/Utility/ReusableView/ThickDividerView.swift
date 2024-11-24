@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct ThickDividerView: View {
+
+    // MARK: ENUM
     enum Orientation {
         case vertical
         case horizontal
     }
 
+    // MARK: PROPERTY
     let orientation: Orientation
 
+    // MARK: BODY
     var body: some View {
         Rectangle()
             .frame(width: orientation == .vertical ? 2 : nil,
@@ -22,6 +26,7 @@ struct ThickDividerView: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     ThickDividerView(orientation: .vertical)
 }

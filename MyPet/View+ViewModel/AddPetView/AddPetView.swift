@@ -32,7 +32,6 @@ struct AddPetView: View {
                         colorInformationsView()
                         photoView()
                     }
-                    .navigationTitle("Ajouter un animal")
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding([.leading, .trailing])
                     .onSubmit {
@@ -49,22 +48,29 @@ struct AddPetView: View {
                             viewModel.photo = photo
                         }
                     }
-                    .alert("Une erreur est survenue.", isPresented: $photoPickerCenter.showingAlert) {
-                        Button("OK") { }
-                    } message: {
-                        Text(photoPickerCenter.errorMessage)
-                    }
                 }
                 .frame(maxHeight: .infinity)
             }
+            .navigationTitle("Ajouter un animal")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sauvegarder") {
-                        viewModel.addPet(modelContext: modelContext)
-                        dismiss()
+                        if viewModel.addPet(modelContext: modelContext) {
+                            dismiss()
+                        }
                     }
-                    .disabled(viewModel.isFormValid)
+                    .disabled(!viewModel.isFormValid)
                 }
+            }
+            .alert("Une erreur est survenue.", isPresented: $photoPickerCenter.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(photoPickerCenter.errorMessage)
+            }
+            .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
             }
         }
     }

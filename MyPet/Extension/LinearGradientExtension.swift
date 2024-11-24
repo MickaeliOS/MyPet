@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 
 extension LinearGradient {
+
+    // MARK: PROPERTY
     static var linearBlue: LinearGradient {
         LinearGradient(
             gradient: Gradient(colors: [Color.blue, Color.cyan]),

@@ -8,16 +8,20 @@
 import SwiftUI
 
 struct CategoryTitleView<S: ShapeStyle>: View {
+
+    // MARK: PROPERTY
     let text: String
     let systemImage: String
     var foregroundStyle: S
 
+    // MARK: INIT
     init(text: String, systemImage: String, foregroundStyle: S = .blue) {
         self.text = text
         self.systemImage = systemImage
         self.foregroundStyle = foregroundStyle
     }
 
+    // MARK: BODY
     var body: some View {
         Label {
             Text(text)
@@ -29,6 +33,7 @@ struct CategoryTitleView<S: ShapeStyle>: View {
     }
 }
 
+// MARK: - PREVIEW
 #Preview {
     CategoryTitleView(text: "Identification", systemImage: "cpu")
 }

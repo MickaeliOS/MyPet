@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MedicineCardView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @State private var daysLeft: Int?
 
     private let calendar = Calendar.current
@@ -20,7 +20,7 @@ struct MedicineCardView: View {
     ]
     let medicine: Medicine
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
@@ -97,6 +97,7 @@ struct MedicineCardView: View {
         return NavigationStack {
             MedicineCardView(medicine: Medicine.sampleMedicine)
         }
+        .modelContainer(previewer.container)
         .environment(previewer.firstPet)
 
     } catch {

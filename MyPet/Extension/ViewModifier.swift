@@ -9,8 +9,11 @@ import Foundation
 import SwiftUI
 
 struct CustomTextField: ViewModifier {
+
+    // MARK: PROPERTY
     let icon: Image
 
+    // MARK: BODY
     func body(content: Content) -> some View {
         HStack {
             icon
@@ -27,9 +30,12 @@ struct CustomTextField: ViewModifier {
 }
 
 struct CustomBackButtonToolBar: ViewModifier {
+
+    // MARK: PROPERTY
     let title: String
     let dismiss: () -> Void
 
+    // MARK: BODY
     func body(content: Content) -> some View {
         content
             .toolbar {
@@ -50,6 +56,8 @@ struct CustomBackButtonToolBar: ViewModifier {
 }
 
 struct RoundedRectangleShadow: ViewModifier {
+
+    // MARK: BODY
     func body(content: Content) -> some View {
         content
             .background(Color(UIColor.systemBackground))
@@ -60,6 +68,8 @@ struct RoundedRectangleShadow: ViewModifier {
 }
 
 struct WideLinearBlueGradient: ViewModifier {
+
+    // MARK: BODY
     func body(content: Content) -> some View {
         content
             .padding()
