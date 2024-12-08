@@ -116,7 +116,7 @@ struct InformationListView: View {
                     .bold()
                     .padding(.bottom, 5)
 
-                Image(viewModel.getGender(gender: pet.information.gender))
+                Image(pet.information.gender.getGenderImage)
                     .resizable()
                     .frame(width: 30, height: 30)
             }

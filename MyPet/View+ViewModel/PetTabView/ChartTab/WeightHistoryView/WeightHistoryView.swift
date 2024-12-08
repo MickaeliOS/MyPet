@@ -12,6 +12,9 @@ struct WeightHistoryView: View {
     // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+
+    @State private var viewModel = ViewModel()
 
     // MARK: BODY
     var body: some View {
@@ -26,11 +29,11 @@ struct WeightHistoryView: View {
                                 Text("\(weight.weight.formatted()) Kg")
                             }
                         }
-                        .onDelete(perform: pet.deleteWeight)
+                        .onDelete(perform: deleteWeight)
                     }
                     .toolbar {
                         EditButton()
-                            .environment(\.locale, .init(identifier: "fr"))
+                            .environment(\.locale, .init(identifier: Locale.preferredLanguages[0]))
                     }
                 } else {
                     EmptyListView(emptyListMessage: "Historique vide", messageFontSize: .title2)
@@ -38,7 +41,16 @@ struct WeightHistoryView: View {
             }
             .navigationTitle("Historique de poids")
             .navigationBarTitleDisplayMode(.large)
+            .alert("Une erreur est survenue.", isPresented: $viewModel.showingAlert) {
+                Button("OK") { }
+            } message: {
+                Text(viewModel.errorMessage)
+            }
         }
+    }
+
+    private func deleteWeight(at offsets: IndexSet) {
+        viewModel.deleteWeight(pet: pet, offsets: offsets, context: modelContext)
     }
 }
 

@@ -14,7 +14,6 @@ struct EditInformationListView: View {
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.undoManager) var undoManager
     @FocusState private var focusedField: FocusedField?
 
     @State private var viewModel = ViewModel()
@@ -62,10 +61,11 @@ struct EditInformationListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sauvegarder") {
-                        if viewModel.savePet(pet: pet, context: modelContext, undoManager: undoManager) {
+                        if viewModel.savePet(pet: pet, context: modelContext) {
                             dismiss()
                         }
                     }
+                    .disabled(!viewModel.isFormValid)
                 }
             }
             .padding()

@@ -45,7 +45,7 @@ extension EditVeterinarianView {
             pet.veterinarian = veterinarian
 
             do {
-                try SwiftDataHelper.save(with: context)
+                try SwiftDataHelper().save(with: context)
                 return true
             } catch {
                 pet.veterinarian = veterinarianCopy

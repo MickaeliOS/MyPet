@@ -20,18 +20,14 @@ extension EditHealthInformationView {
         var isSterelizedChanged = false
         var errorMessage = ""
         var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
 
-        // MARK: FUNCTION
-        func removeEmptyElement() {
-            if !allergies.isEmpty {
-                allergies = allergies.removeEmptyElement()
-            }
-
-            if !intolerances.isEmpty {
-                intolerances = intolerances.removeEmptyElement()
-            }
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
         }
 
+        // MARK: FUNCTION
         func setupHealthInformations(with health: Health?) {
             if let health {
                 allergies = health.allergies ?? []
@@ -43,7 +39,7 @@ extension EditHealthInformationView {
             }
         }
 
-        func savePet(pet: Pet, context: ModelContext, undoManager: UndoManager?) -> Bool {
+        func savePet(pet: Pet, context: ModelContext) -> Bool {
             let healthCopy = pet.health
 
             if pet.health == nil {
@@ -67,7 +63,7 @@ extension EditHealthInformationView {
             if isSterelizedChanged { pet.health?.isSterelized = isSterelized }
 
             do {
-                try SwiftDataHelper.save(with: context)
+                try swiftDataHelper.save(with: context)
                 return true
             } catch {
                 pet.health = healthCopy
@@ -76,5 +72,15 @@ extension EditHealthInformationView {
                 return false
             }
         }
+
+//        private func removeEmptyElement() {
+//            if !allergies.isEmpty {
+//                allergies = allergies.removeEmptyElement()
+//            }
+//
+//            if !intolerances.isEmpty {
+//                intolerances = intolerances.removeEmptyElement()
+//            }
+//        }
     }
 }

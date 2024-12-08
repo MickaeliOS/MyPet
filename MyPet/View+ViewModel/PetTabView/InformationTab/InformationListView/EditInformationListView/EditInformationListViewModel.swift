@@ -26,6 +26,11 @@ extension EditInformationListView {
     final class ViewModel {
 
         // MARK: PROPERTY
+        var information: Information?
+        var errorMessage = ""
+        var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
+
         var sampleInformation = Information(
             name: "",
             gender: .male,
@@ -36,9 +41,15 @@ extension EditInformationListView {
             eyeColor: ""
         )
 
-        var information: Information?
-        var errorMessage = ""
-        var showingAlert = false
+        var isFormValid: Bool {
+            guard let info = information else { return false }
+            return String.areStringsNotEmpty(strings: info.name, info.race, info.type, info.eyeColor, info.color)
+        }
+
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
+        }
 
         // MARK: FUNCTION
         func nextField(focusedField: FocusedField) -> FocusedField {
@@ -52,15 +63,15 @@ extension EditInformationListView {
             return transitions[focusedField] ?? .name
         }
 
-        func savePet(pet: Pet, context: ModelContext, undoManager: UndoManager?) -> Bool {
-            let informationCopy = pet.information
-
+        func savePet(pet: Pet, context: ModelContext) -> Bool {
             guard let information else { return true }
+
+            let informationCopy = pet.information
 
             pet.information = information
 
             do {
-                try SwiftDataHelper.save(with: context)
+                try swiftDataHelper.save(with: context)
                 return true
             } catch {
                 pet.information = informationCopy

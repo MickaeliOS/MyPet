@@ -164,7 +164,7 @@ extension AddMedicineView {
 
         func savePet(context: ModelContext) -> Bool {
             do {
-                try SwiftDataHelper.save(with: context)
+                try SwiftDataHelper().save(with: context)
                 return true
             } catch {
                 errorMessage = error.description

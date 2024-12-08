@@ -19,7 +19,7 @@ extension PetListView {
             switch self {
             case .cannotDeleteWithoutNotificationsAuth:
                 """
-                Vous essayez de supprimer un ou plusieurs animaux ayant des notifications de médicaments. 
+                Vous essayez de supprimer un ou plusieurs animaux ayant des notifications de médicaments.
                 Veuillez d'abord autoriser les notifications dans les réglages de l'appareil afin de les supprimer.
                 """
             }
@@ -31,41 +31,38 @@ extension PetListView {
     final class ViewModel {
         var errorMessage = ""
         var showingAlert = false
-        private let center = UNUserNotificationCenter.current()
         private let notificationHelper = NotificationHelper()
         private let userDefault = UserDefaults.standard
 
-        func deletePet(at offsets: IndexSet, pets: [Pet], context: ModelContext) {
-            Task {
-                if doPetHaveNotifications(pets: pets, offsets: offsets),
-                    await !notificationHelper.areNotificationsAuthorized() {
+        @MainActor
+        func deletePet(at offsets: IndexSet, pets: [Pet], context: ModelContext) async {
+            if doPetHaveNotifications(pets: pets, offsets: offsets),
+               await !notificationHelper.areNotificationsAuthorized() {
+                errorMessage = PetListViewError.cannotDeleteWithoutNotificationsAuth.description
+                showingAlert = true
+                return
+            }
 
-                    errorMessage = PetListViewError.cannotDeleteWithoutNotificationsAuth.description
-                    showingAlert = true
-                    return
+            var petsCopy: [Pet] = []
+
+            for offset in offsets {
+                let pet = pets[offset]
+                petsCopy.append(pet)
+                context.delete(pet)
+            }
+
+            do {
+                try SwiftDataHelper().save(with: context)
+
+                petsCopy.forEach { pet in
+                    pet.deletePetNotifications()
                 }
 
-                var petsCopy: [Pet] = []
-
-                for offset in offsets {
-                    let pet = pets[offset]
-                    petsCopy.append(pet)
-                    context.delete(pet)
-                }
-
-                do {
-                    try SwiftDataHelper.save(with: context)
-
-                    petsCopy.forEach { pet in
-                        pet.deletePetNotifications()
-                    }
-
-                    rescheduleNotifications()
-                } catch let error as SwiftDataHelper.SwiftDataHelperError {
-                    context.rollback()
-                    errorMessage = error.description
-                    showingAlert = true
-                }
+                rescheduleNotifications()
+            } catch {
+                context.rollback()
+                errorMessage = error.description
+                showingAlert = true
             }
         }
 
@@ -90,7 +87,7 @@ extension PetListView {
                 userDefault.set(badgeCount, forKey: "badgeCount")
             }
 
-            Task {
+            Task { @MainActor in
                 await notificationHelper.reschedulePendingNotifications()
             }
         }

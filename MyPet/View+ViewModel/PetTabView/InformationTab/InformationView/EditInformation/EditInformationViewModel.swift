@@ -38,6 +38,12 @@ extension EditInformationView {
         var favorite: Favorite?
         var errorMessage = ""
         var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
+
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
+        }
 
         // MARK: FUNCTION
         func nextField(focusedField: FocusedField) -> FocusedField {
@@ -52,14 +58,13 @@ extension EditInformationView {
                 .tatoo: .tatooLocation,
                 .tatooLocation: .toy,
                 .toy: .food,
-                .food: .place,
-                .place: .place
+                .food: .place
             ]
 
             return transitions[focusedField] ?? .name
         }
 
-        func savePet(pet: Pet, context: ModelContext, undoManager: UndoManager?) -> Bool {
+        func savePet(pet: Pet, context: ModelContext) -> Bool {
             let identificationCopy = pet.identification
             let favoriteCopy = pet.favorite
 
@@ -67,7 +72,7 @@ extension EditInformationView {
             pet.favorite = favorite
 
             do {
-                try SwiftDataHelper.save(with: context)
+                try swiftDataHelper.save(with: context)
                 return true
             } catch {
                 pet.identification = identificationCopy

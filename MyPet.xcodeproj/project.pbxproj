@@ -34,6 +34,7 @@
 		83A02ED42CAECA5B003360A4 /* LinearGradientExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */; };
 		83A23C4C2C6E42D500B7DEC3 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */; };
 		83A23C4E2C6E4F9D00B7DEC3 /* ThickDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */; };
+		83AE2E382CF74D8000DAE351 /* WeightHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83AE2E372CF74D8000DAE351 /* WeightHistoryViewModel.swift */; };
 		83B0076D2CE6624800247383 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B0076C2CE6624800247383 /* ArrayExtension.swift */; };
 		83B699502CEE37F800AB80D9 /* SwiftDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */; };
 		83BA03F42C7379F100391642 /* PetTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BA03F32C7379F100391642 /* PetTabView.swift */; };
@@ -109,6 +110,7 @@
 		83A02ED32CAECA5B003360A4 /* LinearGradientExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearGradientExtension.swift; sourceTree = "<group>"; };
 		83A23C4B2C6E42D500B7DEC3 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		83A23C4D2C6E4F9D00B7DEC3 /* ThickDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThickDividerView.swift; sourceTree = "<group>"; };
+		83AE2E372CF74D8000DAE351 /* WeightHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightHistoryViewModel.swift; sourceTree = "<group>"; };
 		83B0076C2CE6624800247383 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataHelper.swift; sourceTree = "<group>"; };
 		83BA03F32C7379F100391642 /* PetTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetTabView.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				8383B3782CB699E10040F440 /* WeightHistoryView.swift */,
+				83AE2E372CF74D8000DAE351 /* WeightHistoryViewModel.swift */,
 			);
 			path = WeightHistoryView;
 			sourceTree = "<group>";
@@ -697,6 +700,7 @@
 				83CD7E6F2C8890560091FB50 /* AddMedicineView.swift in Sources */,
 				83A02EB92CA2DEAC003360A4 /* EditVeterinarianView.swift in Sources */,
 				83CD7EA82C9319270091FB50 /* HealthInformationView.swift in Sources */,
+				83AE2E382CF74D8000DAE351 /* WeightHistoryViewModel.swift in Sources */,
 				83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */,
 				83A02ECD2CAC355B003360A4 /* View.swift in Sources */,
 				83A02EC22CA2F0FD003360A4 /* ChartViewModel.swift in Sources */,

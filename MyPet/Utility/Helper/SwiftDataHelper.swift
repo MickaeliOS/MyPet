@@ -8,24 +8,30 @@
 import Foundation
 import SwiftData
 
-struct SwiftDataHelper {
+// MARK: - SWIFT DATA PROTOCOL
+protocol SwiftDataProtocol {
+    typealias ErrorEnum = SwiftDataHelperError
+    func save(with context: ModelContext) throws(SwiftDataHelperError)
+}
 
-    // MARK: ENUM
-    enum SwiftDataHelperError: Error {
-        case couldNotSave
+// MARK: - ENUM
+enum SwiftDataHelperError: Error {
+    case couldNotSave
 
-        var description: String {
-            switch self {
-            case .couldNotSave:
-                return """
-                Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
-                """
-            }
+    var description: String {
+        switch self {
+        case .couldNotSave:
+            return """
+            Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
+            """
         }
     }
+}
 
+// MARK: - SWIFT DATA HELPER
+struct SwiftDataHelper: SwiftDataProtocol {
     // MARK: FUNCTION
-    static func save(with context: ModelContext) throws(SwiftDataHelperError) {
+    func save(with context: ModelContext) throws(SwiftDataHelperError) {
         do {
             try context.save()
         } catch {

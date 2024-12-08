@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 extension ModelContext {
-    
+
     // MARK: PROPERTY
     var sqliteCommand: String {
         if let url = container.configurations.first?.url.path(percentEncoded: false) {

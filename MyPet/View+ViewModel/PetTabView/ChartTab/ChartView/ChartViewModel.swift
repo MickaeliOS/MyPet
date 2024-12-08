@@ -45,7 +45,7 @@ extension ChartView {
         // MARK: PRIVATE FUNCTION
         private func savePet(pet: Pet, weightsCopy: [Weight]?, context: ModelContext) {
             do {
-                try SwiftDataHelper.save(with: context)
+                try SwiftDataHelper().save(with: context)
             } catch {
                 pet.weights = weightsCopy
                 errorMessage = error.description

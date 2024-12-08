@@ -41,19 +41,12 @@ struct MedicineListView: View {
                                 }
                                 .listRowSeparator(.hidden)
                         }
-                        .onDelete {
-                            viewModel.deleteMedicine(
-                                pet: pet,
-                                context: modelContext,
-                                sortedMedicineList: sortedMedicineList,
-                                offsets: $0
-                            )
-                        }
+                        .onDelete(perform: deleteMedicine)
                     }
                     .listStyle(.plain)
                     .toolbar {
                         EditButton()
-                            .environment(\.locale, .init(identifier: "fr"))
+                            .environment(\.locale, .init(identifier: Locale.preferredLanguages[0]))
                     }
                 } else {
                     EmptyListView(
@@ -89,6 +82,17 @@ struct MedicineListView: View {
             } message: {
                 Text(viewModel.errorMessage)
             }
+        }
+    }
+
+    private func deleteMedicine(at offsets: IndexSet) {
+        Task { @MainActor in
+            await viewModel.deleteMedicine(
+                pet: pet,
+                context: modelContext,
+                sortedMedicineList: sortedMedicineList,
+                offsets: offsets
+            )
         }
     }
 }

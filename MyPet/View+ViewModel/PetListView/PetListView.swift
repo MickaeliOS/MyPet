@@ -59,7 +59,7 @@ struct PetListView: View {
                     .toolbar {
                         if pets.count > 0 {
                             EditButton()
-                                .environment(\.locale, .init(identifier: "fr"))
+                                .environment(\.locale, .init(identifier: Locale.preferredLanguages[0]))
                         }
                     }
                 }
@@ -72,13 +72,21 @@ struct PetListView: View {
                 } message: {
                     Text(viewModel.errorMessage)
                 }
+                .onAppear {
+                    print("---")
+                    print(Locale.current)
+                    print("---")
+
+                }
             }
         }
     }
 
     // MARK: - PRIVATE FUNCTIONS
     private func deletePet(at offsets: IndexSet) {
-        viewModel.deletePet(at: offsets, pets: pets, context: modelContext)
+        Task { @MainActor in
+            await viewModel.deletePet(at: offsets, pets: pets, context: modelContext)
+        }
     }
 }
 

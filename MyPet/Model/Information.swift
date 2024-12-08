@@ -26,6 +26,17 @@ extension Information {
         case male = "Mâle"
         case female = "Femelle"
         case hermaphrodite = "Hermaphrodite"
+
+        var getGenderImage: String {
+            switch self {
+            case .male:
+                "male"
+            case .female:
+                "female"
+            case .hermaphrodite:
+                "hermaphrodite"
+            }
+        }
     }
 
     var getStringAge: String {

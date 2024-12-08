@@ -45,12 +45,18 @@ extension AddPetView {
         var photo: Data?
         var errorMessage = ""
         var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
 
-        // MARK: FUNCTIONS
-        var isFormValid: Bool {
-            String.areStringsValid(strings: name, race, type, eyeColor, color)
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
         }
 
+        var isFormValid: Bool {
+            String.areStringsNotEmpty(strings: name, race, type, eyeColor, color)
+        }
+
+        // MARK: FUNCTIONS
         func nextField(focusedField: FocusedField) -> FocusedField {
             let transitions: [FocusedField: FocusedField] = [
                 .name: .type,
@@ -83,7 +89,7 @@ extension AddPetView {
             modelContext.insert(Pet(information: information))
 
             do {
-                try SwiftDataHelper.save(with: modelContext)
+                try swiftDataHelper.save(with: modelContext)
                 return true
             } catch {
                 modelContext.rollback()

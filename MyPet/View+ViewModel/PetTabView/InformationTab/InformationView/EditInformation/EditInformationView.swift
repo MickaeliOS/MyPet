@@ -13,7 +13,6 @@ struct EditInformationView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.undoManager) private var undoManager
 
     @FocusState private var focusedField: FocusedField?
 
@@ -43,7 +42,7 @@ struct EditInformationView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sauvegarder") {
-                        if viewModel.savePet(pet: pet, context: modelContext, undoManager: undoManager) {
+                        if viewModel.savePet(pet: pet, context: modelContext) {
                             dismiss()
                         }
                     }

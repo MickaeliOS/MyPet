@@ -38,31 +38,31 @@ extension MedicineListView {
         private let center = UNUserNotificationCenter.current()
 
         // MARK: FUNCTION
-        func deleteMedicine(pet: Pet, context: ModelContext, sortedMedicineList: [Medicine], offsets: IndexSet) {
-            Task {
-                if sortedMedicineList.contains(where: { $0.notificationIDs != nil }),
-                    await !notificationHelper.areNotificationsAuthorized() {
+        @MainActor
+        func deleteMedicine(pet: Pet, context: ModelContext, sortedMedicineList: [Medicine], offsets: IndexSet) async {
 
-                    errorMessage = MedicineListViewError.cannotDeleteWithoutNotificationsAuth.description
-                    showingAlert = true
-                    return
-                }
+            if sortedMedicineList.contains(where: { $0.notificationIDs != nil }),
+               await !notificationHelper.areNotificationsAuthorized() {
 
-                guard let medicineCopy = pet.medicine else {
-                    return
-                }
+                errorMessage = MedicineListViewError.cannotDeleteWithoutNotificationsAuth.description
+                showingAlert = true
+                return
+            }
 
-                pet.deleteMedicineFromOffSets(with: sortedMedicineList, offsets: offsets)
+            guard let medicineCopy = pet.medicine else {
+                return
+            }
 
-                do {
-                    try SwiftDataHelper.save(with: context)
-                    deleteNotifications(medicines: medicineCopy, offsets: offsets)
-                    rescheduleNotifications()
-                } catch let error as SwiftDataHelper.SwiftDataHelperError {
-                    pet.medicine = medicineCopy
-                    errorMessage = error.description
-                    showingAlert = true
-                }
+            pet.deleteMedicineFromOffSets(with: sortedMedicineList, offsets: offsets)
+
+            do {
+                try SwiftDataHelper().save(with: context)
+                deleteNotifications(medicines: medicineCopy, offsets: offsets)
+                rescheduleNotifications()
+            } catch {
+                pet.medicine = medicineCopy
+                errorMessage = error.description
+                showingAlert = true
             }
         }
 
@@ -82,7 +82,7 @@ extension MedicineListView {
                 userDefault.set(badgeCount, forKey: "badgeCount")
             }
 
-            Task {
+            Task { @MainActor in
                 await notificationHelper.reschedulePendingNotifications()
             }
         }

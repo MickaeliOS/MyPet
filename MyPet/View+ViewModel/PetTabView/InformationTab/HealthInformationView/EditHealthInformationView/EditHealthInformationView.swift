@@ -13,7 +13,6 @@ struct EditHealthInformationView: View {
     @Environment(Pet.self) private var pet
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.undoManager) var undoManager
     @State private var viewModel = ViewModel()
 
     // MARK: BODY
@@ -37,7 +36,7 @@ struct EditHealthInformationView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Sauvegarder") {
-                            if viewModel.savePet(pet: pet, context: modelContext, undoManager: undoManager) {
+                            if viewModel.savePet(pet: pet, context: modelContext) {
                                 dismiss()
                             }
                         }

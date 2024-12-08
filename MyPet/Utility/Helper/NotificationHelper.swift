@@ -87,7 +87,6 @@ struct NotificationHelper {
                 if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
                     badgeCount -= 1
                     userDefault.set(badgeCount, forKey: "badgeCount")
-//                    newContent.badge = NSNumber(value: badgeCount)
                 }
             }
         }

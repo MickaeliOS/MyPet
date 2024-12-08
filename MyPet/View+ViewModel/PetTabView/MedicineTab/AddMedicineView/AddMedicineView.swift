@@ -235,7 +235,7 @@ struct MedicineFrequencyView: View {
                             .foregroundStyle(.white)
                             .padding()
                         }
-                        .environment(\.locale, .init(identifier: "fr"))
+                        .environment(\.locale, .init(identifier: Locale.preferredLanguages[0]))
                     }
                 }
             }

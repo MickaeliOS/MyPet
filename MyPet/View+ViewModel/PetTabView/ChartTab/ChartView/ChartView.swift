@@ -52,9 +52,16 @@ struct ChartView: View {
                         .padding([.top, .leading, .trailing])
                         .foregroundStyle(Color.blue)
                         .chartXAxisLabel(position: .bottom, alignment: .center) {
-                            Text("Jours")
-                                .foregroundStyle(.blue)
-                                .font(.headline)
+                            VStack {
+                                if weights.count == 1 {
+                                    Text(weights[0].day.formatted(date: .long, time: .omitted))
+                                }
+
+                                Text("Jours")
+                                    .foregroundStyle(.blue)
+                                    .font(.headline)
+                            }
+                            .frame(maxWidth: .infinity)
                         }
                         .chartYAxisLabel(position: .leading, alignment: .center) {
                             Text("Poids")
@@ -118,7 +125,7 @@ struct ChartView: View {
                     .padding()
                 }
                 .navigationTitle("Poids")
-                .environment(\.locale, .init(identifier: "fr"))
+                .environment(\.locale, .init(identifier: Locale.preferredLanguages[0]))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {

@@ -39,12 +39,6 @@ extension InformationListView {
         var showingAlert = false
 
         // MARK: FUNCTION
-        func getGender(gender: Information.Gender) -> String {
-            return gender == .male ? "male" :
-            gender == .female ? "female" :
-            "hermaphrodite"
-        }
-
         func requestAuthorizationForNotifications() async {
             let center = UNUserNotificationCenter.current()
 

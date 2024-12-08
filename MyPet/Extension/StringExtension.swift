@@ -15,7 +15,7 @@ extension String {
     }
 
     // MARK: FUNCTION
-    static func areStringsValid(strings: String...) -> Bool {
+    static func areStringsNotEmpty(strings: String...) -> Bool {
         return !strings.contains { $0.isReallyEmpty }
     }
 }
