@@ -20,6 +20,8 @@
 		83636B962C5BCE7D004E1EE5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */; };
 		83636BA32C5BCF04004E1EE5 /* AddPetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA22C5BCF04004E1EE5 /* AddPetView.swift */; };
 		83636BA52C5BCF1D004E1EE5 /* Pet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83636BA42C5BCF1D004E1EE5 /* Pet.swift */; };
+		836B3A8D2D0C6BBE00BB0D2F /* UserDefaultHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836B3A8C2D0C6BBE00BB0D2F /* UserDefaultHelper.swift */; };
+		836B3A912D0C7C6000BB0D2F /* UNUserNotificationCenterHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836B3A902D0C7C6000BB0D2F /* UNUserNotificationCenterHelper.swift */; };
 		8383B3792CB699E10040F440 /* WeightHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8383B3782CB699E10040F440 /* WeightHistoryView.swift */; };
 		8383B37D2CB815390040F440 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8383B37C2CB815390040F440 /* LaunchScreen.storyboard */; };
 		83A02EB52C99D070003360A4 /* CalendarExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83A02EB42C99D070003360A4 /* CalendarExtension.swift */; };
@@ -95,6 +97,8 @@
 		83636B952C5BCE7D004E1EE5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		83636BA22C5BCF04004E1EE5 /* AddPetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPetView.swift; sourceTree = "<group>"; };
 		83636BA42C5BCF1D004E1EE5 /* Pet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pet.swift; sourceTree = "<group>"; };
+		836B3A8C2D0C6BBE00BB0D2F /* UserDefaultHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultHelper.swift; sourceTree = "<group>"; };
+		836B3A902D0C7C6000BB0D2F /* UNUserNotificationCenterHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UNUserNotificationCenterHelper.swift; sourceTree = "<group>"; };
 		8383B3782CB699E10040F440 /* WeightHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightHistoryView.swift; sourceTree = "<group>"; };
 		8383B37C2CB815390040F440 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		839D65FA2CE8DF970057E2CF /* MyPetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyPetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,8 +150,25 @@
 		83E912CE2CC9470000A18A19 /* EditInformationListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditInformationListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		836B3A9B2D12D3DE00BB0D2F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extension/UNNotificationSettingsExtension.swift,
+			);
+			target = 83636B882C5BCE7B004E1EE5 /* MyPet */;
+		};
+		836B3A9C2D12D3DE00BB0D2F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Extension/UNNotificationSettingsExtension.swift,
+			);
+			target = 839D65F92CE8DF970057E2CF /* MyPetTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		839D65FB2CE8DF970057E2CF /* MyPetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = MyPetTests; sourceTree = "<group>"; };
+		839D65FB2CE8DF970057E2CF /* MyPetTests */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (836B3A9B2D12D3DE00BB0D2F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 836B3A9C2D12D3DE00BB0D2F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = MyPetTests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -512,6 +533,8 @@
 				83D15E752CD282D70007ADC1 /* PhotoPickerCenter.swift */,
 				83D15E7B2CDBC85E0007ADC1 /* NotificationHelper.swift */,
 				83B6994F2CEE37F800AB80D9 /* SwiftDataHelper.swift */,
+				836B3A8C2D0C6BBE00BB0D2F /* UserDefaultHelper.swift */,
+				836B3A902D0C7C6000BB0D2F /* UNUserNotificationCenterHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -663,6 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				836B3A8D2D0C6BBE00BB0D2F /* UserDefaultHelper.swift in Sources */,
 				83CD7EAE2C9339540091FB50 /* EditListViewModel.swift in Sources */,
 				83BA04022C77656900391642 /* Favorite.swift in Sources */,
 				83A02ED42CAECA5B003360A4 /* LinearGradientExtension.swift in Sources */,
@@ -711,6 +735,7 @@
 				83B699502CEE37F800AB80D9 /* SwiftDataHelper.swift in Sources */,
 				83A02EC02CA2ED84003360A4 /* Weight.swift in Sources */,
 				83CD7E8A2C8F315C0091FB50 /* AddMedicineViewModel.swift in Sources */,
+				836B3A912D0C7C6000BB0D2F /* UNUserNotificationCenterHelper.swift in Sources */,
 				835517182C60D882006D111B /* PetListView.swift in Sources */,
 				83636B8D2C5BCE7B004E1EE5 /* MyPetApp.swift in Sources */,
 				8383B3792CB699E10040F440 /* WeightHistoryView.swift in Sources */,

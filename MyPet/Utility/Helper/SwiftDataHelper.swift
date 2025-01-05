@@ -30,6 +30,7 @@ enum SwiftDataHelperError: Error {
 
 // MARK: - SWIFT DATA HELPER
 struct SwiftDataHelper: SwiftDataProtocol {
+
     // MARK: FUNCTION
     func save(with context: ModelContext) throws(SwiftDataHelperError) {
         do {

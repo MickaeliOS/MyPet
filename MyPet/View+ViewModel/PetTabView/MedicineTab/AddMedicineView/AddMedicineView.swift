@@ -14,7 +14,7 @@ struct AddMedicineView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
 
-    @State private var viewModel = ViewModel()
+    @State private var viewModel = ViewModel(notificationHelper: NotificationHelper())
     @State private var scrollToEnd = false
 
     private let center = UNUserNotificationCenter.current()

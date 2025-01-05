@@ -8,11 +8,26 @@
 import Foundation
 import UserNotifications
 
-struct NotificationHelper {
+struct NotificationTransit {
+    let identifier: String
+    let content: UNNotificationContent
+    let date: Date
+    let trigger: UNCalendarNotificationTrigger
+}
 
+struct NotificationHelper {
     // MARK: PROPERTY
-    private let center = UNUserNotificationCenter.current()
-    private let userDefault = UserDefaults.standard
+    let center: UNUserNotificationCenterProtocol
+    private let userDefault: UserDefaultHelperProtocol
+
+    // MARK: INIT
+    init(
+        center: UNUserNotificationCenterProtocol = UNUserNotificationCenterHelper(),
+        userDefault: UserDefaultHelperProtocol = UserDefaultHelper()
+    ) {
+        self.center = center
+        self.userDefault = userDefault
+    }
 
     // MARK: FUNCTION
     func areNotificationsAuthorized() async -> Bool {
@@ -50,6 +65,11 @@ struct NotificationHelper {
     }
 
     func reschedulePendingNotifications() async {
+        if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+            badgeCount = 0
+            userDefault.set(badgeCount, forKey: "badgeCount")
+        }
+
         let notificationsTransit = await convertPendingNotification()
         let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
 
@@ -91,11 +111,4 @@ struct NotificationHelper {
             }
         }
     }
-}
-
-struct NotificationTransit {
-    let identifier: String
-    let content: UNNotificationContent
-    let date: Date
-    let trigger: UNCalendarNotificationTrigger
 }

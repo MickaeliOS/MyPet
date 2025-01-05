@@ -14,6 +14,12 @@ extension WeightHistoryView {
     final class ViewModel {
         var errorMessage = ""
         var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
+
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
+        }
 
         func deleteWeight(pet: Pet, offsets: IndexSet, context: ModelContext) {
             let weightCopy = pet.weights
@@ -21,7 +27,7 @@ extension WeightHistoryView {
             pet.deleteWeight(offsets: offsets)
 
             do {
-                try SwiftDataHelper().save(with: context)
+                try swiftDataHelper.save(with: context)
             } catch {
                 pet.weights = weightCopy
                 errorMessage = error.description

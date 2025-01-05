@@ -34,7 +34,6 @@ extension MedicineListView {
         var errorMessage = ""
         var showingAlert = false
         private let notificationHelper = NotificationHelper()
-        private let userDefault = UserDefaults.standard
         private let center = UNUserNotificationCenter.current()
 
         // MARK: FUNCTION
@@ -77,10 +76,10 @@ extension MedicineListView {
         }
 
         private func rescheduleNotifications() {
-            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                badgeCount = 0
-                userDefault.set(badgeCount, forKey: "badgeCount")
-            }
+//            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+//                badgeCount = 0
+//                userDefault.set(badgeCount, forKey: "badgeCount")
+//            }
 
             Task { @MainActor in
                 await notificationHelper.reschedulePendingNotifications()

@@ -46,16 +46,26 @@ extension AddMedicineView {
         var additionalInformations = ""
         var everyDay = false
         var duration: Int?
-        var takingTimes: [Medicine.TakingTime] = [.init(date: .now)]
+        var takingTimes: [Medicine.TakingTime] = [.init(date: Date.now)]
         var multiDatePickerDateSet: Set<DateComponents> = []
         var selectedMedicineType = Medicine.MedicineType.pill
         var errorMessage = ""
         var showingAlert = false
         var notificationIDs: [String] = []
-        let today = Calendar.current.startOfDay(for: Date.now)
-        let userDefault = UserDefaults.standard
-        private let center = UNUserNotificationCenter.current()
-        private let notificationHelper = NotificationHelper()
+        var today = Calendar.current.startOfDay(for: Date.now)
+        let userDefault: UserDefaultHelperProtocol
+        let notificationHelper: NotificationHelper
+        let swiftDataHelper: SwiftDataProtocol
+
+        // MARK: INIT
+        init(userDefault: UserDefaultHelperProtocol = UserDefaultHelper(),
+             notificationHelper: NotificationHelper,
+             swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+
+            self.userDefault = userDefault
+            self.notificationHelper = notificationHelper
+            self.swiftDataHelper = swiftDataHelper
+        }
 
         // MARK: FUNCTION
         func createMedicineFlow() -> Medicine? {
@@ -63,13 +73,13 @@ extension AddMedicineView {
                 let lastDay = try calculateLastDay()
                 var days: [DateComponents] = []
 
-                if everyDay, duration != nil {
+                if duration != nil, everyDay {
                     days = createDays(lastDay: lastDay)
                 } else {
                     days = sortedDateComponentsSet(set: multiDatePickerDateSet)
                 }
 
-                let medicineDates = setupTakingTimesToDays(days: days)
+                let medicineDates = attachTimeToDays(days: days)
 
                 return Medicine(
                     name: medicineName,
@@ -121,13 +131,13 @@ extension AddMedicineView {
         }
 
         func scheduleNotificationsFlow(medicine: Medicine, petName: String) async {
-            let pendingNotifications = await center.pendingNotificationRequests()
+            let pendingNotifications = await notificationHelper.center.pendingNotificationRequests()
 
-            guard let medicineDates = medicine.dates else {
-                return
-            }
+//            guard let medicineDates = medicine.dates else {
+//                return
+//            }
 
-            for dateComponents in medicineDates {
+            for dateComponents in medicine.dates {
                 guard let date = Calendar.current.date(from: dateComponents), date > Date.now else {
                     return
                 }
@@ -164,7 +174,7 @@ extension AddMedicineView {
 
         func savePet(context: ModelContext) -> Bool {
             do {
-                try SwiftDataHelper().save(with: context)
+                try swiftDataHelper.save(with: context)
                 return true
             } catch {
                 errorMessage = error.description
@@ -174,7 +184,7 @@ extension AddMedicineView {
         }
 
         func deleteNotifications() {
-            center.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+            notificationHelper.center.removePendingNotificationRequests(withIdentifiers: notificationIDs)
         }
 
         // MARK: PRIVATE FUNCTION
@@ -208,7 +218,7 @@ extension AddMedicineView {
             return allDates
         }
 
-        private func setupTakingTimesToDays(days: [DateComponents]) -> [DateComponents] {
+        private func attachTimeToDays(days: [DateComponents]) -> [DateComponents] {
             var updatedArray: [DateComponents] = []
 
             days.forEach { dateComponents in
@@ -251,7 +261,7 @@ extension AddMedicineView {
 
             // Adding the Notification in NotificationCenter
             do {
-                try await center.add(request)
+                try await notificationHelper.center.add(request)
                 notificationIDs.append(id)
             } catch {
                 if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
@@ -274,7 +284,7 @@ extension AddMedicineView {
             notificationsTransit.append(newNotification)
             let sortedNotifications = notificationsTransit.sorted { $0.date < $1.date }
 
-            center.removeAllPendingNotificationRequests()
+            notificationHelper.center.removeAllPendingNotificationRequests()
 
             for sortedNotification in sortedNotifications {
                 // New Content
@@ -308,7 +318,7 @@ extension AddMedicineView {
 
                 // Adding the Notification in NotificationCenter
                 do {
-                    try await center.add(newRequest)
+                    try await notificationHelper.center.add(newRequest)
                     if sortedNotification.identifier == newNotification.identifier {
                         notificationIDs.append(newID)
                     }

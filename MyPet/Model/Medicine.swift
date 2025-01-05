@@ -16,7 +16,7 @@ struct Medicine: Codable, Hashable, Identifiable {
     let medicineType: MedicineType
     let everyDay: Bool
     let takingTimes: [TakingTime]
-    let dates: [DateComponents]?
+    let dates: [DateComponents]
     let additionalInformation: String?
     let lastDay: Date
     var timeZone: TimeZone
@@ -59,7 +59,7 @@ extension Medicine {
             TakingTime(date: Date()),
             TakingTime(date: Date())
         ],
-        dates: nil,
+        dates: [],
         additionalInformation: "After lunch.",
         lastDay: .now,
         timeZone: .current,

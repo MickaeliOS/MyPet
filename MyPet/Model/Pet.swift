@@ -12,7 +12,7 @@ import UserNotifications
 @Model
 final class Pet {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     var information: Information
     var identification: Identification?
     var favorite: Favorite?
@@ -21,7 +21,7 @@ final class Pet {
     var medicine: [Medicine]?
     var weights: [Weight]?
 
-    // MARK: - INIT
+    // MARK: INIT
     init(
         information: Information,
         identification: Identification? = nil,
@@ -41,7 +41,7 @@ final class Pet {
     }
 }
 
-// MARK: - EXTENSION
+// MARK: EXTENSION
 extension Pet {
     func addMedicine(medicine: Medicine) {
         self.medicine?.append(medicine)
@@ -67,7 +67,7 @@ extension Pet {
         }
     }
 
-    func deletePetNotifications() {
+    func deletePetNotifications(center: UNUserNotificationCenterProtocol) {
         medicine?.forEach({ med in
             let notificationCenter = UNUserNotificationCenter.current()
 
@@ -75,9 +75,22 @@ extension Pet {
                 return
             }
 
-            notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+            center.removePendingNotificationRequests(withIdentifiers: notificationIDs)
         })
     }
+
+//    // Old working version, new one changed to help for unit test with the protocol
+//    func deletePetNotifications() {
+//        medicine?.forEach({ med in
+//            let notificationCenter = UNUserNotificationCenter.current()
+//
+//            guard let notificationIDs = med.notificationIDs else {
+//                return
+//            }
+//
+//            notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
+//        })
+//    }
 
     func addWeight(weight: Weight) {
         if let index = self.weights?.firstIndex(where: { $0.day > weight.day }) {

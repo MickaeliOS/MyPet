@@ -31,8 +31,20 @@ extension PetListView {
     final class ViewModel {
         var errorMessage = ""
         var showingAlert = false
-        private let notificationHelper = NotificationHelper()
-        private let userDefault = UserDefaults.standard
+        var swiftDataHelper: SwiftDataProtocol
+        private let notificationHelper: NotificationHelper
+        private let center: UNUserNotificationCenterProtocol
+
+        // MARK: INIT
+        init(
+            swiftDataHelper: SwiftDataProtocol = SwiftDataHelper(),
+            notificationHelper: NotificationHelper,
+            center: UNUserNotificationCenterProtocol = UNUserNotificationCenterHelper()
+        ) {
+            self.swiftDataHelper = swiftDataHelper
+            self.notificationHelper = notificationHelper
+            self.center = center
+        }
 
         @MainActor
         func deletePet(at offsets: IndexSet, pets: [Pet], context: ModelContext) async {
@@ -52,10 +64,10 @@ extension PetListView {
             }
 
             do {
-                try SwiftDataHelper().save(with: context)
+                try swiftDataHelper.save(with: context)
 
                 petsCopy.forEach { pet in
-                    pet.deletePetNotifications()
+                    pet.deletePetNotifications(center: center)
                 }
 
                 rescheduleNotifications()
@@ -82,10 +94,10 @@ extension PetListView {
         }
 
         private func rescheduleNotifications() {
-            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-                badgeCount = 0
-                userDefault.set(badgeCount, forKey: "badgeCount")
-            }
+//            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+//                badgeCount = 0
+//                userDefault.set(badgeCount, forKey: "badgeCount")
+//            }
 
             Task { @MainActor in
                 await notificationHelper.reschedulePendingNotifications()

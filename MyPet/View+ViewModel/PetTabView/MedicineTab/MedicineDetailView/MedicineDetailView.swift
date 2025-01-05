@@ -44,8 +44,8 @@ struct MedicineDetailView: View {
                             .font(.headline)
                     }
 
-                    if let dates = medicine.dates {
-                        let nonNilDates = dates.compactMap { $0.date }
+//                    if let dates = medicine.dates {
+                        let nonNilDates = medicine.dates.compactMap { $0.date }
                         let sortedDates = nonNilDates.sorted(by: { $0 < $1 })
 
                         LazyVGrid(columns: medicineDatesGrid, spacing: 10) {
@@ -60,7 +60,7 @@ struct MedicineDetailView: View {
                                     }
                             }
                         }
-                    }
+//                    }
                 }
 
                 VStack(alignment: .leading) {

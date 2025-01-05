@@ -27,6 +27,12 @@ extension EditVeterinarianView {
         var errorMessage = ""
         var showingAlert = false
         let sampleVeterinarian = Veterinarian(name: nil, address: nil, phone: nil, website: nil)
+        var swiftDataHelper: SwiftDataProtocol
+
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
+        }
 
         // MARK: FUNCTION
         func nextField(focusedField: FocusedField) -> FocusedField {
@@ -45,7 +51,7 @@ extension EditVeterinarianView {
             pet.veterinarian = veterinarian
 
             do {
-                try SwiftDataHelper().save(with: context)
+                try swiftDataHelper.save(with: context)
                 return true
             } catch {
                 pet.veterinarian = veterinarianCopy

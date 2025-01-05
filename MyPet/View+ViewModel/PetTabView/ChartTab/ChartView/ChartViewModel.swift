@@ -18,9 +18,15 @@ extension ChartView {
         var day = Date.now
         var errorMessage = ""
         var showingAlert = false
+        var swiftDataHelper: SwiftDataProtocol
 
         var isFormValid: Bool {
             return weight != nil
+        }
+
+        // MARK: INIT
+        init(swiftDataHelper: SwiftDataProtocol = SwiftDataHelper()) {
+            self.swiftDataHelper = swiftDataHelper
         }
 
         // MARK: FUNCTION
@@ -29,11 +35,11 @@ extension ChartView {
                 return
             }
 
+            let weightsCopy = pet.weights
+
             if pet.weights == nil {
                 pet.weights = []
             }
-
-            let weightsCopy = pet.weights
 
             let newWeight = Weight(day: day, weight: weight)
             pet.addWeight(weight: newWeight)
@@ -45,7 +51,7 @@ extension ChartView {
         // MARK: PRIVATE FUNCTION
         private func savePet(pet: Pet, weightsCopy: [Weight]?, context: ModelContext) {
             do {
-                try SwiftDataHelper().save(with: context)
+                try swiftDataHelper.save(with: context)
             } catch {
                 pet.weights = weightsCopy
                 errorMessage = error.description

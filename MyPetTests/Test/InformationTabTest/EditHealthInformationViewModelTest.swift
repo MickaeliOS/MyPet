@@ -11,14 +11,18 @@ import SwiftData
 @testable import MyPet
 
 final class EditHealthInformationViewModelTest {
+
+    // MARK: PROPERTY
     private var mockSwiftDataHelper: MockSwiftDataHelper!
     private let sut: EditHealthInformationView.ViewModel!
 
+    // MARK: INIT
     init() {
         mockSwiftDataHelper = .init()
         sut = .init(swiftDataHelper: mockSwiftDataHelper)
     }
 
+    // MARK: TEST
     @Test("With Health informations from Health object, sut's health informations should be set")
     func sutHealthInfosShouldBeSetup() {
         let health = Health(isSterelized: true, intolerances: ["gluten"], allergies: ["beef"])
@@ -51,8 +55,8 @@ final class EditHealthInformationViewModelTest {
     @MainActor
     @Test(
         """
-            Without any Health infos yet, Pet's health infos should be saved 
-            with new infos (allergy and intolerance array + isSterelized
+            Without any Health infos yet, Pet's health infos should be saved
+            with new infos (allergy and intolerance array + isSterelized)
         """
     )
     func petHealthInfosShouldBeSaved() {
@@ -64,17 +68,12 @@ final class EditHealthInformationViewModelTest {
             // When saving the pet, he must exist in the database already,
             // so we're creating it, otherwise, modification will not be saved
             try mockSwiftDataHelper.addPet(pet: pet, with: mockContainer.mainContext)
-            let descriptor = FetchDescriptor<Pet>()
-            let pets = try mockContainer.mainContext.fetch(descriptor)
-            #expect(pets.count == 1)
-            let testingPet = pets[0]
-
             sut.allergies = ["beef", ""]
             sut.intolerances = ["gluten", "", "lactose"]
             sut.isSterelizedChanged = true
             sut.isSterelized = true
 
-            #expect(self.sut.savePet(pet: testingPet, context: mockContainer.mainContext))
+            #expect(self.sut.savePet(pet: pet, context: mockContainer.mainContext))
 
             // Now, let's make sure the changes propagate through persistent storage
             let newContext = ModelContext(mockContainer)
@@ -85,6 +84,8 @@ final class EditHealthInformationViewModelTest {
             #expect(savedPets[0].health?.allergies == ["beef"])
             #expect(savedPets[0].health?.intolerances == ["gluten", "lactose"])
             #expect(savedPets[0].health?.isSterelized ?? false)
+            #expect(self.sut.errorMessage.isEmpty)
+            #expect(self.sut.showingAlert == false)
         }
     }
 
@@ -119,6 +120,8 @@ final class EditHealthInformationViewModelTest {
             #expect(savedPets[0].health?.allergies == nil)
             #expect(savedPets[0].health?.intolerances == nil)
             #expect(savedPets[0].health?.isSterelized ?? false)
+            #expect(self.sut.errorMessage.isEmpty)
+            #expect(self.sut.showingAlert == false)
         }
     }
 
@@ -161,8 +164,11 @@ final class EditHealthInformationViewModelTest {
             #expect(notSavedPets[0].health?.allergies == nil)
             #expect(notSavedPets[0].health?.intolerances == nil)
             #expect(notSavedPets[0].health?.isSterelized == nil)
+            #expect(self.sut.errorMessage.isEmpty == false)
+            #expect(self.sut.errorMessage == """
+            Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
+            """)
+            #expect(self.sut.showingAlert)
         }
     }
 }
-
-// test quand health est à nil

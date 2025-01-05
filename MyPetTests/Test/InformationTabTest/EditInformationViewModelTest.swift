@@ -11,14 +11,18 @@ import SwiftData
 @testable import MyPet
 
 final class EditInformationViewModelTest {
+
+    // MARK: PROPERTY
     private var mockSwiftDataHelper: MockSwiftDataHelper!
     private let sut: EditInformationView.ViewModel!
 
+    // MARK: INIT
     init() {
         mockSwiftDataHelper = .init()
         sut = .init(swiftDataHelper: mockSwiftDataHelper)
     }
 
+    // MARK: TEST
     @Test("When FocusedField is .name, nextField() should return .type FocusedField.")
     func nextFieldFunctionShouldReturnWithType() {
         let focusedField = EditInformationView.FocusedField.name
@@ -96,6 +100,13 @@ final class EditInformationViewModelTest {
         #expect(sut.nextField(focusedField: focusedField) == .place)
     }
 
+    @Test("When FocusedField is .place, nextField() should return .name FocusedField.")
+    func nextFieldFunctionShouldReturnWithName() {
+        let focusedField = EditInformationView.FocusedField.place
+
+        #expect(sut.nextField(focusedField: focusedField) == .name)
+    }
+
     @MainActor
     @Test("When we edit the pet, pet should be edited correctly.")
     func editPetShouldBeSuccessful() {
@@ -131,6 +142,8 @@ final class EditInformationViewModelTest {
             #expect(editedPet.identification?.chip == "1234")
             #expect(editedPet.identification?.chipLocation == "Neck")
             #expect(editedPet.favorite?.toy == "Ball")
+            #expect(self.sut.showingAlert == false)
+            #expect(self.sut.errorMessage.isEmpty)
         }
     }
 
@@ -175,6 +188,10 @@ final class EditInformationViewModelTest {
 
             #expect(notSavedPets[0].identification == nil)
             #expect(notSavedPets[0].favorite == nil)
+            #expect(self.sut.showingAlert)
+            #expect(self.sut.errorMessage == """
+            Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
+            """)
         }
     }
 }

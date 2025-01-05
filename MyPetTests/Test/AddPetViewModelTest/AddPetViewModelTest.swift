@@ -10,14 +10,18 @@ import SwiftData
 @testable import MyPet
 
 final class AddPetViewModelTest {
+
+    // MARK: PROPERTY
     private var mockSwiftDataHelper: MockSwiftDataHelper!
     private let sut: AddPetView.ViewModel!
 
+    // MARK: INIT
     init() {
         self.mockSwiftDataHelper = MockSwiftDataHelper()
         self.sut = .init(swiftDataHelper: mockSwiftDataHelper)
     }
 
+    // MARK: HELPER
     private func setupSUT(
         name: String = "",
         race: String = "",
@@ -32,6 +36,7 @@ final class AddPetViewModelTest {
         sut.eyeColor = eyeColor
     }
 
+    // MARK: TEST
     @Test("With all the fields correctly filled, isFormValid should be true.")
     func formShouldBeValid() {
         sut.name = "Pet"
@@ -98,19 +103,21 @@ final class AddPetViewModelTest {
         #expect(sut.addPet(modelContext: mockContainer.mainContext))
 
         do {
+            // Now, let's make sure the changes got added into persistent storage
+            let newContext = ModelContext(mockContainer)
             let descriptor = FetchDescriptor<Pet>()
-            let pets = try mockContainer.mainContext.fetch(descriptor)
+            let savedPet = try newContext.fetch(descriptor)
 
-            #expect(pets.count == 1)
+            #expect(savedPet.count == 1)
 
-            let petInfos = pets[0].information
-            #expect(petInfos.name == sut.name)
-            #expect(petInfos.gender == sut.gender)
-            #expect(petInfos.type == sut.type)
-            #expect(petInfos.race == sut.race)
-            #expect(petInfos.birthdate == sut.birthdate)
-            #expect(petInfos.color == sut.color)
-            #expect(petInfos.eyeColor == sut.eyeColor)
+            let pet = savedPet[0].information
+            #expect(pet.name == sut.name)
+            #expect(pet.gender == sut.gender)
+            #expect(pet.type == sut.type)
+            #expect(pet.race == sut.race)
+            #expect(pet.birthdate == sut.birthdate)
+            #expect(pet.color == sut.color)
+            #expect(pet.eyeColor == sut.eyeColor)
         } catch {
             Issue.record("MainContext fetch failed.")
         }
@@ -224,6 +231,14 @@ final class AddPetViewModelTest {
                 """
         )
         #expect(sut.showingAlert)
-        #expect(mockContainer.mainContext.hasChanges == false)
+
+        do {
+            let descriptor = FetchDescriptor<Pet>()
+            let pets = try mockContainer.mainContext.fetch(descriptor)
+
+            #expect(pets.count == 0)
+        } catch {
+            Issue.record("MainContext fetch failed.")
+        }
     }
 }

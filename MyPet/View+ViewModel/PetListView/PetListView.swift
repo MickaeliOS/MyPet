@@ -20,7 +20,7 @@ struct PetListView: View {
     @State private var path = NavigationPath()
     @State private var selectedPet: Pet?
     @State private var showPetTabView = false
-    @State private var viewModel = ViewModel()
+    @State private var viewModel = ViewModel(notificationHelper: NotificationHelper())
 
     // MARK: - BODY
     var body: some View {

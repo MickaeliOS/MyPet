@@ -11,14 +11,18 @@ import SwiftData
 @testable import MyPet
 
 final class EditInformationListViewModelTest {
+
+    // MARK: PROPERTY
     private var mockSwiftDataHelper: MockSwiftDataHelper!
     private var sut: EditInformationListView.ViewModel!
 
+    // MARK: INIT
     init() {
         self.mockSwiftDataHelper = MockSwiftDataHelper()
         self.sut = .init(swiftDataHelper: mockSwiftDataHelper)
     }
 
+    // MARK: TEST
     @Test("With correct Information object, form should be valid.")
     func formShouldBeValid() {
         let pet = PetTest().pet
@@ -103,6 +107,8 @@ final class EditInformationListViewModelTest {
             let editedPet = editedPets[0]
 
             #expect(editedPet.information.name == "newName")
+            #expect(self.sut.showingAlert == false)
+            #expect(self.sut.errorMessage.isEmpty)
         }
     }
 
@@ -149,6 +155,10 @@ final class EditInformationListViewModelTest {
             let notSavedPet = notSavedPets[0]
 
             #expect(notSavedPet.information.name == "testName")
+            #expect(self.sut.showingAlert)
+            #expect(self.sut.errorMessage == """
+            Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
+            """)
         }
     }
 
@@ -212,6 +222,9 @@ final class EditInformationListViewModelTest {
             #expect(notSavedPet.information.birthdate == date)
             #expect(notSavedPet.information.color == "testColor")
             #expect(notSavedPet.information.eyeColor == "testEyeColor")
+
+            #expect(self.sut.showingAlert == false)
+            #expect(self.sut.errorMessage.isEmpty)
         }
     }
 }
