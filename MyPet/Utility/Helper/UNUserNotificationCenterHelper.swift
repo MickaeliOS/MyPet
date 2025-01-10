@@ -39,5 +39,3 @@ struct UNUserNotificationCenterHelper: UNUserNotificationCenterProtocol {
         center.removeAllPendingNotificationRequests()
     }
 }
-
-

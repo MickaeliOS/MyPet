@@ -20,6 +20,7 @@ final class Pet {
     var health: Health?
     var medicine: [Medicine]?
     var weights: [Weight]?
+    var center: UNUserNotificationCenterProtocol
 
     // MARK: INIT
     init(
@@ -29,7 +30,8 @@ final class Pet {
         veterinarian: Veterinarian? = nil,
         health: Health? = nil,
         medicine: [Medicine]? = nil,
-        weights: [Weight]? = nil
+        weights: [Weight]? = nil,
+        center: UNUserNotificationCenterProtocol = UNUserNotificationCenterHelper()
     ) {
         self.information = information
         self.identification = identification
@@ -38,6 +40,7 @@ final class Pet {
         self.health = health
         self.medicine = medicine
         self.weights = nil
+        self.center = center
     }
 }
 
@@ -69,8 +72,6 @@ extension Pet {
 
     func deletePetNotifications(center: UNUserNotificationCenterProtocol) {
         medicine?.forEach({ med in
-            let notificationCenter = UNUserNotificationCenter.current()
-
             guard let notificationIDs = med.notificationIDs else {
                 return
             }

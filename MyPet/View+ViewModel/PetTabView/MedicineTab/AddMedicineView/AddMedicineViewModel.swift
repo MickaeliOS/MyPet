@@ -76,7 +76,7 @@ extension AddMedicineView {
                 if duration != nil, everyDay {
                     days = createDays(lastDay: lastDay)
                 } else {
-                    days = sortedDateComponentsSet(set: multiDatePickerDateSet)
+                    days = sortedDateComponentsSet()
                 }
 
                 let medicineDates = attachTimeToDays(days: days)
@@ -133,10 +133,6 @@ extension AddMedicineView {
         func scheduleNotificationsFlow(medicine: Medicine, petName: String) async {
             let pendingNotifications = await notificationHelper.center.pendingNotificationRequests()
 
-//            guard let medicineDates = medicine.dates else {
-//                return
-//            }
-
             for dateComponents in medicine.dates {
                 guard let date = Calendar.current.date(from: dateComponents), date > Date.now else {
                     return
@@ -155,7 +151,8 @@ extension AddMedicineView {
                 let id = UUID().uuidString
 
                 // We must be sure that the badge count is in order
-                if await isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications) {
+                let result = await notificationHelper.isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications)
+                if result {
                     await addGreaterDateNotification(id: id, content: content, trigger: trigger)
                 } else {
                     await addLowerDateNotification(id: id, content: content, date: date, trigger: trigger)
@@ -262,7 +259,7 @@ extension AddMedicineView {
             // Adding the Notification in NotificationCenter
             do {
                 try await notificationHelper.center.add(request)
-                notificationIDs.append(id)
+                await controlNotification(id: id)
             } catch {
                 if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
                     badgeCount -= 1
@@ -319,8 +316,9 @@ extension AddMedicineView {
                 // Adding the Notification in NotificationCenter
                 do {
                     try await notificationHelper.center.add(newRequest)
+
                     if sortedNotification.identifier == newNotification.identifier {
-                        notificationIDs.append(newID)
+                        await controlNotification(id: id)
                     }
                 } catch {
                     if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
@@ -331,7 +329,7 @@ extension AddMedicineView {
             }
         }
 
-        private func sortedDateComponentsSet(set: Set<DateComponents>) -> [DateComponents] {
+        private func sortedDateComponentsSet() -> [DateComponents] {
             return multiDatePickerDateSet
                 .compactMap { dateComponents in
                     dateComponents.date.map { date in
@@ -346,21 +344,17 @@ extension AddMedicineView {
                 }
         }
 
-        private func isNewNotificationDateGreater(
-            date: Date,
-            pendingNotifications: [UNNotificationRequest]
-        ) async -> Bool {
-            guard pendingNotifications.isEmpty == false else {
-                return true
-            }
+        private func controlNotification(id: String) async {
+            let pendingNotifications = await notificationHelper.center.pendingNotificationRequests()
 
-            let allDatesAreEarlier = pendingNotifications.compactMap { request in
-                (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
-            }.allSatisfy { existingDate in
-                date > existingDate
+            if pendingNotifications.contains(where: { $0.identifier == id }) {
+                notificationIDs.append(id)
+            } else {
+                if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
+                    badgeCount -= 1
+                    userDefault.set(badgeCount, forKey: "badgeCount")
+                }
             }
-
-            return allDatesAreEarlier ? true : false
         }
     }
 }

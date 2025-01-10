@@ -104,9 +104,14 @@ struct MedicineDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .padding([.leading, .trailing, .bottom])
         .onAppear {
-            daysLeft = Calendar.current.numberOfDaysBetween(.now,
-                                                            and: medicine.lastDay,
-                                                            from: medicine.timeZone)
+            var components = DateComponents()
+            components.calendar = Calendar.current
+
+            guard let startOfDay = components.calendar?.startOfDay(for: Date.now) else {
+                return
+            }
+
+            daysLeft = Calendar.current.numberOfDaysBetween(startOfDay, and: medicine.lastDay)
         }
     }
 }

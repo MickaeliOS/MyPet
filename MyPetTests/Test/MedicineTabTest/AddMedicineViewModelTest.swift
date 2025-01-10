@@ -144,13 +144,45 @@ final class AddMedicineViewModelTest {
         }
     }
 
+    @MainActor
+    private func deletePet(pet: Pet) async {
+        // Before deleting, we add the pet in SwiftData
+        #expect(throws: Never.self) {
+            try mockSwiftDataHelper.addPet(pet: pet, with: mockContainer.mainContext)
+
+            // Now, let's make sure the changes propagate through persistent storage
+            let newContext = ModelContext(mockContainer)
+            let secondDescriptor = FetchDescriptor<Pet>()
+            let savedPets = try newContext.fetch(secondDescriptor)
+
+            #expect(savedPets.count == 1)
+        }
+
+        let petListViewModel = PetListView.ViewModel(
+            swiftDataHelper: mockSwiftDataHelper,
+            notificationHelper: NotificationHelper(
+                center: UNUserNotificationCenterMock(),
+                userDefault: UserDefaultHelperMock()
+            ),
+            center: UNUserNotificationCenterMock()
+        )
+
+        let indexSet = IndexSet(integer: 0)
+        let mockContainer = MockContainer().mockContainer
+
+        await petListViewModel.deletePet(at: indexSet, pets: [pet], context: mockContainer.mainContext)
+        #expect(pet == nil)
+
+    }
+
+    // MARK: TESTS
     @Test("When adding a medicine in \"datePicker mode\", if calculateLastDay() throw, medicine is not created.")
     func medicineNotAddedIfLastDayCannotBeCalculated() {
         sut.medicineName = "MedicineTest"
         sut.medicineDosage = "DosageTest"
         setupTakingTime()
 
-        guard let _ = sut.createMedicineFlow() else {
+        guard sut.createMedicineFlow() != nil else {
             #expect(sut.showingAlert)
             #expect(sut.errorMessage == """
                 Oups, une erreur est survenue ! Veuillez vérifier
@@ -162,7 +194,7 @@ final class AddMedicineViewModelTest {
         Issue.record("The medicine creation flow should have failed.")
     }
 
-    @Test("When adding a medicine in \"everyDay mode\" with its notifications properly, they should be added.")
+    @Test("When adding/deleting a medicine in \"everyDay mode\" with its notifications properly, they should be added/deleted.")
     func addingMedicineInEverydayModeShouldWorkWhenGoodSetup() async {
         sut.medicineName = "MedicineTest"
         sut.medicineDosage = "DosageTest"
@@ -206,6 +238,11 @@ final class AddMedicineViewModelTest {
 
         // UserDefault part
         #expect(sut.userDefault.value(forKey: "badgeCount") as? Int == 4)
+
+        // Deleting Part
+        let petTest = PetTest()
+        petTest.pet.medicine?.append(medicine)
+        await deletePet(pet: petTest.pet)
     }
 
     @Test("When adding a medicine in \"datePicker mode\" and its notifications properly, they should be added.")

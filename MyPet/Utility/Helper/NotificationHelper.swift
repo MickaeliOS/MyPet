@@ -111,4 +111,21 @@ struct NotificationHelper {
             }
         }
     }
+
+    func isNewNotificationDateGreater(
+        date: Date,
+        pendingNotifications: [UNNotificationRequest]
+    ) async -> Bool {
+        guard pendingNotifications.isEmpty == false else {
+            return true
+        }
+
+        let allDatesAreEarlier = pendingNotifications.compactMap { request in
+            (request.trigger as? UNCalendarNotificationTrigger)?.nextTriggerDate()
+        }.allSatisfy { existingDate in
+            date > existingDate
+        }
+
+        return allDatesAreEarlier ? true : false
+    }
 }
