@@ -81,13 +81,17 @@ struct MedicineCardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(.blue, lineWidth: 2))
         .onAppear {
+            // Adjusting the components in case we changed country, so the
+            // interval remains correct.
             var components = DateComponents()
-            components.calendar = calendar
+            components.timeZone = medicine.timeZone
+            components.calendar = Calendar.current
 
-            guard let startOfDay = components.calendar?.startOfDay(for: Date.now) else {
+            guard let startOfDay = components.calendar?.startOfDay(for: .now) else {
+                daysLeft = nil
                 return
             }
-
+            
             daysLeft = calendar.numberOfDaysBetween(startOfDay, and: medicine.lastDay)
         }
         .saturation((daysLeft != nil && daysLeft! <= 0) ? 0 : 1)

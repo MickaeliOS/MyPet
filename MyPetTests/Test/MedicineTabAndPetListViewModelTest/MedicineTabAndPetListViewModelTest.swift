@@ -1,5 +1,5 @@
 //
-//  AddMedicineViewModelTest.swift
+//  MedicineTabAndPetListViewModelTest.swift
 //  MyPetTests
 //
 //  Created by Mickaël Horn on 19/12/2024.
@@ -11,17 +11,19 @@ import Testing
 import UserNotifications
 import SwiftData
 
-final class AddMedicineViewModelTest {
+final class MedicineTabAndPetListViewModelTest {
 
     // MARK: PROPERTY
     private var mockSwiftDataHelper: MockSwiftDataHelper!
     private let sut: AddMedicineView.ViewModel!
 
+    // Need centerMock for two SUT, so I declared it there
+    private let centerMock = UNUserNotificationCenterMock()
+
     // MARK: INIT
     init() {
         mockSwiftDataHelper = MockSwiftDataHelper()
         let userDefaultMock = UserDefaultHelperMock()
-        let centerMock = UNUserNotificationCenterMock()
         self.sut = .init(userDefault: userDefaultMock,
                          notificationHelper: NotificationHelper(
                             center: centerMock,
@@ -38,141 +40,6 @@ final class AddMedicineViewModelTest {
         }
 
         sut.today = Calendar.current.startOfDay(for: baseDate)
-    }
-
-    // MARK: PRIVATE FUNCTIONS
-    private func setupTakingTime() {
-        var dateComponents = Calendar.current.dateComponents([.day], from: Date.now)
-        dateComponents.hour = 6
-        dateComponents.minute = 0
-
-        guard let takingTime = Calendar.current.date(from: dateComponents) else {
-            Issue.record("Error, the date should not be nil.")
-            return
-        }
-
-        sut.takingTimes = [.init(date: takingTime)]
-    }
-
-    private func setupDates(with today: Date) -> Set<DateComponents> {
-        let calendar = Calendar.current
-
-        guard let firstDate = calendar.date(byAdding: .day, value: 1, to: today) else {
-            Issue.record("secondDate invalid.")
-            return []
-        }
-
-        guard let secondDate = calendar.date(byAdding: .day, value: 1, to: firstDate) else {
-            Issue.record("secondDate invalid.")
-            return []
-        }
-
-        var firstDateComponents = calendar.dateComponents([.year, .month, .day, .hour], from: firstDate)
-        var secondDateComponents = calendar.dateComponents([.year, .month, .day, .hour], from: secondDate)
-        firstDateComponents.calendar = calendar
-        secondDateComponents.calendar = calendar
-
-        return [firstDateComponents, secondDateComponents]
-    }
-
-    private func setupSampleNotifications() async {
-        let today = Date.now
-
-        for index in 1...2 {
-            guard let notificationDate = Calendar.current.date(byAdding: .month, value: index, to: today) else {
-                Issue.record("notificationDate should be correct.")
-                return
-            }
-
-            let firstNotificationDateComponents = Calendar.current.dateComponents(
-                [.day, .month, .year, .hour],
-                from: notificationDate
-            )
-
-            // Setting up the Notification's Content
-            let content = UNMutableNotificationContent()
-            content.title = "SampleTitle"
-            content.body = "SampleBody"
-            content.sound = UNNotificationSound.default
-
-            // Trigger's creation
-            let trigger = UNCalendarNotificationTrigger(dateMatching: firstNotificationDateComponents, repeats: false)
-
-            // ID
-            let id = UUID().uuidString
-
-            // Notification is fully constructed with the Request
-            let request = UNNotificationRequest(
-                identifier: id,
-                content: content,
-                trigger: trigger
-            )
-
-            await #expect(throws: Never.self) {
-                try await sut.notificationHelper.center.add(request)
-            }
-        }
-    }
-
-    private func areNotificationsInChronologicalOrder(_ requests: [UNNotificationRequest]) -> Bool {
-        // First, we extract the notifications's dates
-        let dates = requests.compactMap { request -> Date? in
-            if let trigger = request.trigger as? UNCalendarNotificationTrigger {
-                return trigger.nextTriggerDate()
-            }
-            return nil
-        }
-
-        return zip(dates, dates.dropFirst()).allSatisfy { $0 <= $1 }
-    }
-
-    private func getLastDayFromDatePickerMode() -> Date? {
-        let dates = sut.multiDatePickerDateSet.compactMap { $0.date }
-
-        if let lastDate = dates.sorted(by: <).last {
-            let startOfLastDate = Calendar.current.startOfDay(for: lastDate)
-
-            guard let fullLastDate = Calendar.current.date(byAdding: .day, value: 1, to: startOfLastDate) else {
-                Issue.record("LastDay should be correct.")
-                return nil
-            }
-
-            return fullLastDate
-        } else {
-            Issue.record("Cannot get the last date from datePicker.")
-            return nil
-        }
-    }
-
-    @MainActor
-    private func deletePet(pet: Pet) async {
-        // Before deleting, we add the pet in SwiftData
-        #expect(throws: Never.self) {
-            try mockSwiftDataHelper.addPet(pet: pet, with: mockContainer.mainContext)
-
-            // Now, let's make sure the changes propagate through persistent storage
-            let newContext = ModelContext(mockContainer)
-            let secondDescriptor = FetchDescriptor<Pet>()
-            let savedPets = try newContext.fetch(secondDescriptor)
-
-            #expect(savedPets.count == 1)
-        }
-
-        let petListViewModel = PetListView.ViewModel(
-            swiftDataHelper: mockSwiftDataHelper,
-            notificationHelper: NotificationHelper(
-                center: UNUserNotificationCenterMock(),
-                userDefault: UserDefaultHelperMock()
-            ),
-            center: UNUserNotificationCenterMock()
-        )
-
-        let indexSet = IndexSet(integer: 0)
-        let mockContainer = MockContainer().mockContainer
-
-        await petListViewModel.deletePet(at: indexSet, pets: [pet], context: mockContainer.mainContext)
-        #expect(pet == nil)
-
     }
 
     // MARK: TESTS
@@ -194,7 +61,12 @@ final class AddMedicineViewModelTest {
         Issue.record("The medicine creation flow should have failed.")
     }
 
-    @Test("When adding/deleting a medicine in \"everyDay mode\" with its notifications properly, they should be added/deleted.")
+    @Test(
+    """
+        When adding/deleting a medicine in \"everyDay mode\" with its
+        notifications properly, they should be added/deleted.
+    """
+    )
     func addingMedicineInEverydayModeShouldWorkWhenGoodSetup() async {
         sut.medicineName = "MedicineTest"
         sut.medicineDosage = "DosageTest"
@@ -202,7 +74,7 @@ final class AddMedicineViewModelTest {
         sut.duration = 2
         setupTakingTime()
 
-        guard let medicine = sut.createMedicineFlow() else {
+        guard var medicine = sut.createMedicineFlow() else {
             Issue.record("The medicine creation flow failed.")
             return
         }
@@ -231,16 +103,19 @@ final class AddMedicineViewModelTest {
         sut.userDefault.set(2, forKey: "badgeCount") // Should be 2 because we just added 2 notifications
         await setupSampleNotifications()
         await sut.scheduleNotificationsFlow(medicine: medicine, petName: "PetTestName")
+
         let notificationRequests = await sut.notificationHelper.center.pendingNotificationRequests()
         #expect(notificationRequests.count == 4)
         #expect(areNotificationsInChronologicalOrder(notificationRequests))
-        #expect(sut.notificationIDs.count == 2)
+        medicine.notificationIDs = sut.notificationIDs
+        #expect(medicine.notificationIDs?.count == 2)
 
         // UserDefault part
         #expect(sut.userDefault.value(forKey: "badgeCount") as? Int == 4)
 
         // Deleting Part
         let petTest = PetTest()
+        petTest.pet.medicine = []
         petTest.pet.medicine?.append(medicine)
         await deletePet(pet: petTest.pet)
     }
@@ -371,5 +246,151 @@ final class AddMedicineViewModelTest {
             Oups, la sauvegarde ne s'est pas passée comme prévue, essayez de redémarrer l'application.
             """)
         }
+    }
+}
+
+extension MedicineTabAndPetListViewModelTest {
+
+    // MARK: PRIVATE FUNCTIONS
+    private func setupTakingTime() {
+        var dateComponents = Calendar.current.dateComponents([.day], from: Date.now)
+        dateComponents.hour = 6
+        dateComponents.minute = 0
+
+        guard let takingTime = Calendar.current.date(from: dateComponents) else {
+            Issue.record("Error, the date should not be nil.")
+            return
+        }
+
+        sut.takingTimes = [.init(date: takingTime)]
+    }
+
+    private func setupDates(with today: Date) -> Set<DateComponents> {
+        let calendar = Calendar.current
+
+        guard let firstDate = calendar.date(byAdding: .day, value: 1, to: today) else {
+            Issue.record("secondDate invalid.")
+            return []
+        }
+
+        guard let secondDate = calendar.date(byAdding: .day, value: 1, to: firstDate) else {
+            Issue.record("secondDate invalid.")
+            return []
+        }
+
+        var firstDateComponents = calendar.dateComponents([.year, .month, .day, .hour], from: firstDate)
+        var secondDateComponents = calendar.dateComponents([.year, .month, .day, .hour], from: secondDate)
+        firstDateComponents.calendar = calendar
+        secondDateComponents.calendar = calendar
+
+        return [firstDateComponents, secondDateComponents]
+    }
+
+    private func setupSampleNotifications() async {
+        let today = Date.now
+
+        for index in 1...2 {
+            guard let notificationDate = Calendar.current.date(byAdding: .month, value: index, to: today) else {
+                Issue.record("notificationDate should be correct.")
+                return
+            }
+
+            let firstNotificationDateComponents = Calendar.current.dateComponents(
+                [.day, .month, .year, .hour],
+                from: notificationDate
+            )
+
+            // Setting up the Notification's Content
+            let content = UNMutableNotificationContent()
+            content.title = "SampleTitle"
+            content.body = "SampleBody"
+            content.sound = UNNotificationSound.default
+
+            // Trigger's creation
+            let trigger = UNCalendarNotificationTrigger(dateMatching: firstNotificationDateComponents, repeats: false)
+
+            // ID
+            let id = UUID().uuidString
+
+            // Notification is fully constructed with the Request
+            let request = UNNotificationRequest(
+                identifier: id,
+                content: content,
+                trigger: trigger
+            )
+
+            await #expect(throws: Never.self) {
+                try await sut.notificationHelper.center.add(request)
+            }
+        }
+    }
+
+    private func areNotificationsInChronologicalOrder(_ requests: [UNNotificationRequest]) -> Bool {
+        // First, we extract the notifications's dates
+        let dates = requests.compactMap { request -> Date? in
+            if let trigger = request.trigger as? UNCalendarNotificationTrigger {
+                return trigger.nextTriggerDate()
+            }
+            return nil
+        }
+
+        return zip(dates, dates.dropFirst()).allSatisfy { $0 <= $1 }
+    }
+
+    private func getLastDayFromDatePickerMode() -> Date? {
+        let dates = sut.multiDatePickerDateSet.compactMap { $0.date }
+
+        if let lastDate = dates.sorted(by: <).last {
+            let startOfLastDate = Calendar.current.startOfDay(for: lastDate)
+
+            guard let fullLastDate = Calendar.current.date(byAdding: .day, value: 1, to: startOfLastDate) else {
+                Issue.record("LastDay should be correct.")
+                return nil
+            }
+
+            return fullLastDate
+        } else {
+            Issue.record("Cannot get the last date from datePicker.")
+            return nil
+        }
+    }
+
+    @MainActor
+    private func deletePet(pet: Pet) async {
+        let mockContainer = MockContainer().mockContainer
+
+        // Before deleting, we add the pet in SwiftData
+        #expect(throws: Never.self) {
+            try mockSwiftDataHelper.addPet(pet: pet, with: mockContainer.mainContext)
+
+            // Now, let's make sure the changes propagate through persistent storage
+            let newContext = ModelContext(mockContainer)
+            let descriptor = FetchDescriptor<Pet>()
+            let savedPets = try newContext.fetch(descriptor)
+
+            #expect(savedPets.count == 1)
+        }
+
+        let petListViewModel = PetListView.ViewModel(
+            swiftDataHelper: mockSwiftDataHelper,
+            notificationHelper: NotificationHelper(
+                center: centerMock,
+                userDefault: UserDefaultHelperMock()
+            ),
+            center: centerMock
+        )
+
+        let indexSet = IndexSet(integer: 0)
+        UNNotificationSettings.swizzleAuthorizationStatus()
+        await petListViewModel.deletePet(at: indexSet, pets: [pet], context: mockContainer.mainContext)
+
+        #expect(throws: Never.self) {
+            let secondDescriptor = FetchDescriptor<Pet>()
+            let deletedPet = try mockContainer.mainContext.fetch(secondDescriptor)
+            #expect(deletedPet.isEmpty)
+        }
+
+        let notificationRequests = await sut.notificationHelper.center.pendingNotificationRequests()
+        #expect(notificationRequests.count == 2)
     }
 }

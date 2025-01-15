@@ -151,7 +151,11 @@ extension AddMedicineView {
                 let id = UUID().uuidString
 
                 // We must be sure that the badge count is in order
-                let result = await notificationHelper.isNewNotificationDateGreater(date: date, pendingNotifications: pendingNotifications)
+                let result = await notificationHelper.isNewNotificationDateGreater(
+                    date: date,
+                    pendingNotifications: pendingNotifications
+                )
+
                 if result {
                     await addGreaterDateNotification(id: id, content: content, trigger: trigger)
                 } else {

@@ -12,13 +12,7 @@ import Testing
 final class CalendarExtensionTest {
     @Test("Number of days between 2 days should be 2.")
     func numberOfDaysBetween2DaysReturns2() {
-        var components = DateComponents()
-        components.calendar = Calendar.current
-
-        guard let startOfDay = components.calendar?.startOfDay(for: Date.now) else {
-            Issue.record("startOfDay should not be nil.")
-            return
-        }
+        let startOfDay = Calendar.current.startOfDay(for: Date.now)
 
         guard let lastDay = Calendar.current.date(byAdding: .day, value: 2, to: startOfDay) else {
             Issue.record("lastDay should not be nil.")

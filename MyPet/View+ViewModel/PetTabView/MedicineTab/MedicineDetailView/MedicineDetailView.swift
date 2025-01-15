@@ -44,23 +44,21 @@ struct MedicineDetailView: View {
                             .font(.headline)
                     }
 
-//                    if let dates = medicine.dates {
-                        let nonNilDates = medicine.dates.compactMap { $0.date }
-                        let sortedDates = nonNilDates.sorted(by: { $0 < $1 })
+                    let nonNilDates = medicine.dates.compactMap { $0.date }
+                    let sortedDates = nonNilDates.sorted(by: { $0 < $1 })
 
-                        LazyVGrid(columns: medicineDatesGrid, spacing: 10) {
-                            ForEach(sortedDates, id: \.self) { date in
-                                Text(date, format: .dateTime.day().month().year())
-                                    .padding(5)
-                                    .font(.title3)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .background {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(.blue, lineWidth: 2)
-                                    }
-                            }
+                    LazyVGrid(columns: medicineDatesGrid, spacing: 10) {
+                        ForEach(sortedDates, id: \.self) { date in
+                            Text(date, format: .dateTime.day().month().year())
+                                .padding(5)
+                                .font(.title3)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background {
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(.blue, lineWidth: 2)
+                                }
                         }
-//                    }
+                    }
                 }
 
                 VStack(alignment: .leading) {
