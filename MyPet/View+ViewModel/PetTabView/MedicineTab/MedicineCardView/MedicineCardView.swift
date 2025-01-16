@@ -91,7 +91,7 @@ struct MedicineCardView: View {
                 daysLeft = nil
                 return
             }
-            
+
             daysLeft = calendar.numberOfDaysBetween(startOfDay, and: medicine.lastDay)
         }
         .saturation((daysLeft != nil && daysLeft! <= 0) ? 0 : 1)
@@ -102,7 +102,7 @@ struct MedicineCardView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-
+        
         return NavigationStack {
             MedicineCardView(medicine: Medicine.sampleMedicine)
         }

@@ -44,7 +44,7 @@ extension EditVeterinarianView {
 
             return transitions[focusedField] ?? .name
         }
-
+        
         func savePet(pet: Pet, context: ModelContext) -> Bool {
             let veterinarianCopy = pet.veterinarian
 

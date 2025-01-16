@@ -17,7 +17,7 @@ protocol SwiftDataProtocol {
 // MARK: - ENUM
 enum SwiftDataHelperError: Error {
     case couldNotSave
-
+    
     var description: String {
         switch self {
         case .couldNotSave:
@@ -30,7 +30,7 @@ enum SwiftDataHelperError: Error {
 
 // MARK: - SWIFT DATA HELPER
 struct SwiftDataHelper: SwiftDataProtocol {
-
+    
     // MARK: FUNCTION
     func save(with context: ModelContext) throws(SwiftDataHelperError) {
         do {

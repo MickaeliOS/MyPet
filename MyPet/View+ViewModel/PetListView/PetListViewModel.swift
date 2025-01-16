@@ -94,11 +94,6 @@ extension PetListView {
         }
 
         private func rescheduleNotifications() {
-//            if var badgeCount = userDefault.value(forKey: "badgeCount") as? Int {
-//                badgeCount = 0
-//                userDefault.set(badgeCount, forKey: "badgeCount")
-//            }
-
             Task { @MainActor in
                 await notificationHelper.reschedulePendingNotifications()
             }

@@ -9,7 +9,7 @@ import Foundation
 
 struct Information: Codable {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     var name: String
     var gender: Gender
     var type: String

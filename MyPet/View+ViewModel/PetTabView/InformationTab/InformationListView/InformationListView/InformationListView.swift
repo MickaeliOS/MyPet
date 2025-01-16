@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InformationListView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
 
     @State private var viewModel = ViewModel()
@@ -19,7 +19,7 @@ struct InformationListView: View {
 
     @Binding var showPetTabView: Bool
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
@@ -90,7 +90,7 @@ struct InformationListView: View {
         }
     }
 
-    // MARK: - VIEWBUILDER
+    // MARK: VIEWBUILDER
     @ViewBuilder private func profilePictureView(geometry: GeometryProxy) -> some View {
         VStack {
             viewModel.petPhoto?

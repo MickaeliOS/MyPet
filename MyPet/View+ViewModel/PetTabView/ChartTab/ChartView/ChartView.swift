@@ -9,13 +9,13 @@ import SwiftUI
 import Charts
 
 struct ChartView: View {
-
+    
     // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = ViewModel()
     @State private var showWeightHistoryView = false
-
+    
     private var gradientColor: LinearGradient {
         LinearGradient(
             gradient: Gradient(
@@ -28,13 +28,13 @@ struct ChartView: View {
             endPoint: .bottom
         )
     }
-
+    
     // MARK: BODY
     var body: some View {
         NavigationStack {
             GeometryReader { geometry in
                 HideKeyboardView()
-
+                
                 VStack(alignment: .leading) {
                     if let weights = pet.weights, !weights.isEmpty {
                         Chart {
@@ -44,9 +44,11 @@ struct ChartView: View {
                                     y: .value("Poids", weight.weight)
                                 )
                                 .symbol(.circle)
-
-                                AreaMark(x: .value("Jour", weight.day, unit: .day), y: .value("Poids", weight.weight))
-                                    .foregroundStyle(gradientColor)
+                                
+                                AreaMark(x: .value("Jour", weight.day, unit: .day),
+                                         y: .value("Poids", weight.weight)
+                                )
+                                .foregroundStyle(gradientColor)
                             }
                         }
                         .padding([.top, .leading, .trailing])
@@ -54,9 +56,9 @@ struct ChartView: View {
                         .chartXAxisLabel(position: .bottom, alignment: .center) {
                             VStack {
                                 if weights.count == 1 {
-                                    Text(weights[0].day.formatted(date: .long, time: .omitted))
+                                    Text(weights[0].day.dateToStringDMY)
                                 }
-
+                                
                                 Text("Jours")
                                     .foregroundStyle(.blue)
                                     .font(.headline)
@@ -83,16 +85,16 @@ struct ChartView: View {
                         HStack {
                             Image(systemName: "chart.xyaxis.line")
                                 .font(.system(size: 80))
-
+                            
                             Text("Aucun poids enregistré, ajoutez-en un juste en bas.")
                                 .font(.title2)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .foregroundStyle(.gray)
                     }
-
+                    
                     Spacer()
-
+                    
                     HStack {
                         VStack(alignment: .leading) {
                             TextField("Poids en Kg", value: $viewModel.weight, format: .number)
@@ -104,11 +106,11 @@ struct ChartView: View {
                                         viewModel.addWeight(for: pet, context: modelContext)
                                     }
                                 }
-
+                            
                             DatePicker("Date :", selection: $viewModel.day, displayedComponents: .date)
                         }
                         .frame(width: geometry.size.width * 0.5)
-
+                        
                         Button("Ajouter") {
                             viewModel.addWeight(for: pet, context: modelContext)
                         }
@@ -152,7 +154,7 @@ struct ChartView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-
+        
         return TabView {
             NavigationStack {
                 ChartView()
@@ -166,7 +168,7 @@ struct ChartView: View {
                 )
             }
         }
-
+        
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }

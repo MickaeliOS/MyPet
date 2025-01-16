@@ -11,7 +11,7 @@ import PhotosUI
 
 struct AddPetView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
 
@@ -20,7 +20,7 @@ struct AddPetView: View {
     @State private var viewModel = AddPetView.ViewModel()
     @State private var photoPickerCenter = PhotoPickerCenter()
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -75,6 +75,7 @@ struct AddPetView: View {
         }
     }
 
+    // MARK: VIEWBUILDER
     @ViewBuilder private func principalInformationsView() -> some View {
         VStack {
             VStack(alignment: .leading) {

@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 
+// MARK: - PROTOCOL
 protocol UNUserNotificationCenterProtocol {
     func notificationSettings() async -> UNNotificationSettings
     func pendingNotificationRequests() async -> [UNNotificationRequest]
@@ -16,6 +17,7 @@ protocol UNUserNotificationCenterProtocol {
     func removeAllPendingNotificationRequests()
 }
 
+// MARK: - NOTIFICATION HELPER
 struct UNUserNotificationCenterHelper: UNUserNotificationCenterProtocol {
     private let center = UNUserNotificationCenter.current()
 
@@ -30,7 +32,7 @@ struct UNUserNotificationCenterHelper: UNUserNotificationCenterProtocol {
     func add(_ request: UNNotificationRequest) async throws {
         try await center.add(request)
     }
-
+    
     func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
         center.removePendingNotificationRequests(withIdentifiers: identifiers)
     }

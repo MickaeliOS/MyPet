@@ -37,7 +37,7 @@ struct VeterinarianView: View {
 
                 Text("Site web")
                     .bold()
-                    .textInputAutocapitalization(.none)
+                    .textInputAutocapitalization(.never)
 
                 Text((pet.veterinarian?.website).orDefault())
             }

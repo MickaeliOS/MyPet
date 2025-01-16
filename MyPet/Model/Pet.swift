@@ -41,7 +41,7 @@ final class Pet {
     }
 }
 
-// MARK: EXTENSION
+// MARK: - EXTENSION
 extension Pet {
     func addMedicine(medicine: Medicine) {
         self.medicine?.append(medicine)
@@ -55,18 +55,6 @@ extension Pet {
         }
     }
 
-//    func deleteNotifications(with medicineList: [Medicine], offsets: IndexSet) {
-//        for offset in offsets {
-//            if let index = medicine?.firstIndex(of: medicineList[offset]) {
-//                if let notificationsToDelete = medicine?[index].notificationIDs {
-//                    UNUserNotificationCenter.current().removePendingNotificationRequests(
-//                        withIdentifiers: notificationsToDelete
-//                    )
-//                }
-//            }
-//        }
-//    }
-
     func deletePetNotifications(center: UNUserNotificationCenterProtocol) {
         medicine?.forEach({ med in
             guard let notificationIDs = med.notificationIDs else {
@@ -76,19 +64,6 @@ extension Pet {
             center.removePendingNotificationRequests(withIdentifiers: notificationIDs)
         })
     }
-
-//    // Old working version, new one changed to help for unit test with the protocol
-//    func deletePetNotifications() {
-//        medicine?.forEach({ med in
-//            let notificationCenter = UNUserNotificationCenter.current()
-//
-//            guard let notificationIDs = med.notificationIDs else {
-//                return
-//            }
-//
-//            notificationCenter.removePendingNotificationRequests(withIdentifiers: notificationIDs)
-//        })
-//    }
 
     func addWeight(weight: Weight) {
         if let index = self.weights?.firstIndex(where: { $0.day > weight.day }) {

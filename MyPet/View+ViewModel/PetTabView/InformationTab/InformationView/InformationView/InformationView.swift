@@ -125,7 +125,7 @@ struct FavoriteView: View {
 #Preview {
     do {
         let previewer = try Previewer()
-
+        
         return TabView {
             NavigationStack {
                 InformationView()

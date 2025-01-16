@@ -72,15 +72,5 @@ extension EditHealthInformationView {
                 return false
             }
         }
-
-//        private func removeEmptyElement() {
-//            if !allergies.isEmpty {
-//                allergies = allergies.removeEmptyElement()
-//            }
-//
-//            if !intolerances.isEmpty {
-//                intolerances = intolerances.removeEmptyElement()
-//            }
-//        }
     }
 }

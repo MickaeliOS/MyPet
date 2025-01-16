@@ -9,7 +9,7 @@ import Foundation
 
 struct Medicine: Codable, Hashable, Identifiable {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     var id = UUID()
     let name: String
     let dosage: String

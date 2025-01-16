@@ -65,7 +65,7 @@ extension EditInformationListView {
 
         func savePet(pet: Pet, context: ModelContext) -> Bool {
             guard let information else { return true }
-
+            
             let informationCopy = pet.information
 
             pet.information = information

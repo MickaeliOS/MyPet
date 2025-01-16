@@ -10,7 +10,7 @@ import SwiftData
 
 struct PetListView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
 
@@ -22,7 +22,7 @@ struct PetListView: View {
     @State private var showPetTabView = false
     @State private var viewModel = ViewModel(notificationHelper: NotificationHelper())
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         if let selectedPet, showPetTabView {
             PetTabView(showPetTabView: $showPetTabView)
@@ -72,17 +72,11 @@ struct PetListView: View {
                 } message: {
                     Text(viewModel.errorMessage)
                 }
-                .onAppear {
-                    print("---")
-                    print(Locale.current)
-                    print("---")
-
-                }
             }
         }
     }
 
-    // MARK: - PRIVATE FUNCTIONS
+    // MARK: PRIVATE FUNCTIONS
     private func deletePet(at offsets: IndexSet) {
         Task { @MainActor in
             await viewModel.deletePet(at: offsets, pets: pets, context: modelContext)

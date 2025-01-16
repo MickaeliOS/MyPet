@@ -23,14 +23,14 @@ struct MyApp: App {
             PetListView()
                 .onAppear {
 #if DEBUG
-                    center.getPendingNotificationRequests { notifs in
-                        notifs.forEach { notif in
-                            print("-----------------")
-                            print(notif)
-                            print("-----------------")
-                        }
-                    }
-//                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+                    //                    center.getPendingNotificationRequests { notifs in
+                    //                        notifs.forEach { notif in
+                    //                            print("-----------------")
+                    //                            print(notif)
+                    //                            print("-----------------")
+                    //                        }
+                    //                    }
+                    //                     UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
 #endif
                 }
                 .onChange(of: scenePhase) { _, newPhase in
@@ -41,8 +41,6 @@ struct MyApp: App {
                             let pendingNotifications = await center.pendingNotificationRequests()
 
                             if pendingNotifications.count < badgeCount {
-//                                badgeCount = 0
-
                                 if pendingNotifications.count > 0 {
                                     await notificationHelper.reschedulePendingNotifications()
                                 }

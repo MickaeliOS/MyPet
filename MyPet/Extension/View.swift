@@ -27,9 +27,9 @@ extension View {
         modifier(WideLinearBlueGradient())
     }
 
-    #if canImport(UIKit)
+#if canImport(UIKit)
     func hideKeyboard() {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
-    #endif
+#endif
 }

@@ -10,7 +10,7 @@ import PhotosUI
 
 struct EditInformationListView: View {
 
-    // MARK: - PROPERTY
+    // MARK: PROPERTY
     @Environment(Pet.self) private var pet
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -19,7 +19,7 @@ struct EditInformationListView: View {
     @State private var viewModel = ViewModel()
     @State private var photoPickerCenter = PhotoPickerCenter()
 
-    // MARK: - BODY
+    // MARK: BODY
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -172,8 +172,8 @@ struct EditInformationListView: View {
         let previewer = try Previewer()
 
         return EditInformationListView()
-                .modelContainer(previewer.container)
-                .environment(previewer.firstPet)
+            .modelContainer(previewer.container)
+            .environment(previewer.firstPet)
     } catch {
         return Text("Failed to create preview: \(error.localizedDescription)")
     }
